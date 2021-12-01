@@ -1,0 +1,9 @@
+name: MCSU_Refactored
+version: 1.0.0
+author: Cloud and Cak
+main: com.cloud.mcsu.MCSU_main
+api-version: 1.14
+commands:
+  /listGames:
+    description: Lists all loaded games (also tells you about any ones that are dying maybye)
+    usage: /listGames
