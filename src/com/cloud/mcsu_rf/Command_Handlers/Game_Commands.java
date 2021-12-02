@@ -2,6 +2,7 @@ package com.cloud.mcsu_rf.Command_Handlers;
 
 import com.cloud.mcsu_rf.Game_Classes.Game_Main;
 import com.cloud.mcsu_rf.Objects.Game;
+import com.sk89q.worldedit.entity.Player;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -15,7 +16,7 @@ public class Game_Commands implements CommandExecutor {
         if (sender.isOp()) {
             switch (command.getName()) {
                 case "playgame":
-                    Game_Main.Load_Game(command.getName(), sender, args);
+                    Game_Main.Load_Game(args[0], ((Player) sender).getWorld(), args);
                     return true;
                 case "listgames":
                     Bukkit.broadcastMessage("All created games");
