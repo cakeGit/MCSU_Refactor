@@ -1,8 +1,6 @@
 name: MCSU_Refactored
 version: 1.0.0
-authors:
-  - Cloud
-  - Cak
+author: Cloud and Cak
 main: com.cloud.mcsu_rf.MCSU_Main
 api-version: 1.14
 commands:
