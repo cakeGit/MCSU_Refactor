@@ -11,6 +11,6 @@ public class Event_Listeners implements Listener {
 
     @EventHandler
     public static void onPlayerJoin(PlayerJoinEvent evt) {
-        evt.setJoinMessage(ChatColor.BLUE + evt.getPlayer().getName() + " has joined the pain :(");
+        evt.setJoinMessage(ChatColor.BLUE + evt.getPlayer().getName() + ChatColor.WHITE + " has joined the pain :(");
     }
 }

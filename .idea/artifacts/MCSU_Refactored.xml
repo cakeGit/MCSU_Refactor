@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="MCSU_Refactored:jar">
+  <artifact type="jar" name="MCSU_Refactored">
     <output-path>$PROJECT_DIR$/../McsuTestServer/plugins</output-path>
     <root id="archive" name="MCSU V2.jar">
       <element id="module-output" name="MCSU_Refactor" />
