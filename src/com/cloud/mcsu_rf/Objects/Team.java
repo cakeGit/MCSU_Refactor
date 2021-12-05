@@ -24,7 +24,15 @@ public class Team {
     //String functions
 
     public String toScoreboardString() {
-        return this.ChatColour + this.Name + ChatColour.WHITE + ": " + Points;
+        return this.ChatColour + this.Name + ChatColor.WHITE + ": " + Points;
+    }
+
+    public String getName() {
+        return this.ChatColour + this.Name;
+    }
+
+    public String getPlainTextName() {
+        return this.Name;
     }
 
 

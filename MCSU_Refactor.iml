@@ -10,7 +10,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/Downloads/bungeecord-chat-1.16-R0.4(1).jar!/" />
+          <root url="jar://$MODULE_DIR$/../MCSU/Dependencies/bungeecord-api-1.16-R0.3.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -19,7 +19,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/Downloads/spigotapi117.jar!/" />
+          <root url="jar://$MODULE_DIR$/../MCSU/Dependencies/bungeecord-chat-1.16-R0.4.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -28,7 +28,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/Downloads/bungeecord-api-1.16-R0.3.jar!/" />
+          <root url="jar://$MODULE_DIR$/../MCSU/Dependencies/FastAsyncWorldEdit-Bukkit-1.17-240.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -37,7 +37,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/Desktop/Plugins/Server/plugins/FastAsyncWorldEdit-Bukkit-1.17-240.jar!/" />
+          <root url="jar://$MODULE_DIR$/../MCSU/Dependencies/spigot-api-1.17.1-R0.1-20211101.080320-93.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

@@ -7,10 +7,10 @@ Make Gameloader auto-recognise files<br>
 
 #Naming
 
-Vars/OBjects Word_Word
+Vars/OBjects Word_Word <br>
+Vars should not have same name as object type
 
-voids wordWord
-exept for Init();
+function wiould be wordWord
 
 #function organisation in objects or smth
 
