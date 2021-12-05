@@ -30,6 +30,7 @@ public class Player_Commands implements CommandExecutor {
                 } else {
                     sender.sendMessage(ChatColor.RED+"Invalid command. Usage: /setspawn <SpawnArea> <x> <y> <z>");
                 }
+                return true;
             case "hub":
                 if(sender instanceof Player) {
                     Player p = (Player) sender;
@@ -41,6 +42,7 @@ public class Player_Commands implements CommandExecutor {
                 } else {
                     sender.sendMessage(ChatColor.RED+"Only players can run this command!");
                 }
+                return true;
         }
         return false;
     }
