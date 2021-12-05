@@ -27,7 +27,13 @@ public class MCSU_Main extends JavaPlugin {
         Scoreboard_Main.Init();
 
         getLogger().info("Finnisherd loading");
+        configSetup();
 
+    }
+
+    public static void configSetup() {
+        Config_Main.setupSpawnsConfig();
+        Config_Main.setupPointsConfig();
     }
 
     private void setInstance(MCSU_Main instance) {
