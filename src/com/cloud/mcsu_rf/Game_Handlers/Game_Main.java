@@ -26,19 +26,19 @@ public class Game_Main {
 
     }
 
-    public static void loadGame(String Game_Name, Player Player, String[] args) { //TODO: fix pls
+    public static void loadGame(String Game_Name, Player Player, String[] Args) { //TODO: fix pls
         org.bukkit.World World = Player.getWorld();
 
         Player.sendMessage("world is null");
         Player.sendMessage(Player.toString());
         Player.sendMessage(Player.getClass().toString());
-        //Player.sendMessage( ((World) BukkitAdapter.adapt( World )).toString() );
+        Player.sendMessage( ( (World) World).getName() );
         Player.sendMessage("playyer is not null????");
 
         MCSU_Main.Mcsu_Plugin.getLogger().info(MCSU_Main.Mcsu_Plugin.getDataFolder().getAbsolutePath() + File.separator + "/schematics/" + Game_Name + ".schem");
 
         /*Schematic_Loader.Load_Schematic(
-                new File( MCSU_Main.Mcsu_Plugin.getDataFolder().getAbsolutePath() + File.separator + "/schematics/" + Game_Name + ".schem"),
+                new File( MCSU_Main.Mcsu_Plugin.getDataFolder().getAbsolutePath() + File.separator + "/Game/" + Game_Name + ".schem"),
                 BlockVector3.at(0, 70, 0),
                 World
                 );*/
