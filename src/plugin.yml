@@ -11,4 +11,10 @@ commands:
     usage: /listGames
   playgame:
     description: Lists all loaded games (also tells you about any ones that are dying maybye)
-    usage: /playGame <Game name>
+    usage: /playGame <Gamename>
+  MCSUscoreboard:
+    description: Scoreboard Command
+    usage: /playGame <Data>
+  givescore:
+    description: gives score to team
+    usage: /givescore <Team> <Scorecount>

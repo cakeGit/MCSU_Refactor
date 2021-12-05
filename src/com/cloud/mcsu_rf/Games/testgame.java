@@ -7,7 +7,7 @@ public class testgame {
     public static void Init() {
         Game Game = new Game("testgame");
 
-        Game.setMapName("map map");
+        Game.setMapName("testgame");
 
 
     }
