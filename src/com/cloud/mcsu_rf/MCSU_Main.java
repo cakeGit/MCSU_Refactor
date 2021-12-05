@@ -9,7 +9,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class MCSU_Main extends JavaPlugin {
 
     private static MCSU_Main instance;
-
     public static MCSU_Main Mcsu_Plugin;
 
     @Override
@@ -27,16 +26,13 @@ public class MCSU_Main extends JavaPlugin {
 
         getLogger().info("Finnisherd loading");
         configSetup();
+        instance = this;
     }
 
     public void configSetup() {
         getConfig().options().copyDefaults();
         saveDefaultConfig();
         Config_Main.setup();
-    }
-
-    private void setInstance(MCSU_Main instance) {
-        this.instance = instance;
     }
 
     public static MCSU_Main getInstance() {

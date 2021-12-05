@@ -13,8 +13,8 @@ import com.sk89q.worldedit.function.operation.Operation;
 import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.session.ClipboardHolder;
-import com.sk89q.worldedit.world.World;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,21 +22,20 @@ import java.io.IOException;
 
 public class Schematic_Loader {
 
-    public static void loadSchematic(File Schem_File, BlockVector3 Paste_To, World World) {
+    public static void loadSchematic(String Schem_File, BlockVector3 Paste_To, World world) {
 
-        Bukkit.getLogger().info("Loading schem " + Schem_File.getAbsoluteFile());
+        Bukkit.getLogger().info("Loading schem " +Schem_File);
 
-        World adaptedWorld = (World) BukkitAdapter.adapt(World);
+        com.sk89q.worldedit.world.World adaptedWorld = BukkitAdapter.adapt(world);
         EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(adaptedWorld, -1);
-        File sgschem = new File(MCSU_Main.Mcsu_Plugin.getDataFolder() + File.separator + "/schematics/sg.schem");
-
+        File schem = new File(MCSU_Main.Mcsu_Plugin.getDataFolder() + File.separator + "/schematics/"+Schem_File+".schem");
         Bukkit.getScheduler().runTaskAsynchronously(
                 MCSU_Main.getInstance(), new Runnable() {
                     @Override
                     public void run() {
                         try {
-                            ClipboardFormat format = ClipboardFormats.findByFile(sgschem);
-                            ClipboardReader reader = format.getReader(new FileInputStream(sgschem));
+                            ClipboardFormat format = ClipboardFormats.findByFile(schem);
+                            ClipboardReader reader = format.getReader(new FileInputStream(schem));
                             Clipboard clipboard = reader.read();
                             Operation operation = new ClipboardHolder(clipboard).createPaste(editSession).to(Paste_To).ignoreAirBlocks(false).build();
                             Operations.complete(operation);

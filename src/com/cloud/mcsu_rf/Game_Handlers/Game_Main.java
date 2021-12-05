@@ -5,8 +5,8 @@ import com.cloud.mcsu_rf.MCSU_Main;
 import com.cloud.mcsu_rf.Objects.Game;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
-import com.sk89q.worldedit.world.World;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -26,22 +26,18 @@ public class Game_Main {
 
     }
 
-    public static void loadGame(String Game_Name, Player Player, String[] Args) { //TODO: fix pls
-        org.bukkit.World World = Player.getWorld();
+    public static void loadGame(String Game_Name, Player player, String[] args) { //TODO: fix pls
+        World world = player.getWorld();
 
-        Player.sendMessage("world is null");
-        Player.sendMessage(Player.toString());
-        Player.sendMessage(Player.getClass().toString());
-        Player.sendMessage( ( (World) World).getName() );
-        Player.sendMessage("playyer is not null????");
+        player.sendMessage("world is null");
+        player.sendMessage(player.toString());
+        player.sendMessage(player.getClass().toString());
+        player.sendMessage(world.getName());
+        player.sendMessage("playyer is not null????");
 
-        MCSU_Main.Mcsu_Plugin.getLogger().info(MCSU_Main.Mcsu_Plugin.getDataFolder().getAbsolutePath() + File.separator + "/schematics/" + Game_Name + ".schem");
+        //MCSU_Main.Mcsu_Plugin.getLogger().info(MCSU_Main.Mcsu_Plugin.getDataFolder().getAbsolutePath() + File.separator + "/schematics/" + Game_Name + ".schem");
 
-        /*Schematic_Loader.Load_Schematic(
-                new File( MCSU_Main.Mcsu_Plugin.getDataFolder().getAbsolutePath() + File.separator + "/Game/" + Game_Name + ".schem"),
-                BlockVector3.at(0, 70, 0),
-                World
-                );*/
+        Schematic_Loader.loadSchematic("testgame", BlockVector3.at(0, 70, 0), world);
 
 
     }
