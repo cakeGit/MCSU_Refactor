@@ -13,10 +13,6 @@ import org.bukkit.entity.Player;
 import java.io.File;
 import java.util.ArrayList;
 
-
-
-
-
 //Please note the actual Game object is in the objects package
 
 public class Game_Main {
@@ -30,9 +26,14 @@ public class Game_Main {
 
     }
 
-    public static void Load_Game(String Game_Name, Player Player, String[] args) {
+    public static void loadGame(String Game_Name, Player Player, String[] args) { //TODO: fix pls
+        org.bukkit.World World = Player.getWorld();
 
-        World World = BukkitAdapter.adapt(Player.getWorld());
+        Player.sendMessage("world is null");
+        Player.sendMessage(Player.toString());
+        Player.sendMessage(Player.getClass().toString());
+        //Player.sendMessage( ((World) BukkitAdapter.adapt( World )).toString() );
+        Player.sendMessage("playyer is not null????");
 
         MCSU_Main.Mcsu_Plugin.getLogger().info(MCSU_Main.Mcsu_Plugin.getDataFolder().getAbsolutePath() + File.separator + "/schematics/" + Game_Name + ".schem");
 

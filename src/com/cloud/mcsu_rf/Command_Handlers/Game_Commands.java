@@ -1,17 +1,13 @@
 package com.cloud.mcsu_rf.Command_Handlers;
 
 import com.cloud.mcsu_rf.Game_Handlers.Game_Main;
-import com.cloud.mcsu_rf.MCSU_Main;
 import com.cloud.mcsu_rf.Objects.Game;
-import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Wolf;
 
 public class Game_Commands implements CommandExecutor {
 
@@ -30,7 +26,7 @@ public class Game_Commands implements CommandExecutor {
                     }
                     Sender.sendMessage("shown you the" + Args[0]);
 
-                    Game_Main.Load_Game(
+                    Game_Main.loadGame(
                             Args[0],
                             (Player) Sender,
                             Args

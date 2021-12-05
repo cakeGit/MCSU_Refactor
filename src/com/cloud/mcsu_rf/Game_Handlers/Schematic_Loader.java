@@ -22,7 +22,7 @@ import java.io.IOException;
 
 public class Schematic_Loader {
 
-    public static void Load_Schematic(File Schem_File, BlockVector3 Paste_To, World World) {
+    public static void loadSchematic(File Schem_File, BlockVector3 Paste_To, World World) {
 
         Bukkit.getLogger().info("Loading schem " + Schem_File.getAbsoluteFile());
 

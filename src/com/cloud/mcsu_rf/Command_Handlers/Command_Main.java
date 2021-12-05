@@ -4,7 +4,7 @@ import com.cloud.mcsu_rf.MCSU_Main;
 
 public class Command_Main {
 
-    static void Register_Commands() {
+    static void registerCommands() {
 
         MCSU_Main.Mcsu_Plugin.getCommand("listgames").setExecutor(new Game_Commands());
         MCSU_Main.Mcsu_Plugin.getCommand("playgame").setExecutor(new Game_Commands());
@@ -13,7 +13,7 @@ public class Command_Main {
 
     public static void Init() {
 
-        Register_Commands();
+        registerCommands();
 
     }
 
