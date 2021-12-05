@@ -18,3 +18,9 @@ commands:
   givescore:
     description: gives score to team
     usage: /givescore <Team> <Scorecount>
+  setspawn:
+    description: Edit the config using this command.
+    usage: /setspawn <SpawnArea> <x> <y> <z>
+  hub:
+    description: Teleports the player to the hub.
+    usage: /setspawn <SpawnArea> <x> <y> <z>

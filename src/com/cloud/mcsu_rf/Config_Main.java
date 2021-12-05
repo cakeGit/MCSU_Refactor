@@ -41,7 +41,7 @@ public class Config_Main {
         }
     }
 
-    public static void updateStats() {
+    public static void updateConfig() {
         Config_Main.save();
         Config_Main.get().options().copyDefaults(true);
         Config_Main.reload();

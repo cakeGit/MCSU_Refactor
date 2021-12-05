@@ -8,7 +8,8 @@ public class Command_Main {
 
         MCSU_Main.Mcsu_Plugin.getCommand("listgames").setExecutor(new Game_Commands());
         MCSU_Main.Mcsu_Plugin.getCommand("playgame").setExecutor(new Game_Commands());
-
+        MCSU_Main.Mcsu_Plugin.getCommand("setspawn").setExecutor(new Player_Commands());
+        MCSU_Main.Mcsu_Plugin.getCommand("hub").setExecutor(new Player_Commands());
     }
 
     public static void Init() {
