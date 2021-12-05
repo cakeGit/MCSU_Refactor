@@ -9,66 +9,46 @@ import java.io.IOException;
 
 public class Config_Main {
 
-    private static File pointsFile;
-    private static File spawnsFile;
-    private static FileConfiguration pointsFileConfig;
-    private static FileConfiguration spawnsFileConfig;
+    private static File file;
+    private static FileConfiguration configfile;
 
-    public static void setupPointsConfig() {
-        pointsFile = new File(Bukkit.getServer().getPluginManager().getPlugin("MCSU_Refactored").getDataFolder(), "Points.yml");
-        if(!pointsFile.exists()) {
+    public static void setup() {
+        file = new File(Bukkit.getServer().getPluginManager().getPlugin("MCSU_Refactored").getDataFolder(), "config.yml");
+        if(!file.exists()) {
             try {
-                pointsFile.createNewFile();
-                Config_Main.setupPointsConfig();
-                Config_Main.getPointsFileConfig().options().copyDefaults(true);
-                Config_Main.save("Points");
+                file.createNewFile();
+                Config_Main.setup();
+                Config_Main.get().options().copyDefaults(true);
+                Config_Main.save();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        pointsFileConfig = YamlConfiguration.loadConfiguration(pointsFile);
+
+        configfile = YamlConfiguration.loadConfiguration(file);
     }
 
-    public static void setupSpawnsConfig() {
-        spawnsFile = new File(Bukkit.getServer().getPluginManager().getPlugin("MCSU_Refactored").getDataFolder(), "Spawns.yml");
-        if(!spawnsFile.exists()) {
-            try {
-                spawnsFile.createNewFile();
-                Config_Main.setupSpawnsConfig();
-                Config_Main.getSpawnsFileConfig().options().copyDefaults(true);
-                Config_Main.save("Spawns");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        spawnsFileConfig = YamlConfiguration.loadConfiguration(pointsFile);
+    public static FileConfiguration get() {
+        return configfile;
     }
 
-    public static FileConfiguration getSpawnsFileConfig() {
-        return spawnsFileConfig;
-    }
-
-    public static FileConfiguration getPointsFileConfig() {
-        return pointsFileConfig;
-    }
-
-    public static void save(String file) {
+    public static void save() {
         try {
-            switch(file) {
-                case "Points":
-                    pointsFileConfig.save(pointsFile);
-                case "Spawns":
-                    spawnsFileConfig.save(spawnsFile);
-            }
+            configfile.save(file);
         } catch (IOException e) {
             System.out.println("Couldn't save file.");
             e.printStackTrace();
         }
     }
 
+    public static void updateStats() {
+        Config_Main.save();
+        Config_Main.get().options().copyDefaults(true);
+        Config_Main.reload();
+    }
+
     public static void reload() {
-        spawnsFileConfig = YamlConfiguration.loadConfiguration(spawnsFile);
-        pointsFileConfig = YamlConfiguration.loadConfiguration(pointsFile);
+        configfile = YamlConfiguration.loadConfiguration(file);
     }
 
 }

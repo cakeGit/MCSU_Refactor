@@ -28,12 +28,12 @@ public class MCSU_Main extends JavaPlugin {
 
         getLogger().info("Finnisherd loading");
         configSetup();
-
     }
 
-    public static void configSetup() {
-        Config_Main.setupSpawnsConfig();
-        Config_Main.setupPointsConfig();
+    public void configSetup() {
+        getConfig().options().copyDefaults();
+        saveDefaultConfig();
+        Config_Main.setup();
     }
 
     private void setInstance(MCSU_Main instance) {
