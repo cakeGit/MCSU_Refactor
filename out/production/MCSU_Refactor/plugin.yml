@@ -1,0 +1,18 @@
+name: MCSU_Refactored
+version: 1.0.0
+author: Cloud and Cak
+main: com.cloud.mcsu_rf.MCSU_Main
+api-version: 1.14
+commands:
+  listgames:
+    description: Lists all loaded games (also tells you about any ones that are dying maybye)
+    usage: /listGames
+  playgame:
+    description: Lists all loaded games (also tells you about any ones that are dying maybye)
+    usage: /playGame <Gamename>
+  MCSUscoreboard:
+    description: Scoreboard Command
+    usage: /playGame <Data>
+  givescore:
+    description: gives score to team
+    usage: /givescore <Team> <Scorecount>
