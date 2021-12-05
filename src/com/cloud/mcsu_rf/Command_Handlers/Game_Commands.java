@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 public class Game_Commands implements CommandExecutor {
 
     @Override
-    public boolean onCommand(CommandSender Sender, Command Command, String Label, String[] Args) {
+    public boolean onCommand(CommandSender Sender, Command Command, String Label, String[] Args) { //Quite thicc, maybye try organising
         if (Sender.isOp()) {
             switch (Command.getName()) {
                 case "playgame":

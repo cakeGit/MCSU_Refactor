@@ -3,6 +3,7 @@ package com.cloud.mcsu_rf;
 import com.cloud.mcsu_rf.Command_Handlers.Command_Main;
 import com.cloud.mcsu_rf.Game_Handlers.Game_Main;
 import com.cloud.mcsu_rf.Score_Handlers.Scoreboard_Main;
+import com.cloud.mcsu_rf.Team_Handlers.Team_Main;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class MCSU_Main extends JavaPlugin {
@@ -22,10 +23,13 @@ public class MCSU_Main extends JavaPlugin {
 
         Game_Main.Init();
         Command_Main.Init();
-        Scoreboard_Main.Init();
+        Team_Main.init();
+        Scoreboard_Main.init();
+
+
 
         getLogger().info("Finnisherd loading");
-        configSetup();
+        //configSetup();
     }
 
     public void configSetup() {
@@ -34,7 +38,7 @@ public class MCSU_Main extends JavaPlugin {
         Config_Main.setup();
     }
 
-    private void setInstance(MCSU_Main instance) {
+    void setInstance(MCSU_Main instance) {
         this.instance = instance;
     }
 

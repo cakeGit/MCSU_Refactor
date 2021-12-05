@@ -20,7 +20,6 @@ public class Team {
 
     }
 
-
     //String functions
 
     public String toScoreboardString() {
@@ -33,6 +32,13 @@ public class Team {
 
     public String getPlainTextName() {
         return this.Name;
+    }
+
+
+    //Gets points
+
+    public int getPoints() {
+        return this.Points;
     }
 
 

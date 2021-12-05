@@ -3,7 +3,8 @@ package com.cloud.mcsu_rf.Score_Handlers;
 import com.cloud.mcsu_rf.Objects.MCSU_Scoreboard.MCSU_Scoreboard;
 import com.cloud.mcsu_rf.Objects.MCSU_Scoreboard.Scoreboard_Element;
 import org.bukkit.Bukkit;
-import org.bukkit.scoreboard.*;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.ScoreboardManager;
 
 public class Scoreboard_Main {
     public static ScoreboardManager Scoreboard_Manager = Bukkit.getScoreboardManager();
@@ -12,18 +13,9 @@ public class Scoreboard_Main {
 
     public static Scoreboard Current_Scoreboard;
 
-    public static void Init() {
-        Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-        Objective objective = scoreboard.registerNewObjective("scoreboard", "dummy");
+    public static void init() { }
 
-        objective.setDisplayName("Custom Scoreboard");
-        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-        Score first= objective.getScore("First Line");
-        Score second = objective.getScore("Second Line");
-        Score third = objective.getScore("Third Line");
-        first.setScore(2);
-        second.setScore(1);
-        third.setScore(0);
+    public static void onTeamsLoaded() {
 
         Default.update();
 
