@@ -1,3 +1,5 @@
 Manifest-Version: 1.0
-Main-Class: MCSU_Main
+Class-Path: FastAsyncWorldEdit-Bukkit-1.17-240.jar bungeecord-api-1.16-R
+ 0.3.jar bungeecord-chat-1.16-R0.4.jar spigot-api-1.17.1-R0.1-20211101.0
+ 80320-93.jar
 

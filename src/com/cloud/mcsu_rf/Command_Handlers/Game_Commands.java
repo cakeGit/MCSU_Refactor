@@ -12,35 +12,35 @@ import org.bukkit.entity.Player;
 public class Game_Commands implements CommandExecutor {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (sender.isOp()) {
-            switch (cmd.getName()) {
+    public boolean onCommand(CommandSender Sender, Command Command, String Label, String[] Args) { //Quite thicc, maybye try organising
+        if (Sender.isOp()) {
+            switch (Command.getName()) {
                 case "playgame":
-                    sender.sendMessage(ChatColor.YELLOW + "Warning: If possible use /queuegame instead");
-                    sender.sendMessage("Loading game " + args[0]);
+                    Sender.sendMessage(ChatColor.YELLOW + "Warning: If possible use /queuegame instead");
+                    Sender.sendMessage("Loading game " + Args[0]);
 
-                    sender.sendMessage("Loading game thinge");
-                    for (org.bukkit.World World : sender.getServer().getWorlds()) {
-                        sender.sendMessage(World.getName());
-                        sender.sendMessage(((Player) sender).getWorld().getName());
+                    Sender.sendMessage("Loading game thinge");
+                    for (org.bukkit.World World : Sender.getServer().getWorlds()) {
+                        Sender.sendMessage(World.getName());
+                        Sender.sendMessage(((Player) Sender).getWorld().getName());
                     }
-                    sender.sendMessage("shown you the" + args[0]);
+                    Sender.sendMessage("shown you the" + Args[0]);
 
                     Game_Main.loadGame(
-                            args[0],
-                            (Player) sender,
-                            args
+                            Args[0],
+                            (Player) Sender,
+                            Args
                     );
                     return true;
                 case "listgames":
-                    sender.sendMessage("All registered games");
+                    Sender.sendMessage("All registered games");
 
                     for (Game game : Game_Main.RegisteredGames) {
-                        sender.sendMessage("  " + game.getName());
+                        Sender.sendMessage("  " + game.getName());
                     }
                     return true;
                 default:
-                    Bukkit.getLogger().info(cmd.getName());
+                    Bukkit.getLogger().info(Command.getName());
 
             }
         }

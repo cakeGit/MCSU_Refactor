@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/MCSU_Refactor.iml" filepath="$PROJECT_DIR$/MCSU_Refactor.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MCSU_Refactored.iml" filepath="$PROJECT_DIR$/MCSU_Refactored.iml" />
     </modules>
   </component>
 </project>

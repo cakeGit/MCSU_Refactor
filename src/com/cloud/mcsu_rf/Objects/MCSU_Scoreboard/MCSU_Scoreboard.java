@@ -41,14 +41,14 @@ public class MCSU_Scoreboard {
 
     }
 
-    public void update(String[][] Args) {
+    public void update(ArrayList<ArrayList<String>> args) { //Arrayception
         int Custom_Arg_Index = 0;
 
         for (Scoreboard_Element Element : this.Elements) {
             if (Element.getType() != "Custom") {
                 Element.update();
             } else {
-                Element.update(Args[Custom_Arg_Index]);
+                Element.update(args.get(Custom_Arg_Index));
                 Custom_Arg_Index += 1;
             }
         }

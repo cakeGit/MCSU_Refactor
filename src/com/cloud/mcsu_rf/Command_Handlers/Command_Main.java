@@ -1,6 +1,8 @@
 package com.cloud.mcsu_rf.Command_Handlers;
 
 import com.cloud.mcsu_rf.MCSU_Main;
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 
 public class Command_Main {
 
@@ -16,6 +18,11 @@ public class Command_Main {
 
         registerCommands();
 
+    }
+
+    public static boolean notOpError(CommandSender sender) {
+        sender.sendMessage( ChatColor.RED + "oi mate bugger off you need op to do that");
+        return true;
     }
 
 }

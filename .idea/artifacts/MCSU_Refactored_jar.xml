@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact name="MCSU_Refactored:jar">
+    <output-path>$PROJECT_DIR$/../McsuTestServer/plugins</output-path>
+    <root id="root">
+      <element id="archive" name="MCSU_Refactored.jar">
+        <element id="module-output" name="MCSU_Refactored" />
+      </element>
+    </root>
+  </artifact>
+</component>

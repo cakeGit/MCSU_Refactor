@@ -10,17 +10,17 @@ commands:
     description: Lists all loaded games (also tells you about any ones that are dying maybye)
     usage: /listGames
   playgame:
-    description: Lists all loaded games (also tells you about any ones that are dying maybye)
+    description: plays specified game
     usage: /playGame <Gamename>
   MCSUscoreboard:
     description: Scoreboard Command
     usage: /playGame <Data>
   givescore:
-    description: gives score to team
+    description: gives score to team - not functional rn
     usage: /givescore <Team> <Scorecount>
-  setspawn:
-    description: Edit the config using this command.
-    usage: /setspawn <SpawnArea> <x> <y> <z>
-  hub:
-    description: Teleports the player to the hub.
-    usage: /setspawn <SpawnArea> <x> <y> <z>
+  countdown:
+    description: enable/dissable the countdown to MCSU
+    usage: /countdown <enable / dissable> <End time hour> <End time minuite>
+  updatescoreboard:
+    description: forces the scoreboard to update
+    usage: /updatescoreboard
