@@ -1,6 +1,8 @@
 name: MCSU_Refactored
 version: 1.0.0
-author: Cloud and Cak
+authors:
+  - Cloud
+  - Cak
 main: com.cloud.mcsu_rf.MCSU_Main
 api-version: 1.14
 commands:
@@ -16,3 +18,9 @@ commands:
   givescore:
     description: gives score to team
     usage: /givescore <Team> <Scorecount>
+  setspawn:
+    description: Edit the config using this command.
+    usage: /setspawn <SpawnArea> <x> <y> <z>
+  hub:
+    description: Teleports the player to the hub.
+    usage: /setspawn <SpawnArea> <x> <y> <z>
