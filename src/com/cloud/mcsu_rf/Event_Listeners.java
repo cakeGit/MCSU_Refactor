@@ -12,9 +12,9 @@ import java.io.File;
 public class Event_Listeners implements Listener {
 
     @EventHandler
-    public static void onPlayerJoin(PlayerJoinEvent evt) {
-        Player Player = evt.getPlayer();
-        evt.setJoinMessage(ChatColor.BLUE + evt.getPlayer().getName() + ChatColor.WHITE + " has joined the pain :(");
+    public static void onPlayerJoin(PlayerJoinEvent e) {
+        Player Player = e.getPlayer();
+        e.setJoinMessage(ChatColor.BLUE + e.getPlayer().getName() + ChatColor.WHITE + " has joined the pain :(");
         Player.setScoreboard(Scoreboard_Main.Current_Scoreboard);
     }
 }
