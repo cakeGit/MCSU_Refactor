@@ -1,6 +1,6 @@
 package com.cloud.mcsu_rf.Objects.MCSU_Scoreboard;
 
-import com.cloud.mcsu_rf.Objects.Team;
+import com.cloud.mcsu_rf.Objects.MCSU_Team;
 import com.cloud.mcsu_rf.Team_Handlers.Team_Main;
 
 import java.util.ArrayList;
@@ -29,20 +29,31 @@ public class Scoreboard_Element {
         this.Content = new ArrayList(); // empty the array
 
         switch (this.Type) {
+
             case "Team_Totals":
 
-                 for ( Team team : Team_Main.getSortedTeams() ) {
+                 for ( MCSU_Team team : Team_Main.getSortedTeams() ) {
 
                      this.Content.add(team.toScoreboardString());
 
                  }
 
                 break;
+
+
             case "Team_Game_Totals":
+
                 this.Content.add("ha ha not done yet - do when current game is in");
                 break;
+
+
             case "Custom":
-                throw new IllegalArgumentException("Update called on a scoreboard element of type 'Custom' without arguments");
+
+                throw new IllegalArgumentException(
+                        "Update called on a scoreboard element " +
+                        "of type 'Custom' without arguments"
+                );
+
         }
 
 

@@ -5,7 +5,8 @@ import org.bukkit.Bukkit;
 
 public class Game {
 
-    String Name;
+    public String Name;
+
     String[] Maps = new String[1];
 
     public Game(String Name) {

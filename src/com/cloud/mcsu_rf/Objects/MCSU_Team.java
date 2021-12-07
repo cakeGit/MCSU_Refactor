@@ -5,22 +5,26 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 
-public class Team {
+public class MCSU_Team {
 
     String Name;
+    String TeamID;
     ChatColor ChatColour;
     int Points = 0;
 
     ArrayList<Player> Members;
 
-    public Team(String Name, ChatColor Colour) {
+    public MCSU_Team(String Name, String TeamID, ChatColor Colour) {
 
         this.Name = Name;
+        this.TeamID = TeamID;
         this.ChatColour = Colour;
 
     }
 
-    //String functions
+    public String getID() {
+        return this.TeamID;
+    }
 
     public String toScoreboardString() {
         return this.ChatColour + this.Name + ChatColor.WHITE + ": " + Points;
@@ -34,17 +38,10 @@ public class Team {
         return this.Name;
     }
 
-
-    //Gets points
-
     public int getPoints() {
         return this.Points;
     }
 
-
-    //Member Functions
-
-    //Both return the updated member list for debugging
     public ArrayList<Player> addMember(Player Member) {
         this.Members.add(Member);
         return this.Members;

@@ -1,17 +1,35 @@
 package com.cloud.mcsu_rf;
 
-import org.bukkit.Bukkit;
+import com.cloud.mcsu_rf.Objects.ConfigFile;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 
-import java.io.File;
-import java.io.IOException;
+import java.util.ArrayList;
 
 public class Config_Main {
 
-    private static File file;
     private static FileConfiguration configfile;
 
+    public static ArrayList<ConfigFile> Configs = new ArrayList();
+
+    public static void init() {
+
+        Configs.add( new ConfigFile(
+                "Config",
+                "c",
+                "config.yml"
+        ) );
+        Configs.add( new ConfigFile(
+                "DebugMapConfig",
+                "m",
+                "debugMapConfig.yml"
+        ) );
+
+    }
+
+
+
+
+/*
     public static void setup() {
         file = new File(Bukkit.getServer().getPluginManager().getPlugin("MCSU_Refactored").getDataFolder(), "config.yml");
         if(!file.exists()) {
@@ -50,5 +68,5 @@ public class Config_Main {
     public static void reload() {
         configfile = YamlConfiguration.loadConfiguration(file);
     }
-
+*/
 }
