@@ -1,13 +1,8 @@
 package com.cloud.mcsu_rf.Command_Handlers;
-import com.cloud.mcsu_rf.Config_Main;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
-public class Player_Commands implements CommandExecutor {
+//DISABLED UNTIL COMMAND REWORK
+
+/*public class Player_Commands implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String s, String[] args) {
@@ -46,4 +41,4 @@ public class Player_Commands implements CommandExecutor {
         }
         return false;
     }
-}
+}*/
