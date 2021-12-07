@@ -8,12 +8,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class MCSU_Main extends JavaPlugin {
 
-    private static MCSU_Main instance;
-
     public static MCSU_Main Mcsu_Plugin;
+    private static MCSU_Main instance;
 
     @Override
     public void onEnable() {
+
+        setInstance(this);
 
         Mcsu_Plugin = MCSU_Main.getPlugin(MCSU_Main.class);
 
@@ -26,23 +27,20 @@ public class MCSU_Main extends JavaPlugin {
         Team_Main.init();
         Scoreboard_Main.init();
 
+        //Config init
 
-
-        getLogger().info("Finnisherd loading");
-        //configSetup();
-    }
-
-    public void configSetup() {
         getConfig().options().copyDefaults();
         saveDefaultConfig();
-        Config_Main.setup();
-    }
+        Config_Main.init();
 
-    void setInstance(MCSU_Main instance) {
-        this.instance = instance;
+        getLogger().info("Finnisherd loading");
     }
 
     public static MCSU_Main getInstance() {
         return instance;
+    }
+
+    private void setInstance(MCSU_Main instance) {
+        this.instance = instance;
     }
 }
