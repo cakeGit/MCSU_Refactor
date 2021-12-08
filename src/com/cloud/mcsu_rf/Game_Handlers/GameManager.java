@@ -6,18 +6,18 @@ import org.bukkit.Bukkit;
 public class GameManager {
 
     private final MCSU_Main MCSU_Plugin;
-    public GameState gameState = GameState.LOBBY;
+    public static GameState gameState = GameState.LOBBY;
     private Game_Countdown_Task gameCountdownTask;
 
     public GameManager(MCSU_Main mcsu_plugin) {
         this.MCSU_Plugin = mcsu_plugin;
     }
 
-    public void setGameState(GameState gameState) {
-        if(this.gameState == GameState.ACTIVE && gameState == GameState.STARTING) return;
-        if(this.gameState == gameState) return;
-        this.gameState = gameState;
-        switch (gameState) {
+    public static void setGameState(GameState state) {
+        if(gameState == GameState.ACTIVE && state == GameState.STARTING) return;
+        if(gameState == state) return;
+        gameState = state;
+        switch (state) {
             case ACTIVE:
                 if(this.gameCountdownTask != null) this.gameCountdownTask.cancel();
                 Bukkit.broadcastMessage("Active!");
