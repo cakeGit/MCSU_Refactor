@@ -9,6 +9,10 @@ public class Command_Main {
 
     private static GameManager gameManager;
 
+    public static void setGameManager(GameManager gameManager) {
+        Command_Main.gameManager = gameManager;
+    }
+
     public static void registerCommands() {
 
         MCSU_Main.Mcsu_Plugin.getCommand("listgames").setExecutor(new Game_Commands(gameManager));
@@ -25,5 +29,6 @@ public class Command_Main {
         sender.sendMessage( ChatColor.RED + "oi mate bugger off you need op to do that");
         return true;
     }
+
 
 }

@@ -1,4 +1,4 @@
-package com.cloud.mcsu_rf;
+package com.cloud.mcsu_rf.Listeners;
 
 import com.cloud.mcsu_rf.Score_Handlers.Scoreboard_Main;
 import org.bukkit.ChatColor;

@@ -28,7 +28,6 @@ public class Team_Main {
 
     public static ArrayList<MCSU_Team> getSortedTeams() {
         ArrayList<MCSU_Team> sortedTeams = Teams;
-
         sortedTeams.sort((t1, t2) -> {
             if (t1.getPoints() > t2.getPoints())
                 return 1;

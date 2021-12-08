@@ -39,7 +39,7 @@ public class Game_Commands implements CommandExecutor {
                             (Player) Sender,
                             Args
                     );
-                    gameManager.gameState = GameState.STARTING;
+                    this.gameManager.gameState = GameState.STARTING;
                     return true;
                 case "listgames":
                     Sender.sendMessage("All registered games");
