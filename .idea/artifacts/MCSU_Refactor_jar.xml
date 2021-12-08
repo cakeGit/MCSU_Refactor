@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="MCSU_Refactor:jar">
+  <artifact type="jar" build-on-make="true" name="MCSU_Refactor:jar">
     <output-path>$USER_HOME$/Desktop/Plugins/Server/plugins</output-path>
     <root id="archive" name="MCSU_Refactor.jar">
       <element id="module-output" name="MCSU_Refactor" />
