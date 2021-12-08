@@ -6,42 +6,36 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dc89bfad-b1e8-4abb-80c0-6846c9ed336b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/com/cloud/mcsu_rf/Game_Handlers/GameManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/cloud/mcsu_rf/Game_Handlers/GameState.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/MCSU_Refactor_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/MCSU_Refactor_jar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/MCSU_Refactored_jar.xml" beforeDir="false" />
+    <list default="true" id="e78c7897-1bc8-4816-a0fc-297b2dcea273" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/cloud/mcsu_rf/Game_Handlers/Game_Countdown_Task.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/cloud/mcsu_rf/Game_Handlers/Game_Countdown_Task.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/cloud/mcsu_rf/Command_Handlers/Command_Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/cloud/mcsu_rf/Command_Handlers/Command_Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/cloud/mcsu_rf/Command_Handlers/Game_Commands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/cloud/mcsu_rf/Command_Handlers/Game_Commands.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/cloud/mcsu_rf/Game_Handlers/GameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/cloud/mcsu_rf/Game_Handlers/GameManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/cloud/mcsu_rf/Games/testgame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/cloud/mcsu_rf/Games/testgame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/cloud/mcsu_rf/MCSU_Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/cloud/mcsu_rf/MCSU_Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Class" />
-        <option value="Enum" />
-      </list>
-    </option>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectId" id="220ojU5FVD5bfItqcqw5Txb4PS7" />
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2210zso70YyBOq632btRolD3wDt" />
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -49,11 +43,11 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="dc89bfad-b1e8-4abb-80c0-6846c9ed336b" name="Default Changelist" comment="" />
-      <created>1638897922516</created>
+      <changelist id="e78c7897-1bc8-4816-a0fc-297b2dcea273" name="Changes" comment="" />
+      <created>1638990053145</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1638897922516</updated>
+      <updated>1638990053145</updated>
     </task>
     <servers />
   </component>
@@ -67,6 +61,5 @@
         </entry>
       </map>
     </option>
-    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>

@@ -1,5 +1,7 @@
 package com.cloud.mcsu_rf.Command_Handlers;
 
+import com.cloud.mcsu_rf.Game_Handlers.GameManager;
+import com.cloud.mcsu_rf.Game_Handlers.GameState;
 import com.cloud.mcsu_rf.Game_Handlers.Game_Main;
 import com.cloud.mcsu_rf.Objects.Game;
 import org.bukkit.Bukkit;
@@ -10,6 +12,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class Game_Commands implements CommandExecutor {
+
+    private final GameManager gameManager;
+
+    public Game_Commands(GameManager gameManager) {
+        this.gameManager = gameManager;
+    }
 
     @Override
     public boolean onCommand(CommandSender Sender, Command Command, String Label, String[] Args) { //Quite thicc, maybye try organising
@@ -31,6 +39,7 @@ public class Game_Commands implements CommandExecutor {
                             (Player) Sender,
                             Args
                     );
+                    gameManager.gameState = GameState.STARTING;
                     return true;
                 case "listgames":
                     Sender.sendMessage("All registered games");

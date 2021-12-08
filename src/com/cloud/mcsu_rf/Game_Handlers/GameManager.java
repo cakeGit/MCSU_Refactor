@@ -6,12 +6,11 @@ import org.bukkit.Bukkit;
 public class GameManager {
 
     private final MCSU_Main MCSU_Plugin;
-    private GameState gameState;
+    public GameState gameState = GameState.LOBBY;
     private Game_Countdown_Task gameCountdownTask;
 
     public GameManager(MCSU_Main mcsu_plugin) {
         this.MCSU_Plugin = mcsu_plugin;
-
     }
 
     public void setGameState(GameState gameState) {
