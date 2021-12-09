@@ -19,6 +19,11 @@ public class Config_Main {
                 "config.yml"
         ) );
         Configs.add( new ConfigFile(
+                "tpPoints",
+                "t",
+                "tpPoints.yml"
+        ) );
+        Configs.add( new ConfigFile(
                 "DebugMapConfig",
                 "m",
                 "debugMapConfig.yml"
@@ -26,7 +31,11 @@ public class Config_Main {
 
     }
 
+    public static ConfigFile getByID(String ID) {
 
+        return Configs.stream().filter(Config -> Config.id == ID).findFirst().orElse(null);
+
+    }
 
 
 /*

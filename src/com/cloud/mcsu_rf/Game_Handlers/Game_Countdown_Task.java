@@ -8,15 +8,12 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class Game_Countdown_Task extends BukkitRunnable {
 
     private int timeLeft = 10;
-    private GameManager gameManager;
-    public Game_Countdown_Task(GameManager gameManager) {this.gameManager = gameManager;}
 
     @Override
     public void run() {
         timeLeft--;
         if(timeLeft <= 0) {
             cancel();
-            gameManager.setGameState(GameState.ACTIVE);
             return;
         }
         for(Player players : Bukkit.getOnlinePlayers()) {

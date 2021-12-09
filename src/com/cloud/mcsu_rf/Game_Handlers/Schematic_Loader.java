@@ -30,7 +30,7 @@ public class Schematic_Loader {
         EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(adaptedWorld, -1);
         File schem = new File(MCSU_Main.Mcsu_Plugin.getDataFolder() + File.separator + "/schematics/"+Schem_File+".schem");
         Bukkit.getScheduler().runTaskAsynchronously(
-                MCSU_Main.getInstance(), new Runnable() {
+                MCSU_Main.instance, new Runnable() {
                     @Override
                     public void run() {
                         try {

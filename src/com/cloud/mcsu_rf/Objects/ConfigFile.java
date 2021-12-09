@@ -1,80 +1,58 @@
 package com.cloud.mcsu_rf.Objects;
 
 import com.cloud.mcsu_rf.MCSU_Main;
-import org.bukkit.Bukkit;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
-public class ConfigFile { // the most extra object to exist
+public class ConfigFile  {
+
+    public File configFile;
+    public FileConfiguration config;
 
     public String name;
-    public String configID;
+    public String id;
     public String fileName;
 
-    public File file;
-    public FileConfiguration configFile;
-
-    public ConfigFile(String name, String configID, String fileName) {
+    public ConfigFile(String name, String id, String fileName) {
 
         this.name = name;
-        this.configID = configID;
+        this.id = id;
         this.fileName = fileName;
 
-        this.file = new File(MCSU_Main.Mcsu_Plugin.getDataFolder(), fileName);
+        this.configFile = new File(MCSU_Main.FileDir, this.fileName);
 
-        this.initFile();
+        if (!this.configFile.exists()) {
 
-    }
+            this.configFile.getParentFile().mkdir();
 
-    public void loadFileDat() {
-        this.configFile = YamlConfiguration.loadConfiguration(this.file);
-    }
+            MCSU_Main.instance.saveResource("EmptyYml.yml", false);
 
-    public void initFile() {
+            Path source = Paths.get(MCSU_Main.FileDir + "/EmptyYml.yml");
 
-        if(!this.file.exists()) {
+            try{
 
-            try {
-
-                this.file.createNewFile();
-                this.initFile();
-                this.configFile.options().copyDefaults(true);
-                this.save();
+                // rename a file in the same directory
+                Files.move(source, source.resolveSibling(this.fileName));
 
             } catch (IOException e) {
-
                 e.printStackTrace();
-
             }
 
         }
 
-        this.loadFileDat();
-
-    }
-
-    public void save() {
+        this.config = YamlConfiguration.loadConfiguration(this.configFile);
 
         try {
-
-            configFile.save(file);
-
-        } catch (IOException e) {
-
-            Bukkit.getLogger().info("Couldn't save file " + this.fileName);
+            this.config.load(this.configFile);
+        } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
-
         }
-
     }
-
-    public void updateConfig() {
-        this.save();
-        this.configFile.options().copyDefaults(true);
-        this.loadFileDat();
-    }
-
 }

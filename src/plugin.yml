@@ -12,15 +12,26 @@ commands:
   playgame:
     description: plays specified game
     usage: /playGame <Gamename>
-  MCSUscoreboard:
-    description: Scoreboard Command
-    usage: /playGame <Data>
   givescore:
     description: gives score to team - not functional rn
     usage: /givescore <Team> <Scorecount>
   countdown:
     description: enable/dissable the countdown to MCSU
     usage: /countdown <enable / dissable> <End time hour> <End time minuite>
-  updatescoreboard:
-    description: forces the scoreboard to update
-    usage: /updatescoreboard
+
+  createtppoint:
+    description: Creates a new tpPoint at the current position
+    usage: /createpoint <Name>
+  createdebugtppoint:
+    description: Creates a new debugTpPoint at the current position
+    usage: /createdebugpoint <Name>
+  listtppoints:
+    description: Goes to the specified tpPoint
+    usage: /gotopoint <tpPoint>
+  gotopoint:
+    description: Goes to the specified tpPoint
+    usage: /gotopoint <tpPoint>
+
+  hub:
+    description: Teleports you to the Hub,
+    usage: /hub

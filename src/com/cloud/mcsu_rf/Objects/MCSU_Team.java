@@ -7,10 +7,10 @@ import java.util.ArrayList;
 
 public class MCSU_Team {
 
-    String Name;
-    String TeamID;
-    ChatColor ChatColour;
-    int Points = 0;
+    public String Name;
+    public String TeamID;
+    public ChatColor ChatColour;
+    public int Points = 0;
 
     ArrayList<Player> Members;
 
@@ -22,38 +22,35 @@ public class MCSU_Team {
 
     }
 
-    public String getID() {
-        return this.TeamID;
-    }
-
     public String toScoreboardString() {
+
         return this.ChatColour + this.Name + ChatColor.WHITE + ": " + Points;
+
     }
 
-    public String getName() {
+    public String getColouredName() {
+
         return this.ChatColour + this.Name;
-    }
 
-    public String getPlainTextName() {
-        return this.Name;
-    }
-
-    public int getPoints() {
-        return this.Points;
     }
 
     public ArrayList<Player> addMember(Player Member) {
+
         this.Members.add(Member);
         return this.Members;
+
     }
 
     public ArrayList<Player> removeMember(Player Member) {
+
         this.Members.remove(Member);
         return this.Members;
+
     }
 
 
     public ArrayList<String> getMemberNames() {
+
         ArrayList<String> Member_Names = new ArrayList();
 
         for (Player Member : Members) {
@@ -61,6 +58,7 @@ public class MCSU_Team {
         }
 
         return Member_Names;
+
     }
 
 }

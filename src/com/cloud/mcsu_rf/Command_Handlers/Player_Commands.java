@@ -1,6 +1,6 @@
 package com.cloud.mcsu_rf.Command_Handlers;
 
-//DISABLED UNTIL COMMAND REWORK
+//currently functioning as reference for TPPOint commands
 
 /*public class Player_Commands implements CommandExecutor {
 
