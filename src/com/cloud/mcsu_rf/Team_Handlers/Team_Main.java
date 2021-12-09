@@ -11,7 +11,14 @@ public class Team_Main {
     public static ArrayList<MCSU_Team> Teams = new ArrayList();
 
     static void initTeams() {
-        Teams.add(new MCSU_Team("Blue smurfs haha", "b", ChatColor.BLUE));
+        Teams.add(new MCSU_Team("Blue Smurfs", "b", ChatColor.BLUE));
+        Teams.add(new MCSU_Team("Red Reindeers", "r", ChatColor.RED));
+        Teams.add(new MCSU_Team("Green Grinches", "gn", ChatColor.GREEN));
+        Teams.add(new MCSU_Team("Yellow Yodellers", "y", ChatColor.YELLOW));
+        Teams.add(new MCSU_Team("Aqua Angels", "a", ChatColor.AQUA));
+        Teams.add(new MCSU_Team("Pink Pipers", "p", ChatColor.LIGHT_PURPLE));
+        Teams.add(new MCSU_Team("White Wise Men", "w", ChatColor.WHITE));
+        Teams.add(new MCSU_Team("Gray Gingerbreads", "gy", ChatColor.GRAY));
     }
 
     public static void init() {
@@ -25,7 +32,6 @@ public class Team_Main {
 
     public static ArrayList<MCSU_Team> getSortedTeams() {
         ArrayList<MCSU_Team> sortedTeams = Teams;
-
         sortedTeams.sort((t1, t2) -> {
             if (t1.Points > t2.Points)
                 return 1;
