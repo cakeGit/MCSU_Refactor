@@ -50,11 +50,11 @@ public class Game_Cmds {
         }
 
 
-        /*Game_Main.loadGame(
+        Game_Main.loadGame(
                 Args[0],
                 (Player) Sender,
                 Args
-        );            */
+        );
         gameStartCountdownTask = new Game_Countdown_Task();
         gameStartCountdownTask.runTaskTimer(plugin, 0, 20);
 

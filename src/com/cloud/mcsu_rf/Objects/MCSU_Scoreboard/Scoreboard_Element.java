@@ -5,6 +5,7 @@ import com.cloud.mcsu_rf.Objects.MCSU_Player;
 import com.cloud.mcsu_rf.Objects.MCSU_Team;
 import com.cloud.mcsu_rf.Score_Handlers.Scoreboard_Main;
 import com.cloud.mcsu_rf.Team_Handlers.Team_Main;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -46,8 +47,7 @@ public class Scoreboard_Element {
                 break;
 
             case "Online_Players":
-                int onlinePlayers = MCSU_Player.MCSU_Players.size()+1;
-                this.Content.add(ChatColor.RED+" Online: "+ChatColor.WHITE+onlinePlayers);
+                this.Content.add(ChatColor.RED+" Online: "+ChatColor.WHITE+ Bukkit.getOnlinePlayers().size());
                 break;
 
             case "Line_Break":

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class MCSU_Player {
 
-    public static ArrayList<MCSU_Player> MCSU_Players = new ArrayList();
+    public static ArrayList<MCSU_Player> MCSU_Players = new ArrayList<MCSU_Player>();
 
     Player bukkitPlayer;
     String teamID = null;
