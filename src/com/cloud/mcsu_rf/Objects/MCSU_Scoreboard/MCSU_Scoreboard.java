@@ -1,6 +1,7 @@
 package com.cloud.mcsu_rf.Objects.MCSU_Scoreboard;
 
 import com.cloud.mcsu_rf.Score_Handlers.Scoreboard_Main;
+import org.bukkit.ChatColor;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
@@ -12,7 +13,7 @@ import java.util.Arrays;
 public class MCSU_Scoreboard {
 
     String Name;
-    String Default_Name = "MCSU";
+    String Default_Name = ChatColor.RED+"§lMCSU Winter!";
 
     ArrayList<Scoreboard_Element> Elements = new ArrayList<>();
 

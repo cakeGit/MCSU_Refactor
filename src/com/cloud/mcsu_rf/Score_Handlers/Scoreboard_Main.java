@@ -9,7 +9,7 @@ import org.bukkit.scoreboard.ScoreboardManager;
 public class Scoreboard_Main {
     public static ScoreboardManager Scoreboard_Manager = Bukkit.getScoreboardManager();
 
-    public static MCSU_Scoreboard Default = new MCSU_Scoreboard(new Scoreboard_Element[] { new Scoreboard_Element("Team_Totals") });
+    public static MCSU_Scoreboard Default = new MCSU_Scoreboard(new Scoreboard_Element[] { new Scoreboard_Element("Bottom_Line_Break"), new Scoreboard_Element("Team_Totals"), new Scoreboard_Element("Line_Break"), new Scoreboard_Element("Online_Players"), new Scoreboard_Element("Top_Line_Break") });
 
     public static Scoreboard Current_Scoreboard;
 
