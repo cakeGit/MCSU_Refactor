@@ -1,4 +1,4 @@
-package com.cloud.mcsu_rf;
+package com.cloud.mcsu_rf.EventListeners;
 
 import com.cloud.mcsu_rf.Objects.EventListener;
 import com.cloud.mcsu_rf.Objects.MCSU_Player;
@@ -17,16 +17,38 @@ public class EventListener_Main implements Listener {
 
     public static ArrayList<EventListener> playerDeathListeners = new ArrayList();
 
-    public static void addEventListener(EventListener eventListener) {
+    public static ArrayList<EventListener> getListenersArrayList(EventListener eventListener) {
 
         switch (eventListener.getEventName()) {
 
-            case "PlayerDeathEvent": playerDeathListeners.add(eventListener); break;
+            case "PlayerDeathEvent": return playerDeathListeners;
 
         }
 
-        for (EventListener listener : playerDeathListeners) {
-            Bukkit.getLogger().info(listener.getEventName());
+
+        throw new NullPointerException("Error: could not find event thingy for "+ eventListener.getEventName());
+    }
+
+    public static void addEventListener(EventListener eventListener) {
+
+        getListenersArrayList(eventListener).add(eventListener);
+
+        for (EventListener ebsenif : playerDeathListeners) {
+            Bukkit.getLogger().info(ebsenif.getEventName());
+        }
+
+        for (EventListener playerDeathListener : playerDeathListeners) {
+            Bukkit.getLogger().info(playerDeathListener.getEventName());
+        }
+
+    }
+
+    public static void removeEventListener(EventListener eventListener) {
+
+        switch (eventListener.getEventName()) {
+
+            case "PlayerDeathEvent": playerDeathListeners.remove(eventListener); break;
+
         }
 
     }

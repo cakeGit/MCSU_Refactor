@@ -1,5 +1,7 @@
 package com.cloud.mcsu_rf.Objects;
 
+import com.cloud.mcsu_rf.Objects.Lambdas.onEventLambda;
+
 public class EventListener {
 
     String eventName;

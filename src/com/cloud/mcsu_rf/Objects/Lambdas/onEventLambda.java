@@ -1,4 +1,4 @@
-package com.cloud.mcsu_rf.Objects;
+package com.cloud.mcsu_rf.Objects.Lambdas;
 
 import org.bukkit.event.Event;
 

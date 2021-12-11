@@ -1,6 +1,7 @@
 package com.cloud.mcsu_rf;
 
 import com.cloud.mcsu_rf.Command_Handlers.Cmd_Main;
+import com.cloud.mcsu_rf.EventListeners.EventListener_Main;
 import com.cloud.mcsu_rf.Game_Handlers.Game_Main;
 import com.cloud.mcsu_rf.Score_Handlers.Scoreboard_Main;
 import com.cloud.mcsu_rf.Team_Handlers.Team_Main;
@@ -24,7 +25,7 @@ public class MCSU_Main extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new EventListener_Main(),this);
 
-        Game_Main.Init();
+        Game_Main.init();
         Cmd_Main.Init();
         Team_Main.init();
         Scoreboard_Main.init();

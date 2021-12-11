@@ -24,15 +24,15 @@ public class Schematic_Loader {
 
     public static void loadSchematic(String Schem_File, BlockVector3 Paste_To, World world) {
 
-        Bukkit.getLogger().info("Loading schem " +Schem_File);
 
-        com.sk89q.worldedit.world.World adaptedWorld = BukkitAdapter.adapt(world);
-        EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(adaptedWorld, -1);
-        File schem = new File(MCSU_Main.Mcsu_Plugin.getDataFolder() + File.separator + "/schematics/"+Schem_File+".schem");
-        Bukkit.getScheduler().runTaskAsynchronously(
-                MCSU_Main.instance, new Runnable() {
-                    @Override
-                    public void run() {
+        File schem = new File(MCSU_Main.FileDir + File.separator + "schematics/"+Schem_File+".schem");
+        Bukkit.getLogger().info("Loading schem '" + MCSU_Main.FileDir + File.separator + "schematics/"+Schem_File+".schem" + "'");
+
+        if (schem.exists()) {
+            com.sk89q.worldedit.world.World adaptedWorld = BukkitAdapter.adapt(world);
+            EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(adaptedWorld, -1);
+            Bukkit.getScheduler().runTaskAsynchronously(
+                    MCSU_Main.instance, () -> {
                         try {
                             ClipboardFormat format = ClipboardFormats.findByFile(schem);
                             ClipboardReader reader = format.getReader(new FileInputStream(schem));
@@ -44,8 +44,12 @@ public class Schematic_Loader {
                             e.printStackTrace();
                         }
                     }
-                }
-        );
+            );
+        } else  {
+            Bukkit.getLogger().info("Couldn't find file '" + MCSU_Main.FileDir + File.separator + "schematics/"+Schem_File+".schem" + "'");
+        }
+
+
 
     }
 
