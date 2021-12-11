@@ -2,6 +2,8 @@ package com.cloud.mcsu_rf.EventListeners;
 
 import com.cloud.mcsu_rf.Objects.EventListener;
 import com.cloud.mcsu_rf.Objects.MCSU_Player;
+import com.cloud.mcsu_rf.Objects.MCSU_Scoreboard.MCSU_Scoreboard;
+import com.cloud.mcsu_rf.Score_Handlers.Scoreboard_Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -98,6 +100,7 @@ public class EventListener_Main implements Listener {
         }
 
         MCSU_Player.MCSU_Players.add(new MCSU_Player(p));
+        p.setScoreboard(Scoreboard_Main.Current_Scoreboard);
 
         e.setJoinMessage(joinMessage);
 
