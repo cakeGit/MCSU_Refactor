@@ -1,36 +1,43 @@
 package com.cloud.mcsu_rf.Objects;
 
+import com.cloud.mcsu_rf.MCSU_Main;
 import com.cloud.mcsu_rf.Objects.Lambdas.TimerEventLambda;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitScheduler;
 
-public class Timer extends BukkitRunnable {
+public class Timer {
 
     private int timeLeft;
-    private int tickIncrease;
+    private final int tickIncrease;
+    private final Timer thisTimer;
     private TimerEventLambda onTickIncrease = null;
     private TimerEventLambda onTimerEnd = null;
 
-    public Timer(int tickIncrease, int length) { this.tickIncrease = tickIncrease; this.timeLeft = length; }
+    public Timer(int tickIncrease, int length) {
+
+        this.tickIncrease = tickIncrease; this.timeLeft = length;
+
+        this.thisTimer = this;
+
+        new BukkitRunnable() {
+            public void run() {
+                thisTimer.timeLeft += thisTimer.tickIncrease;
+                if (thisTimer.onTickIncrease != null) { thisTimer.onTickIncrease.exec(thisTimer); }
+                //Bukkit.getLogger().info("Time left on timer: "+thisTimer.timeLeft);
+
+                if(thisTimer.timeLeft <= 0) {
+                    if (thisTimer.onTimerEnd != null) { thisTimer.onTimerEnd.exec(thisTimer); }
+                    this.cancel();
+                }
+            }
+        }.runTaskTimer(MCSU_Main.Mcsu_Plugin, 0L, 20L);
+
+    }
 
     public Timer setOnTickIncrease(TimerEventLambda onTickIncrease) { this.onTickIncrease = onTickIncrease; return this; }
     public Timer setOnTimerEnd(TimerEventLambda onTickIncrease) { this.onTimerEnd = onTickIncrease; return this; }
 
     public int getTimeLeft() { return this.timeLeft; }
-
-    @Override
-    public void run() {
-
-        timeLeft += tickIncrease;
-        this.onTickIncrease.exec(this);
-        Bukkit.getLogger().info("ran ontick");
-
-        if(timeLeft <= 0) {
-            this.onTimerEnd.exec(this);
-
-            cancel();
-        }
-
-    }
 
 }

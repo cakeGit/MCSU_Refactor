@@ -2,7 +2,7 @@ package com.cloud.mcsu_rf.Objects.Game;
 
 import com.cloud.mcsu_rf.Game_Handlers.Game_Main;
 import com.cloud.mcsu_rf.Game_Handlers.Schematic_Loader;
-import com.cloud.mcsu_rf.Objects.Extended_Objects.Game_Function.GameFunction;
+import com.cloud.mcsu_rf.Objects.Lambdas.MapLoaderLambda;
 import com.cloud.mcsu_rf.Objects.Timer;
 import com.sk89q.worldedit.math.BlockVector3;
 import net.md_5.bungee.api.ChatMessageType;
@@ -18,19 +18,19 @@ import java.util.ArrayList;
 public class Game {
 
     int DefaultStartLength = 15;
-    Sound DefaultStartTimerSound = Sound.BLOCK_NOTE_BLOCK_SNARE;
-    Sound DefaultStartTimerEndSound = Sound.BLOCK_BEACON_ACTIVATE;
+    Sound DefaultStartTimerTickSound = Sound.BLOCK_BAMBOO_BREAK;
+    Sound DefaultStartTimerEndSound = Sound.ENTITY_FIREWORK_ROCKET_LAUNCH;
 
     String Name;
     boolean startIntervalEnabled;
-    String[] Maps = new String[1];
-    ArrayList<GameState> gameStates = new ArrayList();
+    ArrayList<GameState> gameStates = new ArrayList<>();
+    MapLoaderLambda mapLoaderMethod = (game, world) -> Bukkit.getLogger().info("Game '" + game.getName() + "' isn't given any mapLoader!");
 
     public Game(String Name) {
 
         this.Name = Name;
 
-        Bukkit.getLogger().info("Loading game " + Name);
+        Bukkit.getLogger().info("Registering game " + Name);
 
         Game_Main.RegisteredGames.add(this);
 
@@ -42,28 +42,53 @@ public class Game {
 
     public void startGame(World world) {
 
-        Schematic_Loader.loadSchematic(this.Maps[0], BlockVector3.at(0, 100, 0), world);
+        mapLoaderMethod.exec(this, world);
+
         if (startIntervalEnabled) {
             Timer startTimer = new Timer(-1, DefaultStartLength)
                     .setOnTickIncrease(timer -> {
 
                         for (Player player : Bukkit.getOnlinePlayers()) {
-                            player.spigot().sendMessage(ChatMessageType.ACTION_BAR,
-                                    new TextComponent(
-                                            ChatColor.WHITE+
-                                                    this.getName()+
-                                                    " starting in "+
-                                                    timer.getTimeLeft()
-                                    ));
+
+                            String message = ChatColor.WHITE + "" + ChatColor.BOLD + this.getName() +
+                                    ChatColor.RESET + "" + ChatColor.RED + " starting in " + timer.getTimeLeft();
+
+                            if (timer.getTimeLeft() > 0) {
+                                if (timer.getTimeLeft() <= 5) {
+                                    player.sendTitle(message, "Get ready!", 0, 1, 0);
+                                    player.playSound(player.getLocation(), DefaultStartTimerTickSound, 1, 1);
+                                } else {
+                                    player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(message));
+                                }
+                            }
+
+                        }
+
+                    })
+                    .setOnTimerEnd(timer -> {
+
+                        for (Player player : Bukkit.getOnlinePlayers()) {
+                            player.playSound(player.getLocation(), DefaultStartTimerEndSound, 1, 1);
+                        }
+
+                        for (GameState gameState : getEnabledGameStates()) {
+                            gameState.setEnabled(true);
                         }
 
                     });
+
         }
 
-        for (GameState gameState : getEnabledGameStates()) {
-            gameState.setEnabled(true);
+    }
+
+    public Game setMapManager(String type, String mapName) { // Todo: Make it like game functions with extends n that
+
+        if ("basic".equals(type)) {
+            this.mapLoaderMethod = (game, world) -> Schematic_Loader.loadSchematic(mapName, BlockVector3.at(0, 100, 0), world);
+            return this;
         }
 
+        throw new NullPointerException("tngoisubrd! :(");
     }
 
     public ArrayList<GameState> getEnabledGameStates() {
@@ -74,11 +99,4 @@ public class Game {
 
     }
 
-
-
-
-
-    //depracated stuff - TODO:Remove
-
-    @Deprecated public Game setMapName(String Map_Name) { this.Maps[0] = Map_Name; return this;} // add a mapmanager thing
 }

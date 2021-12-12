@@ -14,7 +14,7 @@ public class TestGame {
 
 
         this.game = new Game("testgame")
-                .setMapName("testgame")
+                .setMapManager("basic", "testgame")
                 .addStartInterval()
                 .addGameState(
                         new GameState("main", true)
