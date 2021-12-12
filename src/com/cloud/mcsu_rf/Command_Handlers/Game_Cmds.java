@@ -29,7 +29,7 @@ public class Game_Cmds {
         Sender.sendMessage(ChatColor.YELLOW + "Warning: If possible use /queuegame instead");
         Sender.sendMessage("Loading game " + Args[0]);
 
-        Game game = Game_Main.getRegisteredGameByName(Args[0]);
+        Game game = Game_Main.getRegisteredGame(Args[0]);
 
         if (game == null) {
             Sender.sendMessage(ChatColor.RED + "what game is " + Args[0] + " lol");
