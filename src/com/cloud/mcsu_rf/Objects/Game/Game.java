@@ -2,6 +2,8 @@ package com.cloud.mcsu_rf.Objects.Game;
 
 import com.cloud.mcsu_rf.Game_Handlers.Game_Main;
 import com.cloud.mcsu_rf.Game_Handlers.Schematic_Loader;
+import com.cloud.mcsu_rf.MCSU_Main;
+import com.cloud.mcsu_rf.Objects.Extended_Objects.Game_Function.Stopwatch;
 import com.cloud.mcsu_rf.Objects.Lambdas.MapLoaderLambda;
 import com.cloud.mcsu_rf.Objects.Timer;
 import com.sk89q.worldedit.math.BlockVector3;
@@ -26,6 +28,10 @@ public class Game {
     ArrayList<GameState> gameStates = new ArrayList<>();
     MapLoaderLambda mapLoaderMethod = (game, world) -> Bukkit.getLogger().info("Game '" + game.getName() + "' isn't given any mapLoader!");
 
+    boolean stopwatchEnabled;
+    private Stopwatch stopwatch;
+    public MCSU_Main plugin = MCSU_Main.getPlugin(MCSU_Main.class);
+
     public Game(String Name) {
 
         this.Name = Name;
@@ -39,6 +45,7 @@ public class Game {
     public Game addGameState(GameState gameState) { this.gameStates.add(gameState); return this;}
     public String getName() { return this.Name; }
     public Game addStartInterval() { startIntervalEnabled = true; return this; }
+    public Game addStopwatch() { stopwatchEnabled = true; return this; }
 
     public void startGame(World world) {
 
@@ -66,7 +73,6 @@ public class Game {
 
                     })
                     .setOnTimerEnd(timer -> {
-
                         for (Player player : Bukkit.getOnlinePlayers()) {
                             player.playSound(player.getLocation(), DefaultStartTimerEndSound, 1, 1);
                         }
@@ -75,10 +81,19 @@ public class Game {
                             gameState.setEnabled(true);
                         }
 
+                        gameStart();
+
                     });
 
         }
 
+    }
+
+    public void gameStart() {
+        if(stopwatchEnabled) {
+            this.stopwatch = new Stopwatch();
+            this.stopwatch.runTaskTimer(plugin, 0, 20);
+        }
     }
 
     public Game setMapManager(String type, String mapName) { // Todo: Make it like game functions with extends n that
