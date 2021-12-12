@@ -35,6 +35,9 @@ public class GameFunction {
 
     public ArrayList<String> getBoundEventNames() { return this.boundEventNames; }
 
+
+    //Common methods
+
     public void runEventHandler(Event event) { }
 
 }

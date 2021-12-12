@@ -7,14 +7,14 @@ import java.util.ArrayList;
 public class GameState {
 
     String name;
+    boolean enabled;
     ArrayList<GameFunction> GameFunctions = new ArrayList<>();
 
-    public GameState(String name) {
+    public GameState(String name, boolean enabled) { this.name = name; this.enabled = enabled; }
+    public GameState(String name) { this.name = name;}
 
-        this.name = name;
+    public GameState addGameFunction(GameFunction gameFunction) { this.GameFunctions.add(gameFunction); return this; }
 
-    }
-
-    public void addGameFunction(GameFunction gameFunction) { this.GameFunctions.add(gameFunction); }
+    public ArrayList<GameFunction> getGameFunctions() { return this.GameFunctions; }
 
 }

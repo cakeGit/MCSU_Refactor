@@ -14,53 +14,19 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class EventListener_Main implements Listener {
 
-    public static ArrayList<EventListener> playerDeathListeners = new ArrayList();
+    public static ArrayList<EventListener> eventListeners = new ArrayList();
 
-    public static ArrayList<EventListener> getListenersArrayList(EventListener eventListener) {
+    public static void addEventListener(EventListener eventListener) { eventListeners.add(eventListener); }
 
-        switch (eventListener.getEventName()) {
-
-            case "PlayerDeathEvent": return playerDeathListeners;
-
-        }
-
-
-        throw new NullPointerException("Error: could not find event thingy for "+ eventListener.getEventName());
-    }
-
-    public static void addEventListener(EventListener eventListener) {
-
-        getListenersArrayList(eventListener).add(eventListener);
-
-        for (EventListener ebsenif : playerDeathListeners) {
-            Bukkit.getLogger().info(ebsenif.getEventName());
-        }
-
-        for (EventListener playerDeathListener : playerDeathListeners) {
-            Bukkit.getLogger().info(playerDeathListener.getEventName());
-        }
-
-    }
-
-    public static void removeEventListener(EventListener eventListener) {
-
-        switch (eventListener.getEventName()) {
-
-            case "PlayerDeathEvent": playerDeathListeners.remove(eventListener); break;
-
-        }
-
-    }
+    public static void removeEventListener(EventListener eventListener) { eventListeners.remove(eventListener); }
 
     public static void executeListenerArrayList(ArrayList<EventListener> listeners, Event event) {
-        Bukkit.getLogger().info("sdmfopsndfaaawqqq");
 
         for (EventListener listener : listeners) {
-
-            Bukkit.getLogger().info("sdmfopsndfsssssss");
 
             listener.getOnEvent().exec(event);
 
@@ -69,15 +35,11 @@ public class EventListener_Main implements Listener {
     }
 
     public static void onRegisteredEvent(Event event) {
-        Bukkit.getLogger().info("sdmfopsnasddf");
 
-        switch (event.getEventName()) {
-
-            case "PlayerDeathEvent":
-                Bukkit.getLogger().info("sdmfopsndasaf");
-                executeListenerArrayList(playerDeathListeners, event);
-                break;
-
+        for (EventListener eventListener : eventListeners) {
+            if (Objects.equals(eventListener.getEventName(), event.getEventName())) {
+                eventListener.getOnEvent().exec(event);
+            }
         }
 
     }
@@ -90,7 +52,7 @@ public class EventListener_Main implements Listener {
         switch (pName) { // use UUID in the future
 
             case "CakeIsTasty":
-                joinMessage = ChatColor.BLUE + pName + ChatColor.WHITE + " has joined the pain :("; // OG join message :)
+                joinMessage = ChatColor.BLUE + pName + ChatColor.WHITE + " has joined the pajin :("; // OG join message :)
                 break;
 
             default:

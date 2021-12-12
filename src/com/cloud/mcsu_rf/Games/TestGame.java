@@ -11,11 +11,15 @@ public class TestGame {
 
     public void init() {
 
-        this.game = new Game("testgame");
-        this.game.setMapName("testgame");
-        this.game.addGameFunction( new PointAwarder("Survival", 2) );
 
-        this.gameStates = new GameState("testgame");
+
+        this.game = new Game("testgame")
+                .setMapName("testgame")
+                .addStartInterval()
+                .addGameState(
+                        new GameState("main", true)
+                        .addGameFunction( new PointAwarder("Survival", 2) )
+                );
 
     }
 

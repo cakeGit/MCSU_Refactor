@@ -17,12 +17,6 @@ public class PointAwarder extends GameFunction {
 
     public void runEventHandler(Event event) {
 
-        Bukkit.getLogger().info("sdmfopsndf");
-        Bukkit.getLogger().info(event.getEventName());
-
-        Bukkit.getLogger().info("sdmfopsndf");
-        Bukkit.getLogger().info(event.getEventName());
-
         switch (event.getEventName()) {
             case "PlayerDeathEvent":
                 for (MCSU_Player mcsuPlayer : MCSU_Player.MCSU_Players) {
