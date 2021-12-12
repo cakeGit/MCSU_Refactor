@@ -12,21 +12,15 @@ public class GameFunction {
 
     public GameFunction() { }
 
-    public void enableFunction() {
+    public void setEnabled(boolean enabled) {
 
         for (String eventName : this.boundEventNames) {
 
-            EventListener_Main.addEventListener(new EventListener(eventName, this::runEventHandler)); // some weir adutogen code - passes the event to runEventHandler
-
-        }
-
-    }
-
-    public void disableFunction() {
-
-        for (String eventName : this.boundEventNames) {
-
-            EventListener_Main.removeEventListener(new EventListener(eventName, this::runEventHandler)); // some weir adutogen code - passes the event to runEventHandler
+            if (enabled) {
+                EventListener_Main.addEventListener(new EventListener(eventName, this::runEventHandler)); // some weir adutogen code - passes the event to runEventHandler
+            } else  {
+                EventListener_Main.removeEventListener(new EventListener(eventName, this::runEventHandler)); // some weir adutogen code - passes the event to runEventHandler
+            }
 
         }
 

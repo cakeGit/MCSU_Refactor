@@ -17,22 +17,12 @@ import java.util.Objects;
 public class Game_Main {
 
     public static ArrayList<Game> RegisteredGames = new ArrayList<>();
-    public static ArrayList<ActivityRule> activityRules = new ArrayList<>();
 
     public static void init() {
 
         registerGames();
-        registerActivityRules();
 
         Bukkit.getLogger().info(MCSU_Main.Mcsu_Plugin.getDataFolder().getAbsolutePath());
-
-    }
-
-
-    public static void registerActivityRules() {
-
-        new ActivityRule("TileDrops", true);
-        new ActivityRule("PVP", true);
 
     }
 
@@ -49,21 +39,6 @@ public class Game_Main {
             if (Objects.equals(game.getName(), Name)) {
 
                 return game;
-
-            }
-
-        }
-
-        return null;
-    }
-
-    public static ActivityRule getActivityRule(String name) {
-
-        for (ActivityRule activityRule : activityRules) {
-
-            if (Objects.equals(activityRule.getName(), name)) {
-
-                return activityRule;
 
             }
 

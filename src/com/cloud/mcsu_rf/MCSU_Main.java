@@ -25,6 +25,7 @@ public class MCSU_Main extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new EventListener_Main(),this);
 
+        EventListener_Main.registerActivityRules();
         Game_Main.init();
         Cmd_Main.Init();
         Team_Main.init();

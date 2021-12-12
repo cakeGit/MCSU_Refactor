@@ -11,10 +11,19 @@ public class GameState {
     ArrayList<GameFunction> GameFunctions = new ArrayList<>();
 
     public GameState(String name, boolean enabled) { this.name = name; this.enabled = enabled; }
-    public GameState(String name) { this.name = name;}
+    public GameState(String name) { this.name = name; this.enabled = false; }
 
     public GameState addGameFunction(GameFunction gameFunction) { this.GameFunctions.add(gameFunction); return this; }
 
     public ArrayList<GameFunction> getGameFunctions() { return this.GameFunctions; }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+
+        for (GameFunction gameFunction: GameFunctions) {
+            gameFunction.setEnabled(enabled);
+        }
+
+    }
 
 }

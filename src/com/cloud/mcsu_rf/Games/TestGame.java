@@ -19,6 +19,7 @@ public class TestGame {
                 .addGameState(
                         new GameState("main", true)
                         .addGameFunction( new PointAwarder("Survival", 2) )
+
                 );
 
     }

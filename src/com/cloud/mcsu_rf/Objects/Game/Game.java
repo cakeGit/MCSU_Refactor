@@ -36,20 +36,8 @@ public class Game {
 
     }
 
-
     public Game addGameState(GameState gameState) { this.gameStates.add(gameState); return this;}
-
-
     public String getName() { return this.Name; }
-
-    public ArrayList<GameState> getEnabledGameStates() {
-
-        ArrayList<GameState> enabled = new ArrayList<>();
-        gameStates.stream().filter(gameState -> gameState.enabled).forEach(enabled::add);
-        return enabled;
-
-    }
-
     public Game addStartInterval() { startIntervalEnabled = true; return this; }
 
     public void startGame(World world) {
@@ -59,26 +47,35 @@ public class Game {
             Timer startTimer = new Timer(-1, DefaultStartLength)
                     .setOnTickIncrease(timer -> {
 
-                       for (Player player : Bukkit.getOnlinePlayers()) {
-                           player.spigot().sendMessage(ChatMessageType.ACTION_BAR,
-                                   new TextComponent(
-                                           ChatColor.WHITE+
-                                           this.getName()+
-                                           " starting in "+
-                                           timer.getTimeLeft()
-                                   ));
-                       }
+                        for (Player player : Bukkit.getOnlinePlayers()) {
+                            player.spigot().sendMessage(ChatMessageType.ACTION_BAR,
+                                    new TextComponent(
+                                            ChatColor.WHITE+
+                                                    this.getName()+
+                                                    " starting in "+
+                                                    timer.getTimeLeft()
+                                    ));
+                        }
 
                     });
         }
 
         for (GameState gameState : getEnabledGameStates()) {
-            for (GameFunction gameFunction : gameState.getGameFunctions()) {
-                gameFunction.enableFunction();
-            }
+            gameState.setEnabled(true);
         }
 
     }
+
+    public ArrayList<GameState> getEnabledGameStates() {
+
+        ArrayList<GameState> enabled = new ArrayList<>();
+        gameStates.stream().filter(gameState -> gameState.enabled).forEach(enabled::add);
+        return enabled;
+
+    }
+
+
+
 
 
     //depracated stuff - TODO:Remove

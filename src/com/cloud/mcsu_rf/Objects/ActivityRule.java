@@ -1,13 +1,24 @@
 package com.cloud.mcsu_rf.Objects;
 
-import com.cloud.mcsu_rf.Game_Handlers.Game_Main;
+import com.cloud.mcsu_rf.EventListeners.EventListener_Main;
 
 public class ActivityRule {
 
     String name;
     Boolean active;
+    Boolean activeDefault;
 
-    public ActivityRule(String name, Boolean active) { this.name = name; this.active = active; Game_Main.activityRules.add(this); }
+    public ActivityRule(String name, Boolean activeDefault) {
+
+        this.name = name;
+        this.activeDefault = activeDefault;
+        this.active = activeDefault;
+
+        EventListener_Main.activityRules.add(this);
+
+    }
+
+    public void resetActive() { this.active = activeDefault; }
 
     public void setActive(Boolean active) { this.active = active; }
 
