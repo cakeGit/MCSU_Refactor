@@ -13,7 +13,7 @@ public class TestGame {
     public void init() {
 
         this.game = new Game("testgame")
-                .setMapName("testgame")
+                .setMapManager("basic", "testgame")
                 .addStartInterval()
                 .addStopwatch()
                 .addGameState(
