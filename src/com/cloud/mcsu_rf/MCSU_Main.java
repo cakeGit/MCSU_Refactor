@@ -5,9 +5,14 @@ import com.cloud.mcsu_rf.EventListeners.EventListener_Main;
 import com.cloud.mcsu_rf.Game_Handlers.Game_Main;
 import com.cloud.mcsu_rf.Score_Handlers.Scoreboard_Main;
 import com.cloud.mcsu_rf.Team_Handlers.Team_Main;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class MCSU_Main extends JavaPlugin {
+import java.util.HashMap;
+
+public class MCSU_Main extends JavaPlugin implements Listener {
 
     public static MCSU_Main Mcsu_Plugin;
     public static MCSU_Main instance;
@@ -15,6 +20,7 @@ public class MCSU_Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
+
 
         instance = this;
         Mcsu_Plugin = MCSU_Main.getPlugin(MCSU_Main.class);
@@ -31,6 +37,6 @@ public class MCSU_Main extends JavaPlugin {
         Team_Main.init();
         Scoreboard_Main.init();
         Config_Main.init();
-
     }
+
 }

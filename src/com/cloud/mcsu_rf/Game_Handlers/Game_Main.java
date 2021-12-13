@@ -1,9 +1,8 @@
 package com.cloud.mcsu_rf.Game_Handlers;
 
-import com.cloud.mcsu_rf.Games.TestGame;
+import com.cloud.mcsu_rf.Games.Spleef;
 import com.cloud.mcsu_rf.MCSU_Main;
 import com.cloud.mcsu_rf.Objects.Game.Game;
-import com.cloud.mcsu_rf.Objects.ActivityRule;
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
@@ -28,7 +27,7 @@ public class Game_Main {
 
     public static void registerGames() {
 
-        TestGame testGame = new TestGame(); testGame.init();
+        Spleef spleef = new Spleef(); spleef.init();
 
     }
 

@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class Game {
 
     int DefaultStartLength = 15;
-    Sound DefaultStartTimerTickSound = Sound.BLOCK_BAMBOO_BREAK;
+    Sound DefaultStartTimerTickSound = Sound.BLOCK_NOTE_BLOCK_SNARE;
     Sound DefaultStartTimerEndSound = Sound.ENTITY_FIREWORK_ROCKET_LAUNCH;
 
     String Name;
@@ -62,7 +62,7 @@ public class Game {
 
                             if (timer.getTimeLeft() > 0) {
                                 if (timer.getTimeLeft() <= 5) {
-                                    player.sendTitle(message, "Get ready!", 0, 1, 0);
+                                    player.sendTitle(message, "Get ready!");
                                     player.playSound(player.getLocation(), DefaultStartTimerTickSound, 1, 1);
                                 } else {
                                     player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(message));
@@ -90,6 +90,9 @@ public class Game {
     }
 
     public void gameStart() {
+        for(Player player : Bukkit.getOnlinePlayers()) {
+            player.sendTitle("something","hi sam");
+        }
         if(stopwatchEnabled) {
             this.stopwatch = new Stopwatch();
             this.stopwatch.runTaskTimer(plugin, 0, 20);
@@ -99,7 +102,7 @@ public class Game {
     public Game setMapManager(String type, String mapName) { // Todo: Make it like game functions with extends n that
 
         if ("basic".equals(type)) {
-            this.mapLoaderMethod = (game, world) -> Schematic_Loader.loadSchematic(mapName, BlockVector3.at(0, 100, 0), world);
+            this.mapLoaderMethod = (game, world) -> Schematic_Loader.loadSchematic(mapName, BlockVector3.at(2000, 100, 2000), world);
             return this;
         }
 
