@@ -3,6 +3,7 @@ package com.cloud.mcsu_rf.Objects.Game;
 import com.cloud.mcsu_rf.Game_Handlers.Game_Main;
 import com.cloud.mcsu_rf.Game_Handlers.Schematic_Loader;
 import com.cloud.mcsu_rf.MCSU_Main;
+import com.cloud.mcsu_rf.Objects.Extended_Objects.Game_Function.Stopwatch;
 import com.cloud.mcsu_rf.Objects.Lambdas.MapLoaderLambda;
 import com.cloud.mcsu_rf.Objects.MCSU_Player;
 import com.cloud.mcsu_rf.Objects.Timer;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 public class Game {
 
     int DefaultStartLength = 15;
-    Sound DefaultStartTimerTickSound = Sound.BLOCK_BAMBOO_BREAK;
+    Sound DefaultStartTimerTickSound = Sound.BLOCK_NOTE_BLOCK_SNARE;
     Sound DefaultStartTimerEndSound = Sound.ENTITY_FIREWORK_ROCKET_LAUNCH;
 
     String Name;
@@ -63,7 +64,7 @@ public class Game {
 
                             if (timer.getTimeLeft() > 0) {
                                 if (timer.getTimeLeft() <= 5) {
-                                    player.sendTitle(message, "Get ready!", 0, 1, 0);
+                                    player.sendTitle(message, "Get ready!");
                                     player.playSound(player.getLocation(), DefaultStartTimerTickSound, 1, 1);
                                 } else {
                                     player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(message));
@@ -91,6 +92,9 @@ public class Game {
     }
 
     public void gameStart() {
+        for(Player player : Bukkit.getOnlinePlayers()) {
+            player.sendTitle("something","hi sam");
+        }
 
         //stuf to run when game begins
 
@@ -103,7 +107,7 @@ public class Game {
     public Game setMapManager(String type, String mapName) { // Todo: Make it like game functions with extends n that
 
         if ("basic".equals(type)) {
-            this.mapLoaderMethod = (game, world) -> Schematic_Loader.loadSchematic(mapName, BlockVector3.at(0, 100, 0), world);
+            this.mapLoaderMethod = (game, world) -> Schematic_Loader.loadSchematic(mapName, BlockVector3.at(2000, 100, 2000), world);
             return this;
         }
 

@@ -16,6 +16,7 @@ public class Scoreboard_Element {
 
     String Type;
     ArrayList<String> Content;
+    Integer online;
 
     public Scoreboard_Element(String Type) {
  

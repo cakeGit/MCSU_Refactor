@@ -10,15 +10,15 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 
 import javax.swing.plaf.basic.BasicIconFactory;
 
-public class TestGame {
+public class Spleef {
 
     Game game;
     GameState gameStates;
 
     public void init() {
 
-        this.game = new Game("testgame")
-                .setMapManager("basic", "testgame")
+        this.game = new Game("Spleef")
+                .setMapManager("basic", "spleef")
                 .addStartInterval()
                 .addGameState(
                         new GameState("main", true)

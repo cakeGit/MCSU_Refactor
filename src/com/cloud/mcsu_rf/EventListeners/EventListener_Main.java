@@ -4,6 +4,8 @@ import com.cloud.mcsu_rf.Objects.ActivityRule;
 import com.cloud.mcsu_rf.Objects.EventListener;
 import com.cloud.mcsu_rf.Objects.MCSU_Player;
 import com.cloud.mcsu_rf.Score_Handlers.Scoreboard_Main;
+import com.cloud.mcsu_rf.Tab;
+import org.bukkit.Bukkit;
 import com.cloud.mcsu_rf.ShorthandClasses.Centered;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -13,6 +15,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.ServerListPingEvent;
 
 import java.util.ArrayList;
@@ -51,6 +54,12 @@ public class EventListener_Main implements Listener {
         Player p = e.getPlayer();
         String pName = p.getDisplayName();
         String joinMessage;
+        /*
+        BossBar bar = Bukkit.createBossBar(ChatColor.RED+"§lMCSU", BarColor.RED, BarStyle.SOLID);
+        bar.setVisible(true);
+        bar.addPlayer(p);
+         */
+        Tab.showTab(p,Bukkit.getOnlinePlayers().size());
 
         switch (pName) { // use UUID in the future
 
@@ -93,6 +102,19 @@ public class EventListener_Main implements Listener {
                 )));
 
         onRegisteredEvent(e);
+    }
+
+    @EventHandler public void onLeave(PlayerQuitEvent e) {
+        Player p = e.getPlayer();
+        String pName = p.getDisplayName();
+        String quitMessage;
+
+        quitMessage = ChatColor.DARK_GREEN+ pName +" has left MCSU :(";
+        e.setQuitMessage(quitMessage);
+        p.setScoreboard(Scoreboard_Main.Current_Scoreboard);
+        for(Player player : Bukkit.getOnlinePlayers()) {
+            Tab.showTab(player,Bukkit.getOnlinePlayers().size()-1);
+        }
     }
 
 
