@@ -3,8 +3,8 @@ package com.cloud.mcsu_rf.Objects.Game;
 import com.cloud.mcsu_rf.Game_Handlers.Game_Main;
 import com.cloud.mcsu_rf.Game_Handlers.Schematic_Loader;
 import com.cloud.mcsu_rf.MCSU_Main;
-import com.cloud.mcsu_rf.Objects.Extended_Objects.Game_Function.Stopwatch;
 import com.cloud.mcsu_rf.Objects.Lambdas.MapLoaderLambda;
+import com.cloud.mcsu_rf.Objects.MCSU_Player;
 import com.cloud.mcsu_rf.Objects.Timer;
 import com.sk89q.worldedit.math.BlockVector3;
 import net.md_5.bungee.api.ChatMessageType;
@@ -28,8 +28,8 @@ public class Game {
     ArrayList<GameState> gameStates = new ArrayList<>();
     MapLoaderLambda mapLoaderMethod = (game, world) -> Bukkit.getLogger().info("Game '" + game.getName() + "' isn't given any mapLoader!");
 
-    boolean stopwatchEnabled;
-    private Stopwatch stopwatch;
+    ArrayList<MCSU_Player> alivePlayers = new ArrayList<>();
+
     public MCSU_Main plugin = MCSU_Main.getPlugin(MCSU_Main.class);
 
     public Game(String Name) {
@@ -45,11 +45,12 @@ public class Game {
     public Game addGameState(GameState gameState) { this.gameStates.add(gameState); return this;}
     public String getName() { return this.Name; }
     public Game addStartInterval() { startIntervalEnabled = true; return this; }
-    public Game addStopwatch() { stopwatchEnabled = true; return this; }
 
-    public void startGame(World world) {
+    public void initGameLoader(World world) {
 
         mapLoaderMethod.exec(this, world);
+
+        alivePlayers = MCSU_Player.MCSU_Players;
 
         if (startIntervalEnabled) {
             Timer startTimer = new Timer(-1, DefaultStartLength)
@@ -90,11 +91,14 @@ public class Game {
     }
 
     public void gameStart() {
-        if(stopwatchEnabled) {
-            this.stopwatch = new Stopwatch();
-            this.stopwatch.runTaskTimer(plugin, 0, 20);
-        }
+
+        //stuf to run when game begins
+
     }
+
+    public ArrayList<MCSU_Player> getAlivePlayers() { return this.alivePlayers; }
+
+    public void removeFromAlivePlayers(MCSU_Player player) { this.alivePlayers.remove(player); }
 
     public Game setMapManager(String type, String mapName) { // Todo: Make it like game functions with extends n that
 

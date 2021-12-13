@@ -15,23 +15,20 @@ commands:
   givescore:
     description: gives score to team - not functional rn
     usage: /givescore <Team> <Scorecount>
+
   countdown:
     description: enable/dissable the countdown to MCSU
-    usage: /countdown <enable / dissable> <End time hour> <End time minuite>
+    usage: /countdown [end/set] <End time hour> <End time minuite>
 
-  createtppoint:
+  tppoint:
     description: Creates a new tpPoint at the current position
     usage: /createpoint <Name>
-  createdebugtppoint:
+  gamepoint:
     description: Creates a new debugTpPoint at the current position
     usage: /createdebugpoint <Name>
-  listtppoints:
+  goto:
     description: Goes to the specified tpPoint
-    usage: /gotopoint <tpPoint>
-  gotopoint:
-    description: Goes to the specified tpPoint
-    usage: /gotopoint <tpPoint>
-
+    usage: /goto <tpPoint>
   hub:
     description: Teleports you to the Hub,
     usage: /hub

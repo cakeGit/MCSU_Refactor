@@ -40,7 +40,7 @@ public class Game_Cmds {
 
             }
         } else {
-            game.startGame( ((Player) Sender).getWorld() );
+            game.initGameLoader( ((Player) Sender).getWorld() );
         }
 
         return true;

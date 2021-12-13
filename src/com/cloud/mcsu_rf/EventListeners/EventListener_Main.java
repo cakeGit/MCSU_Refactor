@@ -4,6 +4,7 @@ import com.cloud.mcsu_rf.Objects.ActivityRule;
 import com.cloud.mcsu_rf.Objects.EventListener;
 import com.cloud.mcsu_rf.Objects.MCSU_Player;
 import com.cloud.mcsu_rf.Score_Handlers.Scoreboard_Main;
+import com.cloud.mcsu_rf.ShorthandClasses.Centered;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -12,6 +13,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.server.ServerListPingEvent;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -75,6 +77,20 @@ public class EventListener_Main implements Listener {
 
     @EventHandler public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
         if (!getRuleActive("PVP")) { e.setCancelled(true); }
+
+        onRegisteredEvent(e);
+
+    }
+
+    @EventHandler public void onServerListPing(ServerListPingEvent e) {
+        e.setMotd(String.join(
+                "\n",
+                Centered.Text(
+                        new String[] {
+                                "ss",
+                                "ssssss"
+                        }, 10
+                )));
 
         onRegisteredEvent(e);
     }

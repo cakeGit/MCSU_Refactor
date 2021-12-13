@@ -22,15 +22,27 @@ public class ConfigFile  {
 
     public ConfigFile(String name, String id, String fileName) {
 
+        String subdirectory = "";
+        configFileConstructor(name, id, fileName, subdirectory);
+
+    }
+    public ConfigFile(String name, String id, String fileName, String subdirectory) {
+
+        configFileConstructor(name, id, fileName, subdirectory);
+
+    }
+
+    private void configFileConstructor(String name, String id, String fileName, String subdirectory) {
+
         this.name = name;
         this.id = id;
         this.fileName = fileName;
 
-        this.configFile = new File(MCSU_Main.FileDir, this.fileName);
+        this.configFile = new File(MCSU_Main.FileDir + subdirectory, this.fileName);
 
         if (!this.configFile.exists()) {
 
-            this.configFile.getParentFile().mkdir();
+            new File(MCSU_Main.FileDir + subdirectory).mkdir();
 
             MCSU_Main.instance.saveResource("EmptyYml.yml", false);
 
@@ -39,7 +51,7 @@ public class ConfigFile  {
             try{
 
                 // rename a file in the same directory
-                Files.move(source, source.resolveSibling(this.fileName));
+                Files.move(source, Path.of(MCSU_Main.FileDir + subdirectory + this.fileName));
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -52,6 +64,15 @@ public class ConfigFile  {
         try {
             this.config.load(this.configFile);
         } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void saveDat() {
+        try {
+            this.config.save( this.configFile );
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

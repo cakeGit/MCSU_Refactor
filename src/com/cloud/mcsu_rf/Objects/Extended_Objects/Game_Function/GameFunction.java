@@ -17,9 +17,9 @@ public class GameFunction {
         for (String eventName : this.boundEventNames) {
 
             if (enabled) {
-                EventListener_Main.addEventListener(new EventListener(eventName, this::runEventHandler)); // some weir adutogen code - passes the event to runEventHandler
+                EventListener_Main.addEventListener(new EventListener(eventName, this::onBoundEvent)); // some weir adutogen code - passes the event to runEventHandler
             } else  {
-                EventListener_Main.removeEventListener(new EventListener(eventName, this::runEventHandler)); // some weir adutogen code - passes the event to runEventHandler
+                EventListener_Main.removeEventListener(new EventListener(eventName, this::onBoundEvent)); // some weir adutogen code - passes the event to runEventHandler
             }
 
         }
@@ -32,6 +32,6 @@ public class GameFunction {
 
     //Common methods
 
-    public void runEventHandler(Event event) { }
+    public void onBoundEvent(Event event) { }
 
 }

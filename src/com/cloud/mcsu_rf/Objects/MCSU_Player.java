@@ -9,7 +9,16 @@ import java.util.ArrayList;
 
 public class MCSU_Player {
 
-    public static ArrayList<MCSU_Player> MCSU_Players = new ArrayList<MCSU_Player>();
+    public static ArrayList<MCSU_Player> MCSU_Players = new ArrayList<>();
+    public static MCSU_Player getPlayerByBukkitPlayer(Player bukkitPlayer) {
+        for (MCSU_Player mcsuPlayer: MCSU_Players) {
+            if (mcsuPlayer.bukkitPlayer == bukkitPlayer) {
+                return mcsuPlayer;
+            }
+        }
+
+        return null;
+    }
 
     Player bukkitPlayer;
     String teamID = null;
@@ -23,9 +32,7 @@ public class MCSU_Player {
 
     }
 
-    public String getTeamID() {
-        return this.teamID;
-    }
+    public String getTeamID() { return this.teamID; }
 
     public void setTeam(MCSU_Team newTeam) {
         this.teamID = newTeam.TeamID;

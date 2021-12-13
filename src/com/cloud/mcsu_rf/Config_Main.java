@@ -1,15 +1,25 @@
 package com.cloud.mcsu_rf;
 
 import com.cloud.mcsu_rf.Objects.ConfigFile;
-import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.YamlConfiguration;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.function.BiConsumer;
 
 public class Config_Main {
 
-    private static FileConfiguration configfile;
+    public static ArrayList<ConfigFile> Configs = new ArrayList<>();
+    public static ArrayList<ConfigFile> MapMetadataConfigs = new ArrayList<>();
 
-    public static ArrayList<ConfigFile> Configs = new ArrayList();
+    public static ConfigFile getByID(String ID) {
+
+        return Configs.stream().filter(Config -> Objects.equals(Config.id, ID)).findFirst().orElse(null);
+
+    }
 
     public static void init() {
 
@@ -17,24 +27,51 @@ public class Config_Main {
                 "Config",
                 "c",
                 "config.yml"
-        ) );
+        ));
         Configs.add( new ConfigFile(
-                "tpPoints",
-                "t",
+                "TpPoints",
+                "tp",
                 "tpPoints.yml"
-        ) );
+        ));
         Configs.add( new ConfigFile(
-                "DebugMapConfig",
+                "MapRegister",
                 "m",
-                "debugMapConfig.yml"
-        ) );
+                "mapRegister.yml"
+        ));
+        Configs.add( new ConfigFile(
+                "TeamConfig",
+                "t",
+                "teamConfig.yml"
+        ));
+
+        ConfigFile mapRegister = getByID("m");
+
+        List<?> Maps = mapRegister.config.getList("Maps");
+
+        if (Maps != null) {
+            Maps.forEach(mapSublist -> {
+                ((List<?>) mapSublist).forEach(mapMetadataFilename -> {
+                    MapMetadataConfigs.add( new ConfigFile(
+                            (String) mapMetadataFilename,
+                            "",
+                            mapMetadataFilename + ".yml",
+                            "/mapMetadata/"
+
+                    ));
+                });
+            });
+        }
+
 
     }
 
-    public static ConfigFile getByID(String ID) {
-
-        return Configs.stream().filter(Config -> Config.id == ID).findFirst().orElse(null);
-
+    public static void consumeFile(File yamlFile, BiConsumer<? super String, ? super Object> consumer){
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(yamlFile);
+        for (String path : config.getKeys(true)){
+            if (config.get(path) != null){
+                consumer.accept(path, config.get(path));
+            }
+        }
     }
 
 

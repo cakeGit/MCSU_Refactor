@@ -11,6 +11,7 @@ public class Timer {
     private int timeLeft;
     private final int tickIncrease;
     private final Timer thisTimer;
+    private boolean stopwatchActive;
     private TimerEventLambda onTickIncrease = null;
     private TimerEventLambda onTimerEnd = null;
 
@@ -24,7 +25,6 @@ public class Timer {
             public void run() {
                 thisTimer.timeLeft += thisTimer.tickIncrease;
                 if (thisTimer.onTickIncrease != null) { thisTimer.onTickIncrease.exec(thisTimer); }
-                //Bukkit.getLogger().info("Time left on timer: "+thisTimer.timeLeft);
 
                 if(thisTimer.timeLeft <= 0) {
                     if (thisTimer.onTimerEnd != null) { thisTimer.onTimerEnd.exec(thisTimer); }
@@ -35,8 +35,31 @@ public class Timer {
 
     }
 
+    public Timer(int tickIncrease) {
+
+        this.tickIncrease = tickIncrease;
+
+        this.thisTimer = this;
+
+        new BukkitRunnable() {
+            public void run() {
+                thisTimer.timeLeft += thisTimer.tickIncrease;
+                if (thisTimer.onTickIncrease != null) { thisTimer.onTickIncrease.exec(thisTimer); }
+
+                if (!stopwatchActive) {
+                    if (thisTimer.onTimerEnd != null) { thisTimer.onTimerEnd.exec(thisTimer); }
+                    this.cancel();
+                }
+
+            }
+        }.runTaskTimer(MCSU_Main.Mcsu_Plugin, 0L, 20L);
+
+    }
+
     public Timer setOnTickIncrease(TimerEventLambda onTickIncrease) { this.onTickIncrease = onTickIncrease; return this; }
     public Timer setOnTimerEnd(TimerEventLambda onTickIncrease) { this.onTimerEnd = onTickIncrease; return this; }
+
+    public void disable() { this.stopwatchActive = false; }
 
     public int getTimeLeft() { return this.timeLeft; }
 

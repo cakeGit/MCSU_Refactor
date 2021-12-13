@@ -1,17 +1,26 @@
 package com.cloud.mcsu_rf.Team_Handlers;
 
+import com.cloud.mcsu_rf.Config_Main;
+import com.cloud.mcsu_rf.Objects.ConfigFile;
 import com.cloud.mcsu_rf.Objects.MCSU_Team;
 import com.cloud.mcsu_rf.Score_Handlers.Scoreboard_Main;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.ConfigurationSection;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class Team_Main {
 
     public static ArrayList<MCSU_Team> Teams = new ArrayList();
 
     static void initTeams() {
-        Teams.add(new MCSU_Team("Blue Smurfs", "b", ChatColor.BLUE));
+        ConfigFile teamRegister = Config_Main.getByID("t");
+
+        for (Team teamName : Objects.requireNonNull(teamRegister.config.getList("Teams"))) {
+            Bukkit.getLogger().log(teamName);
+        }
+
         Teams.add(new MCSU_Team("Red Reindeers", "r", ChatColor.RED));
         Teams.add(new MCSU_Team("Green Grinches", "gn", ChatColor.GREEN));
         Teams.add(new MCSU_Team("Yellow Yodellers", "y", ChatColor.YELLOW));
@@ -27,7 +36,7 @@ public class Team_Main {
     }
 
     public static MCSU_Team getTeamById(String ID) {
-        return Teams.stream().filter(Team -> Team.TeamID == ID).findFirst().orElse(null);
+        return Teams.stream().filter(Team -> Objects.equals(Team.TeamID, ID)).findFirst().orElse(null);
     }
 
     public static ArrayList<MCSU_Team> getSortedTeams() {

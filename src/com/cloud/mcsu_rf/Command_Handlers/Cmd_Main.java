@@ -5,6 +5,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import java.util.Objects;
 
 public class Cmd_Main implements CommandExecutor {
 
@@ -15,11 +18,11 @@ public class Cmd_Main implements CommandExecutor {
     static void registerCommands() {
 
         for (String cmd : cmdNames) {
-            MCSU_Main.Mcsu_Plugin.getCommand(cmd).setExecutor(new Cmd_Main());
+            Objects.requireNonNull(MCSU_Main.Mcsu_Plugin.getCommand(cmd)).setExecutor(new Cmd_Main());
         }
 
         for (String cmd : tpCommands) {
-            MCSU_Main.Mcsu_Plugin.getCommand(cmd).setExecutor(new Cmd_Main());
+            Objects.requireNonNull(MCSU_Main.Mcsu_Plugin.getCommand(cmd)).setExecutor(new Cmd_Main());
         }
 
     }
@@ -32,13 +35,9 @@ public class Cmd_Main implements CommandExecutor {
                 "givescore",
                 "countdown",
 
-                //Op tpPoint Cmds
-                "createtppoint",
-                "createdebugtppoint",
-
-                //Non-Op tpPoint Cmds
-                "listtppoints",
-                "gotopoint"
+                "tppoint",
+                "gamepoint",
+                "goto"
         };
 
         tpCommands = new String[] {
@@ -59,7 +58,7 @@ public class Cmd_Main implements CommandExecutor {
 
         switch (Cmd.getName()) { // Non-Operator commands
 
-            case "hub": return Game_Cmds.listGames(Sender, Cmd, Label, Args);
+            case "hub": return TpPoint_Cmds.teleportPlayerToPoint((Player) Sender, Args[0]);
 
         }
 
@@ -74,14 +73,11 @@ public class Cmd_Main implements CommandExecutor {
 
             case "givescore": return Score_Cmds.giveScore(Sender, Cmd, Label, Args);
 
-            case "createPoint": return TpPoint_Cmds.createPoint(Sender, Cmd, Label, Args, false);
-            case "listPoints": return TpPoint_Cmds.listPoints(Sender, Cmd, Label, Args);
-
-            //case "countdown": return Game_Cmds.playGame(Sender, Cmd, Label, Args); for claude todo
+            case "tppoint": return TpPoint_Cmds.tpPoint(Sender, Args);
 
         }
 
-        Sender.sendMessage(ChatColor.RED + "No executor found for command /" + Cmd.getName());
+        Sender.sendMessage(ChatColor.RED + "[MCSU]: No executor found for command /" + Cmd.getName());
 
         return true;
 
