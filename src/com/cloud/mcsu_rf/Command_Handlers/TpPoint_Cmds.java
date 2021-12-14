@@ -81,7 +81,7 @@ public class TpPoint_Cmds {
 
         switch (args[0]) {
 
-            case "new" -> {
+            case "new":
                 Boolean isGamePoint = Boolean.parseBoolean(args[args.length - 1]);
                 if (args[1] == "-p") { // precise - creates the point with no rounding
                     createPoint(args[1], pLoc.getX(), pLoc.getY(), pLoc.getZ(), pLoc.getPitch(), pLoc.getYaw(), isGamePoint);
@@ -98,8 +98,8 @@ public class TpPoint_Cmds {
                             isGamePoint
                     );
                 }
-            }
-            case "list" -> listPoints(sender);
+            case "list":
+                listPoints(sender);
 
         }
 

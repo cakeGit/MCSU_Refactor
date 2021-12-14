@@ -17,9 +17,12 @@ public class Team_Main {
     static void initTeams() {
         ConfigFile teamRegister = Config_Main.getByID("t");
 
-        for (Team teamName : Objects.requireNonNull(teamRegister.config.getList("Teams"))) {
+        /*
+        for (MCSU_Team teamName : Objects.requireNonNull(teamRegister.config.getList("Teams"))) {
             Bukkit.getLogger().log(teamName);
         }
+
+         */
 
         Teams.add(new MCSU_Team("Red Reindeers", "r", ChatColor.RED));
         Teams.add(new MCSU_Team("Green Grinches", "gn", ChatColor.GREEN));
