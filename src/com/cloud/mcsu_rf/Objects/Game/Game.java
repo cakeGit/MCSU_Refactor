@@ -3,7 +3,6 @@ package com.cloud.mcsu_rf.Objects.Game;
 import com.cloud.mcsu_rf.Game_Handlers.Game_Main;
 import com.cloud.mcsu_rf.Game_Handlers.Schematic_Loader;
 import com.cloud.mcsu_rf.MCSU_Main;
-import com.cloud.mcsu_rf.Objects.Extended_Objects.Game_Function.Stopwatch;
 import com.cloud.mcsu_rf.Objects.Lambdas.MapLoaderLambda;
 import com.cloud.mcsu_rf.Objects.MCSU_Player;
 import com.cloud.mcsu_rf.Objects.Timer;
@@ -93,7 +92,7 @@ public class Game {
 
     public void gameStart() {
         for(Player player : Bukkit.getOnlinePlayers()) {
-            player.sendTitle("something","hi sam");
+            player.sendTitle("game start?","hi sam");
         }
 
         //stuf to run when game begins

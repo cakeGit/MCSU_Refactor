@@ -4,30 +4,48 @@ import com.cloud.mcsu_rf.Config_Main;
 import com.cloud.mcsu_rf.Objects.ConfigFile;
 import com.cloud.mcsu_rf.Objects.MCSU_Team;
 import com.cloud.mcsu_rf.Score_Handlers.Scoreboard_Main;
+import com.fastasyncworldedit.core.configuration.Yaml;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConstructor;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.lang.reflect.Constructor;
 import java.util.*;
 
 public class Team_Main {
 
-    public static ArrayList<MCSU_Team> Teams = new ArrayList();
+    public static ArrayList<MCSU_Team> Teams = new ArrayList<>();
+
+    public static ConfigFile teamRegister = Config_Main.getByID("t");
+    public static List<HashMap> teamList = (List<HashMap>) teamRegister.config.getList("Teams");
 
     static void initTeams() {
-        ConfigFile teamRegister = Config_Main.getByID("t");
 
-        for (Team teamName : Objects.requireNonNull(teamRegister.config.getList("Teams"))) {
-            Bukkit.getLogger().log(teamName);
+        /*if (teamList == null) {
+            teamList = new ArrayList<MCSU_Team>();
         }
 
-        Teams.add(new MCSU_Team("Red Reindeers", "r", ChatColor.RED));
-        Teams.add(new MCSU_Team("Green Grinches", "gn", ChatColor.GREEN));
-        Teams.add(new MCSU_Team("Yellow Yodellers", "y", ChatColor.YELLOW));
-        Teams.add(new MCSU_Team("Aqua Angels", "a", ChatColor.AQUA));
-        Teams.add(new MCSU_Team("Pink Pipers", "p", ChatColor.LIGHT_PURPLE));
-        Teams.add(new MCSU_Team("White Wise Men", "w", ChatColor.WHITE));
-        Teams.add(new MCSU_Team("Gray Gingerbreads", "gy", ChatColor.GRAY));
+        teamList.add(new MCSU_Team("Pink Pandasas", "sp", ChatColor.LIGHT_PURPLE.toString(), new String[] {} ));
+
+        teamRegister.config.set("Teams", teamList);
+        teamRegister.saveDat();*/
+
+        assert teamList != null;
+        for (HashMap<String, Object> teamHash: teamList) {
+            Bukkit.getLogger().info((String) teamHash.get("Name"));
+            Teams.add(new MCSU_Team((String) teamHash.get("Name"), (String) teamHash.get("TeamID"), ChatColor.LIGHT_PURPLE.toString(), (ArrayList<String>) teamHash.get("memberUUIDs") ));
+        }
+        teamRegister.config.set("Teams", teamList);
+        teamRegister.saveDat();
+
+
+
+        //Teams = (ArrayList<MCSU_Team>) teamList;
     }
 
     public static void init() {

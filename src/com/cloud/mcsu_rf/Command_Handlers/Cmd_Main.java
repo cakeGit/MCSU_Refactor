@@ -58,7 +58,7 @@ public class Cmd_Main implements CommandExecutor {
 
         switch (Cmd.getName()) { // Non-Operator commands
 
-            case "hub": return TpPoint_Cmds.teleportPlayerToPoint((Player) Sender, Args[0]);
+            case "hub": return TpPoint_Cmds.teleportPlayerToPoint((Player) Sender, "hub");
 
         }
 
@@ -74,6 +74,7 @@ public class Cmd_Main implements CommandExecutor {
             case "givescore": return Score_Cmds.giveScore(Sender, Cmd, Label, Args);
 
             case "tppoint": return TpPoint_Cmds.tpPoint(Sender, Args);
+            case "setplayerteam": return Score_Cmds.setPlayerTeam(Sender, Args);
 
         }
 
