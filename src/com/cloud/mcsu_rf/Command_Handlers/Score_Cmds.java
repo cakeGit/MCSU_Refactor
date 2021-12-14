@@ -29,4 +29,9 @@ public class Score_Cmds {
 
     }
 
+    public static boolean setPlayerTeam(CommandSender sender, String[] args) {
+
+        return true;
+
+    }
 }

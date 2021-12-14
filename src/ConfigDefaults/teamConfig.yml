@@ -1,0 +1,43 @@
+Teams:
+
+  - ChatColour: ยงd
+    Name: Red Reindeers
+    Points: 0
+    TeamID: r
+    memberUUIDs: []
+
+  - ChatColour: ยงa
+    Name: Green Grinches
+    Points: 0
+    TeamID: ge
+    memberUUIDs: []
+
+  - ChatColour: ยงe
+    Name: Yellow Yodellers
+    Points: 0
+    TeamID: y
+    memberUUIDs: []
+
+  - ChatColour: ยงb
+    Name: Aqua Angels
+    Points: 0
+    TeamID: y
+    memberUUIDs: []
+
+  - ChatColour: ยงd
+    Name: Pink Pipers
+    Points: 0
+    TeamID: y
+    memberUUIDs: []
+
+  - ChatColour: ยงf
+    Name: White Wise Men
+    Points: 0
+    TeamID: y
+    memberUUIDs: []
+
+  - ChatColour: ยง7
+    Name: Gray Gingerbreads
+    Points: 0
+    TeamID: y
+    memberUUIDs: []

@@ -92,7 +92,7 @@ public class Game {
 
     public void gameStart() {
         for(Player player : Bukkit.getOnlinePlayers()) {
-            player.sendTitle("something","hi sam");
+            player.sendTitle("game start?","hi sam");
         }
 
         //stuf to run when game begins

@@ -1,6 +1,7 @@
 package com.cloud.mcsu_rf.Objects;
 
 import com.cloud.mcsu_rf.MCSU_Main;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -40,7 +41,13 @@ public class ConfigFile  {
 
         this.configFile = new File(MCSU_Main.FileDir + subdirectory, this.fileName);
 
-        if (!this.configFile.exists()) {
+        /*File defaultConfigFile = new File(MCSU_Main.getPlugin(MCSU_Main.class). + subdirectory, this.fileName);
+
+        if ( defaultConfigFile.exists() ) {
+            Bukkit.getLogger().info("Found default " + defaultConfigFile.getParentFile());
+        }*/
+
+        if ( !this.configFile.exists() ) {
 
             new File(MCSU_Main.FileDir + subdirectory).mkdir();
 

@@ -81,13 +81,13 @@ public class TpPoint_Cmds {
 
         switch (args[0]) {
 
-            case "new":
+            case "new"  -> {
                 Boolean isGamePoint = Boolean.parseBoolean(args[args.length - 1]);
-                if (args[1] == "-p") { // precise - creates the point with no rounding
+                if (args[1].equals("-p")) { // precise - creates the point with no rounding
                     createPoint(args[1], pLoc.getX(), pLoc.getY(), pLoc.getZ(), pLoc.getPitch(), pLoc.getYaw(), isGamePoint);
-                } else if (args[1] == "-h") { //here= creates the point at player loc with rounding
+                } else if (args[1].equals("-h")) { //here= creates the point at player loc with rounding
                     createPoint(args[1], pXyzRrn[0], pXyzRrn[1], pXyzRrn[2], pPyRrn[0], pPyRrn[1], isGamePoint);
-                } else if (args[1] == "-a") { // creates the point at specified thing
+                } else if (args[1].equals("-a")) { // creates the point at specified thing
                     createPoint(
                             args[0],
                             Double.parseDouble(args[2]),
@@ -98,8 +98,8 @@ public class TpPoint_Cmds {
                             isGamePoint
                     );
                 }
-            case "list":
-                listPoints(sender);
+            }
+            case "list" -> listPoints(sender);
 
         }
 

@@ -4,6 +4,7 @@ import com.cloud.mcsu_rf.Objects.ActivityRule;
 import com.cloud.mcsu_rf.Objects.EventListener;
 import com.cloud.mcsu_rf.Objects.MCSU_Player;
 import com.cloud.mcsu_rf.Score_Handlers.Scoreboard_Main;
+import com.cloud.mcsu_rf.ShorthandClasses.Pick;
 import com.cloud.mcsu_rf.Tab;
 import org.bukkit.Bukkit;
 import com.cloud.mcsu_rf.ShorthandClasses.Centered;
@@ -72,7 +73,7 @@ public class EventListener_Main implements Listener {
                 break;
 
             default:
-                joinMessage= ChatColor.DARK_GREEN + pName + " has joined mCSU!!11!11!";
+                joinMessage= ChatColor.WHITE + pName + " has joined mCSU!!11!11!";
                 break;
 
         }
@@ -92,14 +93,15 @@ public class EventListener_Main implements Listener {
     }
 
     @EventHandler public void onServerListPing(ServerListPingEvent e) {
-        e.setMotd(String.join(
-                "\n",
-                Centered.Text(
-                        new String[] {
-                                "ss",
-                                "ssssss"
-                        }, 10
-                )));
+        e.setMotd(
+                ChatColor.RED +""+ ChatColor.BOLD + "MCSU in development! \n" + ChatColor.RESET +""+ ChatColor.AQUA +""+ ChatColor.ITALIC +
+                Pick.Random(
+                        "wait whos candice?",
+                        "the cake is " + ChatColor.STRIKETHROUGH + "a lie"
+                                + ChatColor.RESET +""+ ChatColor.AQUA +""+ ChatColor.ITALIC + " tasty",
+                        "mcsu?"
+                )
+        );
 
         onRegisteredEvent(e);
     }
@@ -109,7 +111,7 @@ public class EventListener_Main implements Listener {
         String pName = p.getDisplayName();
         String quitMessage;
 
-        quitMessage = ChatColor.DARK_GREEN+ pName +" has left MCSU :(";
+        quitMessage = ChatColor.WHITE+ pName +" has left MCSU :(";
         e.setQuitMessage(quitMessage);
         p.setScoreboard(Scoreboard_Main.Current_Scoreboard);
         for(Player player : Bukkit.getOnlinePlayers()) {

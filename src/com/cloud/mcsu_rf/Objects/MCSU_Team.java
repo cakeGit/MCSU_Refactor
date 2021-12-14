@@ -4,23 +4,28 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class MCSU_Team {
 
     public String Name;
     public String TeamID;
-    public ChatColor ChatColour;
+    public String ChatColour;
     public int Points = 0;
 
-    ArrayList<Player> Members;
+    public ArrayList<String> memberUUIDs;
 
-    public MCSU_Team(String Name, String TeamID, ChatColor Colour) {
+    public MCSU_Team(String Name, String TeamID, String Colour, ArrayList<String> memberUUIDs) {
 
         this.Name = Name;
         this.TeamID = TeamID;
         this.ChatColour = Colour;
+        this.memberUUIDs = memberUUIDs;
 
     }
+
+    public ArrayList<String> getMemberUUIDs() { return memberUUIDs;  }
 
     public String toScoreboardString() {
 
@@ -31,33 +36,6 @@ public class MCSU_Team {
     public String getColouredName() {
 
         return this.ChatColour + this.Name;
-
-    }
-
-    public ArrayList<Player> addMember(Player Member) {
-
-        this.Members.add(Member);
-        return this.Members;
-
-    }
-
-    public ArrayList<Player> removeMember(Player Member) {
-
-        this.Members.remove(Member);
-        return this.Members;
-
-    }
-
-
-    public ArrayList<String> getMemberNames() {
-
-        ArrayList<String> Member_Names = new ArrayList();
-
-        for (Player Member : Members) {
-            Member_Names.add(Member.getName());
-        }
-
-        return Member_Names;
 
     }
 

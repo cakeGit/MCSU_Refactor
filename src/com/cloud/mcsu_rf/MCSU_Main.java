@@ -25,6 +25,7 @@ public class MCSU_Main extends JavaPlugin implements Listener {
 
         instance = this;
         Mcsu_Plugin = MCSU_Main.getPlugin(MCSU_Main.class);
+        //JarFileDir =
         FileDir = MCSU_Main.Mcsu_Plugin.getDataFolder().getAbsolutePath();
         getLogger().info(FileDir);
 
