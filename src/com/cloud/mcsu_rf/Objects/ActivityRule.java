@@ -1,6 +1,6 @@
 package com.cloud.mcsu_rf.Objects;
 
-import com.cloud.mcsu_rf.EventListener_Main;
+import com.cloud.mcsu_rf.EventListenerMain;
 
 public class ActivityRule {
 
@@ -14,7 +14,7 @@ public class ActivityRule {
         this.activeDefault = activeDefault;
         this.active = activeDefault;
 
-        EventListener_Main.activityRules.add(this);
+        EventListenerMain.activityRules.add(this);
 
     }
 

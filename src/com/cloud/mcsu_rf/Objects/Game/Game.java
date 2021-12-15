@@ -1,17 +1,14 @@
 package com.cloud.mcsu_rf.Objects.Game;
 
-import com.cloud.mcsu_rf.EventListener_Main;
+import com.cloud.mcsu_rf.EventListenerMain;
 import com.cloud.mcsu_rf.Game_Handlers.Game_Main;
-import com.cloud.mcsu_rf.Game_Handlers.Schematic_Loader;
-import com.cloud.mcsu_rf.MCSU_Main;
 import com.cloud.mcsu_rf.Objects.CustomEvents.GameCountdownEndEvent;
 import com.cloud.mcsu_rf.Objects.CustomEvents.GameInitEvent;
-import com.cloud.mcsu_rf.Objects.Lambdas.MapLoaderLambda;
-import com.cloud.mcsu_rf.Objects.MCSU_Player;
+import com.cloud.mcsu_rf.Objects.McsuPlayer;
 import com.cloud.mcsu_rf.Objects.Map.MapLoader;
 import com.cloud.mcsu_rf.Objects.Map.SpawnManager;
 import com.cloud.mcsu_rf.Objects.Timer;
-import com.sk89q.worldedit.math.BlockVector3;
+import com.cloud.mcsu_rf.ShorthandClasses.Pick;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -24,6 +21,31 @@ import java.util.ArrayList;
 
 public class Game {
 
+    public static String generateEndSplash() {
+
+        return Pick.Random(
+                "wow what a sweat lol",
+                "*clap* *clap* *clap* *clap*",
+                "lets gooo",
+                "#fuhamroadredemption",
+                "mcsu????",
+                "pog????/?/???",
+                ":D",
+                "im happy for them",
+                "gg",
+                "i like ya cut g",
+                "ok but who asked",
+                "ratio",
+                "very enterprising",
+                "very christian values",
+                "Mr Ebenezer approves",
+                "Mr Tice approves",
+                "i think that deserves a housepoint",
+                "John Davison could calculate ur moms radius better than u"
+                );
+
+    }
+
     //defaults
     static int DefaultStartLength = 15;
     static Sound DefaultStartTimerTickSound = Sound.BLOCK_NOTE_BLOCK_SNARE;
@@ -35,7 +57,7 @@ public class Game {
     MapLoader mapLoader;
 
     ArrayList<GameState> gameStates = new ArrayList<>();
-    ArrayList<MCSU_Player> alivePlayers = new ArrayList<>();
+    ArrayList<McsuPlayer> alivePlayers = new ArrayList<>();
 
     public Game(String Name) {
 
@@ -56,11 +78,7 @@ public class Game {
         this.mapLoader.MapInit(this, world);
         this.mapLoader.getSpawnManager().lobbySpawns(this.mapLoader);
 
-        for (GameState gameState : getEnabledGameStates()) {
-            gameState.setEnabled(true);
-        }
-
-        this.alivePlayers = MCSU_Player.MCSU_Players;
+        this.alivePlayers = McsuPlayer.McsuPlayers;
 
         GameInitEvent event = new GameInitEvent(this);
         Bukkit.getPluginManager().callEvent(event);
@@ -79,7 +97,7 @@ public class Game {
                                 if (timer.getTimeLeft() <= 5) {
                                     if (timer.getTimeLeft() == 5) { // Will run once
                                         this.mapLoader.getSpawnManager().gameSpawns(this.mapLoader);
-                                        EventListener_Main.setActivityRule("PlayerMovement", false);
+                                        EventListenerMain.setActivityRule("PlayerMovement", false);
                                     }
                                     player.sendTitle(message, "Get ready!");
                                     player.playSound(player.getLocation(), DefaultStartTimerTickSound, 1, 1);
@@ -105,9 +123,9 @@ public class Game {
     }
 
     public void gameCountdownEnd() {
-        EventListener_Main.setActivityRule("PlayerMovement", true);
+        EventListenerMain.setActivityRule("PlayerMovement", true);
 
-        for(Player player : Bukkit.getOnlinePlayers()) {
+        for (Player player : Bukkit.getOnlinePlayers()) {
             player.sendTitle(ChatColor.RED + "" + ChatColor.BOLD + "GO!", "");
         }
 
@@ -116,13 +134,26 @@ public class Game {
 
     }
 
+    public void genericGameEnd(McsuPlayer winner) {
+        for (GameState gameState : this.gameStates) {
+            gameState.setEnabled(false);
+        }
+
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            String style = ChatColor.BOLD + "" + ChatColor.WHITE;
+            player.sendTitle(winner.getColouredName() + style + " has won " + ChatColor.RESET + this.getName() + style + "!1!!!11!!!!!1!!11", generateEndSplash());
+        }
+
+        EventListenerMain.resetActivityRules();
+    }
+
     public Game addGameState(GameState gameState) { this.gameStates.add(gameState); return this; }
     public Game setMapLoader(MapLoader mapLoader) { this.mapLoader = mapLoader; return this; }
     public Game addStartInterval() { this.startIntervalEnabled = true; return this; }
 
 
-    public ArrayList<MCSU_Player> getAlivePlayers() { return this.alivePlayers; }
-    public void removeFromAlivePlayers(MCSU_Player player) { this.alivePlayers.remove(player); }
+    public ArrayList<McsuPlayer> getAlivePlayers() { return this.alivePlayers; }
+    public void removeFromAlivePlayers(McsuPlayer player) { this.alivePlayers.remove(player); }
     public String getName() { return this.Name; }
 
     public ArrayList<GameState> getEnabledGameStates() {

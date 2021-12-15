@@ -1,6 +1,6 @@
 package com.cloud.mcsu_rf.Objects.Extended_Objects.Game_Function;
 
-import com.cloud.mcsu_rf.EventListener_Main;
+import com.cloud.mcsu_rf.EventListenerMain;
 import com.cloud.mcsu_rf.Objects.EventListener;
 import org.bukkit.event.Event;
 
@@ -17,9 +17,9 @@ public class GameFunctionBase {
         for (String eventName : this.boundEventNames) {
 
             if (enabled) {
-                EventListener_Main.addEventListener(new EventListener(eventName, this::onBoundEvent)); // some weir adutogen code - passes the event to runEventHandler
+                EventListenerMain.addEventListener(new EventListener(eventName, this::onBoundEvent)); // some weir adutogen code - passes the event to runEventHandler
             } else  {
-                EventListener_Main.removeEventListener(new EventListener(eventName, this::onBoundEvent)); // some weir adutogen code - passes the event to runEventHandler
+                EventListenerMain.removeEventListener(new EventListener(eventName, this::onBoundEvent)); // some weir adutogen code - passes the event to runEventHandler
             }
 
         }

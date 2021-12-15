@@ -1,6 +1,6 @@
 package com.cloud.mcsu_rf.Objects.Extended_Objects.Game_Function;
 
-import com.cloud.mcsu_rf.Objects.MCSU_Player;
+import com.cloud.mcsu_rf.Objects.McsuPlayer;
 import org.bukkit.event.Event;
 
 public class PointAwarder extends GameFunctionBase {
@@ -17,7 +17,7 @@ public class PointAwarder extends GameFunctionBase {
 
         switch (event.getEventName()) {
             case "PlayerDeathEvent":
-                for (MCSU_Player mcsuPlayer : MCSU_Player.MCSU_Players) {
+                for (McsuPlayer mcsuPlayer : McsuPlayer.McsuPlayers) {
                     mcsuPlayer.awardPoints(2);
                 }
                 break;
