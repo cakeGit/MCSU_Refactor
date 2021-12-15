@@ -1,0 +1,15 @@
+MapData:
+    Name: Volatile Volcano
+    Game: Spleef
+    SchemFile: Spleef_VolatileVolcano.schem
+Points:
+    Lobby:
+        -   Coordinates: -1.5 70.0 -10.5
+            Rotation: 90.0 -90.0
+    Game: #Should be mixed around as it picks top -> bottom
+        -   Id: Spawn1
+            Coordinates: -1.5 70.0 -10.5
+            Rotation: 90.0 -90.0
+        -   Id: Spawn2
+            Coordinates: -1.5 70.0 -10.5
+            Rotation: 90.0 -90.0

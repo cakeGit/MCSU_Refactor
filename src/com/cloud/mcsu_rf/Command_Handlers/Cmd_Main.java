@@ -1,6 +1,7 @@
 package com.cloud.mcsu_rf.Command_Handlers;
 
 import com.cloud.mcsu_rf.MCSU_Main;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -33,11 +34,10 @@ public class Cmd_Main implements CommandExecutor {
                 "listgames",
                 "playgame",
                 "givescore",
-                "countdown",
-
                 "tppoint",
                 "gamepoint",
-                "goto"
+                "goto",
+                "team"
         };
 
         tpCommands = new String[] {
@@ -59,6 +59,7 @@ public class Cmd_Main implements CommandExecutor {
         switch (Cmd.getName()) { // Non-Operator commands
 
             case "hub": return TpPoint_Cmds.teleportPlayerToPoint((Player) Sender, "hub");
+            case "goto": return TpPoint_Cmds.teleportPlayerToPoint((Player) Sender, Args[0]);
 
         }
 
@@ -71,10 +72,10 @@ public class Cmd_Main implements CommandExecutor {
             case "listgames": return Game_Cmds.listGames(Sender, Cmd, Label, Args);
             case "playgame": return Game_Cmds.playGame(Sender, Cmd, Label, Args);
 
-            case "givescore": return Score_Cmds.giveScore(Sender, Cmd, Label, Args);
+            case "givescore": return Score_Cmds.giveScore(Sender, Args);
 
             case "tppoint": return TpPoint_Cmds.tpPoint(Sender, Args);
-            case "setplayerteam": return Score_Cmds.setPlayerTeam(Sender, Args);
+            case "team": return Score_Cmds.Team(Sender, Args);
 
         }
 

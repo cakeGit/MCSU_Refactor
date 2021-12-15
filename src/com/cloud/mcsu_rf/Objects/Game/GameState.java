@@ -1,6 +1,6 @@
 package com.cloud.mcsu_rf.Objects.Game;
 
-import com.cloud.mcsu_rf.Objects.Extended_Objects.Game_Function.GameFunction;
+import com.cloud.mcsu_rf.Objects.Extended_Objects.Game_Function.GameFunctionBase;
 
 import java.util.ArrayList;
 
@@ -8,19 +8,20 @@ public class GameState {
 
     String name;
     boolean enabled;
-    ArrayList<GameFunction> GameFunctions = new ArrayList<>();
+
+    ArrayList<GameFunctionBase> gameFunctions = new ArrayList<>();
 
     public GameState(String name, boolean enabled) { this.name = name; this.enabled = enabled; }
     public GameState(String name) { this.name = name; this.enabled = false; }
 
-    public GameState addGameFunction(GameFunction gameFunction) { this.GameFunctions.add(gameFunction); return this; }
-
-    public ArrayList<GameFunction> getGameFunctions() { return this.GameFunctions; }
+    public GameState addGameFunction(GameFunctionBase gameFunction) { this.gameFunctions.add(gameFunction); return this; }
+    public ArrayList<GameFunctionBase> getGameFunctions() { return this.gameFunctions; }
 
     public void setEnabled(boolean enabled) {
+
         this.enabled = enabled;
 
-        for (GameFunction gameFunction: GameFunctions) {
+        for (GameFunctionBase gameFunction: gameFunctions) {
             gameFunction.setEnabled(enabled);
         }
 

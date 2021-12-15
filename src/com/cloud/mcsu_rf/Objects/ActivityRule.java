@@ -1,6 +1,6 @@
 package com.cloud.mcsu_rf.Objects;
 
-import com.cloud.mcsu_rf.EventListeners.EventListener_Main;
+import com.cloud.mcsu_rf.EventListener_Main;
 
 public class ActivityRule {
 
@@ -24,4 +24,5 @@ public class ActivityRule {
 
     public Boolean getActive() {  return active; }
     public String getName() { return name; }
+
 }

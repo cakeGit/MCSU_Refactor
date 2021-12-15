@@ -25,7 +25,7 @@ public class Schematic_Loader {
     public static void loadSchematic(String Schem_File, BlockVector3 Paste_To, World world) {
 
 
-        File schem = new File(MCSU_Main.FileDir + File.separator + "schematics/"+Schem_File+".schem");
+        File schem = new File(MCSU_Main.FileDir + File.separator + "schematics/"+Schem_File);
         Bukkit.getLogger().info("Loading schem '" + MCSU_Main.FileDir + File.separator + "schematics/"+Schem_File+".schem" + "'");
 
         if (schem.exists()) {
