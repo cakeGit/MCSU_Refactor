@@ -1,11 +1,9 @@
 package com.cloud.mcsu_rf.Objects.Extended_Objects.Game_Function;
 
 import com.cloud.mcsu_rf.Objects.MCSU_Player;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
-public class PointAwarder extends GameFunction {
+public class PointAwarder extends GameFunctionBase {
 
     public PointAwarder(String Goal, int pointValue) {
 

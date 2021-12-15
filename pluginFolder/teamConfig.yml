@@ -1,0 +1,37 @@
+Teams:
+- ChatColour: §c
+  Name: Red Reindeers
+  Points: 0
+  TeamID: r
+  memberUUIDs:
+  - 0b2dd0c3-76d5-4dc5-ba3b-3ce5468234b7
+- ChatColour: §a
+  Name: Green Grinches
+  Points: 0
+  TeamID: g
+  memberUUIDs: []
+- ChatColour: §e
+  Name: Yellow Yodellers
+  Points: 0
+  TeamID: y
+  memberUUIDs: []
+- ChatColour: §b
+  Name: Aqua Angels
+  Points: 0
+  TeamID: a
+  memberUUIDs: []
+- ChatColour: §d
+  Name: Pink Pipers
+  Points: 0
+  TeamID: p
+  memberUUIDs: []
+- ChatColour: §f
+  Name: White Wise Men
+  Points: 0
+  TeamID: w
+  memberUUIDs: []
+- ChatColour: §7
+  Name: Gray Gingerbreads
+  Points: 0
+  TeamID: gr
+  memberUUIDs: []

@@ -1,11 +1,15 @@
-package com.cloud.mcsu_rf.EventListeners;
+package com.cloud.mcsu_rf;
 
 import com.cloud.mcsu_rf.Objects.ActivityRule;
+import com.cloud.mcsu_rf.Objects.CustomEvents.GameCountdownEndEvent;
+import com.cloud.mcsu_rf.Objects.CustomEvents.GameInitEvent;
 import com.cloud.mcsu_rf.Objects.EventListener;
 import com.cloud.mcsu_rf.Objects.MCSU_Player;
+import com.cloud.mcsu_rf.Objects.MCSU_Team;
 import com.cloud.mcsu_rf.Score_Handlers.Scoreboard_Main;
 import com.cloud.mcsu_rf.ShorthandClasses.Pick;
 import com.cloud.mcsu_rf.Tab;
+import com.cloud.mcsu_rf.Team_Handlers.Team_Main;
 import org.bukkit.Bukkit;
 import com.cloud.mcsu_rf.ShorthandClasses.Centered;
 import org.bukkit.ChatColor;
@@ -16,11 +20,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.ServerListPingEvent;
 
 import java.util.ArrayList;
 import java.util.Objects;
+
+import static com.cloud.mcsu_rf.Score_Handlers.Scoreboard_Main.reloadScoreboard;
 
 public class EventListener_Main implements Listener {
 
@@ -69,9 +76,7 @@ public class EventListener_Main implements Listener {
                 break;
             case "WaitWhosCandice":
                 joinMessage = ChatColor.BLUE + pName + ChatColor.WHITE + " has joined mCSU!!11!11! \n hol up is candice tho? "; // OG join message :)
-
                 break;
-
             default:
                 joinMessage= ChatColor.WHITE + pName + " has joined mCSU!!11!11!";
                 break;
@@ -79,7 +84,15 @@ public class EventListener_Main implements Listener {
         }
 
         MCSU_Player.MCSU_Players.add(new MCSU_Player(p));
-        p.setScoreboard(Scoreboard_Main.Current_Scoreboard);
+
+        for ( MCSU_Team team : Team_Main.Teams ) {
+            if (team.getMemberUUIDs().contains(p.getUniqueId().toString())) {
+                assert MCSU_Player.getPlayerByBukkitPlayer(p) != null;
+                MCSU_Player.getPlayerByBukkitPlayer(p).setTeam(team);
+            }
+        }
+
+        reloadScoreboard();
 
         e.setJoinMessage(joinMessage);
 
@@ -92,6 +105,13 @@ public class EventListener_Main implements Listener {
 
     }
 
+    @EventHandler public void onPlayerMove(PlayerMoveEvent e) {
+        if (!getRuleActive("PlayerMovement")) { e.setCancelled(true); }
+
+        onRegisteredEvent(e);
+
+    }
+
     @EventHandler public void onServerListPing(ServerListPingEvent e) {
         e.setMotd(
                 ChatColor.RED +""+ ChatColor.BOLD + "MCSU in development! \n" + ChatColor.RESET +""+ ChatColor.AQUA +""+ ChatColor.ITALIC +
@@ -99,7 +119,8 @@ public class EventListener_Main implements Listener {
                         "wait whos candice?",
                         "the cake is " + ChatColor.STRIKETHROUGH + "a lie"
                                 + ChatColor.RESET +""+ ChatColor.AQUA +""+ ChatColor.ITALIC + " tasty",
-                        "mcsu?"
+                        "mcsu?",
+                        "hey ;)"
                 )
         );
 
@@ -111,9 +132,9 @@ public class EventListener_Main implements Listener {
         String pName = p.getDisplayName();
         String quitMessage;
 
-        quitMessage = ChatColor.WHITE+ pName +" has left MCSU :(";
+        quitMessage = ChatColor.BLUE + pName + ChatColor.BLUE + " has left MCSU :(";
         e.setQuitMessage(quitMessage);
-        p.setScoreboard(Scoreboard_Main.Current_Scoreboard);
+        reloadScoreboard();
         for(Player player : Bukkit.getOnlinePlayers()) {
             Tab.showTab(player,Bukkit.getOnlinePlayers().size()-1);
         }
@@ -122,6 +143,8 @@ public class EventListener_Main implements Listener {
 
     //Events that just get passed to registered event with no other code
     @EventHandler public void onPlayerDeath(PlayerDeathEvent e) { onRegisteredEvent(e); }
+    @EventHandler public void onGameInitEvent(GameInitEvent e) { onRegisteredEvent(e); }
+    @EventHandler public void onGameCountdownEndEvent(GameCountdownEndEvent e) { onRegisteredEvent(e); }
 
 
     //Activity rules
@@ -140,6 +163,7 @@ public class EventListener_Main implements Listener {
 
         new ActivityRule("TileDrops", true);
         new ActivityRule("PVP", false);
+        new ActivityRule("PlayerMovement", true);
 
     }
 
@@ -165,7 +189,7 @@ public class EventListener_Main implements Listener {
 
     public static void setActivityRule(String name, Boolean value) {
 
-        Objects.requireNonNull(getActivityRule(name)).setActive(true);
+        Objects.requireNonNull(getActivityRule(name)).setActive(value);
 
     }
 

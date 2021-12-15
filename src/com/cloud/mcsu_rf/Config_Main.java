@@ -1,19 +1,13 @@
 package com.cloud.mcsu_rf;
 
 import com.cloud.mcsu_rf.Objects.ConfigFile;
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.YamlConfiguration;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
-import java.util.function.BiConsumer;
 
 public class Config_Main {
 
     public static ArrayList<ConfigFile> Configs = new ArrayList<>();
-    public static ArrayList<ConfigFile> MapMetadataConfigs = new ArrayList<>();
 
     public static ConfigFile getByID(String ID) {
 
@@ -44,34 +38,6 @@ public class Config_Main {
                 "teamConfig.yml"
         ));
 
-        ConfigFile mapRegister = getByID("m");
-
-        List<?> Maps = mapRegister.config.getList("Maps");
-
-        if (Maps != null) {
-            Maps.forEach(mapSublist -> {
-                ((List<?>) mapSublist).forEach(mapMetadataFilename -> {
-                    MapMetadataConfigs.add( new ConfigFile(
-                            (String) mapMetadataFilename,
-                            "",
-                            mapMetadataFilename + ".yml",
-                            "/mapMetadata/"
-
-                    ));
-                });
-            });
-        }
-
-
-    }
-
-    public static void consumeFile(File yamlFile, BiConsumer<? super String, ? super Object> consumer){
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(yamlFile);
-        for (String path : config.getKeys(true)){
-            if (config.get(path) != null){
-                consumer.accept(path, config.get(path));
-            }
-        }
     }
 
 

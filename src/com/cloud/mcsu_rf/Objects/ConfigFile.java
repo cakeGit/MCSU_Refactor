@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Objects;
 
 public class ConfigFile  {
 
@@ -40,12 +41,6 @@ public class ConfigFile  {
         this.fileName = fileName;
 
         this.configFile = new File(MCSU_Main.FileDir + subdirectory, this.fileName);
-
-        /*File defaultConfigFile = new File(MCSU_Main.getPlugin(MCSU_Main.class). + subdirectory, this.fileName);
-
-        if ( defaultConfigFile.exists() ) {
-            Bukkit.getLogger().info("Found default " + defaultConfigFile.getParentFile());
-        }*/
 
         if ( !this.configFile.exists() ) {
 

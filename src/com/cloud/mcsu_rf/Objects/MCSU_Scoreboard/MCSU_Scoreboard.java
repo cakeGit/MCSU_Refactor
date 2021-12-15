@@ -9,6 +9,7 @@ import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 
 public class MCSU_Scoreboard {
 
@@ -26,13 +27,9 @@ public class MCSU_Scoreboard {
         this.Name = Default_Name;
     }
 
-    public void setName(String Name) {
-        this.Name = Name;
-    }
+    public void setName(String Name) { this.Name = Name; }
 
-    public void addElement(Scoreboard_Element Element) {
-        this.Elements.add(Element);
-    }
+    public void addElement(Scoreboard_Element Element) { this.Elements.add(Element); }
 
     public void update() {
 
@@ -46,7 +43,7 @@ public class MCSU_Scoreboard {
         int Custom_Arg_Index = 0;
 
         for (Scoreboard_Element Element : this.Elements) {
-            if (Element.getType() != "Custom") {
+            if (!Objects.equals(Element.getType(), "Custom")) {
                 Element.update();
             } else {
                 Element.update(args.get(Custom_Arg_Index));
@@ -56,6 +53,8 @@ public class MCSU_Scoreboard {
     }
 
     public Scoreboard toBukkitScoreboard() {
+
+        this.update();
         Scoreboard Scoreboard = Scoreboard_Main.Scoreboard_Manager.getNewScoreboard();
         Objective Objective = Scoreboard.registerNewObjective(this.Name, "dummy", this.Name);
 

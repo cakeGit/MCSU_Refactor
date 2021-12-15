@@ -30,7 +30,7 @@ commands:
     description: Goes to the specified tpPoint
     usage: /goto <tpPoint>
   team:
-    description: not working yet - Sets the player's team
+    description: Sets the player's team
     usage: /team set <Player Name> <TeamID>
 
   hub:
