@@ -5,6 +5,7 @@ import com.cloud.mcsu_rf.Objects.CustomEvents.GameCountdownEndEvent;
 import com.cloud.mcsu_rf.Objects.CustomEvents.GameInitEvent;
 import com.cloud.mcsu_rf.Objects.EventListener;
 import com.cloud.mcsu_rf.Objects.MCSU_Player;
+import com.cloud.mcsu_rf.Objects.MCSU_Scoreboard.MCSU_Scoreboard;
 import com.cloud.mcsu_rf.Objects.MCSU_Team;
 import com.cloud.mcsu_rf.Score_Handlers.Scoreboard_Main;
 import com.cloud.mcsu_rf.ShorthandClasses.Pick;
@@ -93,6 +94,7 @@ public class EventListener_Main implements Listener {
         }
 
         reloadScoreboard();
+        //Scoreboard_Main.animateScoreboard(p);
 
         e.setJoinMessage(joinMessage);
 
@@ -120,7 +122,8 @@ public class EventListener_Main implements Listener {
                         "the cake is " + ChatColor.STRIKETHROUGH + "a lie"
                                 + ChatColor.RESET +""+ ChatColor.AQUA +""+ ChatColor.ITALIC + " tasty",
                         "mcsu?",
-                        "hey ;)"
+                        "hey ;)",
+                        "Call me mojang because I can make your bedrock"
                 )
         );
 
