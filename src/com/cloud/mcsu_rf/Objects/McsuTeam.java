@@ -1,16 +1,13 @@
 package com.cloud.mcsu_rf.Objects;
 
-import com.cloud.mcsu_rf.Config_Main;
-import com.cloud.mcsu_rf.Team_Handlers.Team_Main;
-import org.bukkit.Bukkit;
+import com.cloud.mcsu_rf.TeamHandlers.TeamMain;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
-public class MCSU_Team {
+public class McsuTeam {
 
     String Name;
     String TeamID;
@@ -19,7 +16,7 @@ public class MCSU_Team {
 
     ArrayList<String> memberUUIDs;
 
-    public MCSU_Team(String Name, String TeamID, String Colour, ArrayList<String> memberUUIDs) {
+    public McsuTeam(String Name, String TeamID, String Colour, ArrayList<String> memberUUIDs) {
 
         this.Name = Name;
         this.TeamID = TeamID;
@@ -29,7 +26,7 @@ public class MCSU_Team {
     }
 
     public void saveYaml() {
-        for (HashMap<String, Object> teamHash : Team_Main.teamList) {
+        for (HashMap<String, Object> teamHash : TeamMain.teamList) {
             if (Objects.equals(teamHash.get("Name"), Name)) {
 
                 teamHash.put("TeamID", TeamID);
@@ -39,7 +36,7 @@ public class MCSU_Team {
 
             }
         }
-        Team_Main.saveTeamList();
+        TeamMain.saveTeamList();
     }
 
     public ArrayList<String> getMemberUUIDs() { return memberUUIDs;  }

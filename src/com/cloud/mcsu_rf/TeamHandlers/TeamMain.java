@@ -1,17 +1,17 @@
-package com.cloud.mcsu_rf.Team_Handlers;
+package com.cloud.mcsu_rf.TeamHandlers;
 
 import com.cloud.mcsu_rf.Config_Main;
 import com.cloud.mcsu_rf.Objects.ConfigFile;
-import com.cloud.mcsu_rf.Objects.MCSU_Player;
-import com.cloud.mcsu_rf.Objects.MCSU_Team;
+import com.cloud.mcsu_rf.Objects.McsuPlayer;
+import com.cloud.mcsu_rf.Objects.McsuTeam;
 import com.cloud.mcsu_rf.Score_Handlers.Scoreboard_Main;
 import org.bukkit.Bukkit;
 
 import java.util.*;
 
-public class Team_Main {
+public class TeamMain {
 
-    public static ArrayList<MCSU_Team> Teams = new ArrayList<>();
+    public static ArrayList<McsuTeam> Teams = new ArrayList<>();
 
     public static ConfigFile teamRegister = Config_Main.getByID("t");
     public static List<HashMap> teamList = (List<HashMap>) teamRegister.config.getList("Teams");
@@ -30,7 +30,7 @@ public class Team_Main {
         assert teamList != null;
         for (HashMap<String, Object> teamHash : teamList) {
             Bukkit.getLogger().info("Loading team from config: " + teamHash.get("Name"));
-            Teams.add(new MCSU_Team((String) teamHash.get("Name"), (String) teamHash.get("TeamID"), (String) teamHash.get("ChatColour"), (ArrayList<String>) teamHash.get("memberUUIDs") ));
+            Teams.add(new McsuTeam((String) teamHash.get("Name"), (String) teamHash.get("TeamID"), (String) teamHash.get("ChatColour"), (ArrayList<String>) teamHash.get("memberUUIDs") ));
         }
 
         //teamRegister.config.set("Teams", teamList);
@@ -48,12 +48,12 @@ public class Team_Main {
         Scoreboard_Main.onTeamsLoaded();
     }
 
-    public static MCSU_Team getTeamById(String ID) {
+    public static McsuTeam getTeamById(String ID) {
         return Teams.stream().filter(Team -> Objects.equals(Team.getTeamID(), ID)).findFirst().orElse(null);
     }
 
-    public static ArrayList<MCSU_Team> getSortedTeams() {
-        ArrayList<MCSU_Team> sortedTeams = Teams;
+    public static ArrayList<McsuTeam> getSortedTeams() {
+        ArrayList<McsuTeam> sortedTeams = Teams;
         sortedTeams.sort((t1, t2) -> {
             if (t1.getPoints() > t2.getPoints())
                 return 1;
@@ -66,12 +66,12 @@ public class Team_Main {
     }
 
     public static void refreshAllTeamPoints() {
-        for (MCSU_Team team : Teams) {
+        for (McsuTeam team : Teams) {
             int teamPoints = 0;
 
             for ( String playerUUID : team.getMemberUUIDs() ) {
 
-                teamPoints += Objects.requireNonNull(MCSU_Player.getPlayerByUUID(playerUUID)).getPoints();
+                teamPoints += Objects.requireNonNull(McsuPlayer.getPlayerByUUID(playerUUID)).getPoints();
 
             }
 

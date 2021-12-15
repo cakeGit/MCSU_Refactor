@@ -4,15 +4,11 @@ import com.cloud.mcsu_rf.Objects.ActivityRule;
 import com.cloud.mcsu_rf.Objects.CustomEvents.GameCountdownEndEvent;
 import com.cloud.mcsu_rf.Objects.CustomEvents.GameInitEvent;
 import com.cloud.mcsu_rf.Objects.EventListener;
-import com.cloud.mcsu_rf.Objects.MCSU_Player;
-import com.cloud.mcsu_rf.Objects.MCSU_Scoreboard.MCSU_Scoreboard;
-import com.cloud.mcsu_rf.Objects.MCSU_Team;
-import com.cloud.mcsu_rf.Score_Handlers.Scoreboard_Main;
+import com.cloud.mcsu_rf.Objects.McsuPlayer;
+import com.cloud.mcsu_rf.Objects.McsuTeam;
 import com.cloud.mcsu_rf.ShorthandClasses.Pick;
-import com.cloud.mcsu_rf.Tab;
-import com.cloud.mcsu_rf.Team_Handlers.Team_Main;
+import com.cloud.mcsu_rf.TeamHandlers.TeamMain;
 import org.bukkit.Bukkit;
-import com.cloud.mcsu_rf.ShorthandClasses.Centered;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -30,7 +26,7 @@ import java.util.Objects;
 
 import static com.cloud.mcsu_rf.Score_Handlers.Scoreboard_Main.reloadScoreboard;
 
-public class EventListener_Main implements Listener {
+public class EventListenerMain implements Listener {
 
     //Event handler stuff
 
@@ -84,12 +80,12 @@ public class EventListener_Main implements Listener {
 
         }
 
-        MCSU_Player.MCSU_Players.add(new MCSU_Player(p));
+        McsuPlayer.McsuPlayers.add(new McsuPlayer(p));
 
-        for ( MCSU_Team team : Team_Main.Teams ) {
+        for ( McsuTeam team : TeamMain.Teams ) {
             if (team.getMemberUUIDs().contains(p.getUniqueId().toString())) {
-                assert MCSU_Player.getPlayerByBukkitPlayer(p) != null;
-                MCSU_Player.getPlayerByBukkitPlayer(p).setTeam(team);
+                assert McsuPlayer.getPlayerByBukkitPlayer(p) != null;
+                McsuPlayer.getPlayerByBukkitPlayer(p).setTeam(team);
             }
         }
 

@@ -1,14 +1,9 @@
 package com.cloud.mcsu_rf.Objects.MCSU_Scoreboard;
 
-import com.cloud.mcsu_rf.MCSU_Main;
-import com.cloud.mcsu_rf.Objects.MCSU_Player;
-import com.cloud.mcsu_rf.Objects.MCSU_Team;
-import com.cloud.mcsu_rf.Score_Handlers.Scoreboard_Main;
-import com.cloud.mcsu_rf.Team_Handlers.Team_Main;
+import com.cloud.mcsu_rf.Objects.McsuTeam;
+import com.cloud.mcsu_rf.TeamHandlers.TeamMain;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 
@@ -40,7 +35,7 @@ public class Scoreboard_Element {
 
             case "Team_Totals":
 
-                 for ( MCSU_Team team : Team_Main.getSortedTeams() ) {
+                 for ( McsuTeam team : TeamMain.getSortedTeams() ) {
 
                      this.Content.add(" "+team.toScoreboardString());
                  }
