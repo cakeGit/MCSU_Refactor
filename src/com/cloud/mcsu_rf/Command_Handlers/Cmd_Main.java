@@ -1,5 +1,6 @@
 package com.cloud.mcsu_rf.Command_Handlers;
 
+import com.cloud.mcsu_rf.EventListenerMain;
 import com.cloud.mcsu_rf.MCSU_Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -38,7 +39,8 @@ public class Cmd_Main implements CommandExecutor {
                 "gamepoint",
                 "goto",
                 "team",
-                "nick"
+                "nick",
+                "enablepvp"
         };
 
         tpCommands = new String[] {
@@ -78,6 +80,8 @@ public class Cmd_Main implements CommandExecutor {
             case "tppoint": return TpPoint_Cmds.tpPoint(Sender, Args);
             case "team": return Score_Cmds.Team(Sender, Args);
             case "nick": return Game_Cmds.nick(Sender, Args);
+
+            case "enablepvp": EventListenerMain.setActivityRule("PVP", true); return true;
 
         }
 
