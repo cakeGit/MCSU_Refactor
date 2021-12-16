@@ -44,7 +44,12 @@ public class Scoreboard_Element {
                 break;
 
             case "Online_Players":
-                this.Content.add(ChatColor.RED+" Online: "+ChatColor.WHITE+ Bukkit.getOnlinePlayers().size());
+                this.Content.add(ChatColor.RED+" Online: "+ChatColor.WHITE+Bukkit.getOnlinePlayers().size());
+                break;
+
+            case "Online_Players_Leave":
+                int i = Bukkit.getOnlinePlayers().size()-1;
+                this.Content.add(ChatColor.RED+" Online: "+ChatColor.WHITE+i);
                 break;
 
             case "Line_Break":

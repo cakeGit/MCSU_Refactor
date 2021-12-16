@@ -4,12 +4,16 @@ import com.cloud.mcsu_rf.Objects.ActivityRule;
 import com.cloud.mcsu_rf.Objects.CustomEvents.GameCountdownEndEvent;
 import com.cloud.mcsu_rf.Objects.CustomEvents.GameInitEvent;
 import com.cloud.mcsu_rf.Objects.EventListener;
+import com.cloud.mcsu_rf.Objects.MCSU_Scoreboard.MCSU_Scoreboard;
+import com.cloud.mcsu_rf.Objects.MCSU_Scoreboard.Scoreboard_Element;
 import com.cloud.mcsu_rf.Objects.McsuPlayer;
 import com.cloud.mcsu_rf.Objects.McsuTeam;
+import com.cloud.mcsu_rf.Score_Handlers.Scoreboard_Main;
 import com.cloud.mcsu_rf.ShorthandClasses.Pick;
 import com.cloud.mcsu_rf.TeamHandlers.TeamMain;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -20,6 +24,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.ServerListPingEvent;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -74,6 +79,10 @@ public class EventListenerMain implements Listener {
             case "WaitWhosCandice":
                 joinMessage = ChatColor.BLUE + pName + ChatColor.WHITE + " has joined mCSU!!11!11! \n hol up is candice tho? "; // OG join message :)
                 break;
+            case "goshroom":
+                p.getInventory().setHelmet(new ItemStack(Material.RED_MUSHROOM,1));
+            case "JackyWackers":
+                p.getInventory().setHelmet(new ItemStack(Material.RED_MUSHROOM,1));
             default:
                 joinMessage= ChatColor.WHITE + pName + " has joined mCSU!!11!11!";
                 break;
@@ -84,6 +93,9 @@ public class EventListenerMain implements Listener {
         //Scoreboard_Main.animateScoreboard(p);
 
         e.setJoinMessage(joinMessage);
+        MCSU_Scoreboard sb = new MCSU_Scoreboard(new Scoreboard_Element[] { new Scoreboard_Element("Bottom_Line_Break"), new Scoreboard_Element("Team_Totals"), new Scoreboard_Element("Line_Break"), new Scoreboard_Element("Online_Players"), new Scoreboard_Element("Top_Line_Break") });
+        Scoreboard_Main.Current_Scoreboard = sb;
+        reloadScoreboard();
 
     }
 
@@ -124,6 +136,8 @@ public class EventListenerMain implements Listener {
 
         quitMessage = ChatColor.BLUE + pName + ChatColor.BLUE + " has left MCSU :(";
         e.setQuitMessage(quitMessage);
+        MCSU_Scoreboard sb = new MCSU_Scoreboard(new Scoreboard_Element[] { new Scoreboard_Element("Bottom_Line_Break"), new Scoreboard_Element("Team_Totals"), new Scoreboard_Element("Line_Break"), new Scoreboard_Element("Online_Players_Leave"), new Scoreboard_Element("Top_Line_Break") });
+        Scoreboard_Main.Current_Scoreboard = sb;
         reloadScoreboard();
         for(Player player : Bukkit.getOnlinePlayers()) {
             Tab.showTab(player,Bukkit.getOnlinePlayers().size()-1);

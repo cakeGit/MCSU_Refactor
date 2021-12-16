@@ -35,6 +35,6 @@ commands:
   hub:
     description: Teleports you to the Hub,
     usage: /hub
-  nick:
-    description: Nicks a player
+  spawnsled:
+    description: Puts a player in a sled
     usage: /nick <Name>
