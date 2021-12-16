@@ -34,6 +34,11 @@ public class McsuPlayer {
             }
         }
 
+        Bukkit.getLogger().warning("Could not find any player with UUID of " + UUID);
+        Bukkit.getLogger().warning("All player UUIDs");
+        for (McsuPlayer mcsuPlayer: McsuPlayers) {
+            Bukkit.getLogger().warning(String.valueOf(mcsuPlayer.getBukkitPlayer().getUniqueId()));
+        }
         return null;
     }
     public static McsuPlayer getPlayerByName(String Name) {
@@ -48,6 +53,8 @@ public class McsuPlayer {
 
     public static void registerPlayer(Player p) {
 
+        Bukkit.getLogger().info("Registering player " + p.getName());
+
         AtomicBoolean playerExists = new AtomicBoolean(false);
 
         McsuPlayers.forEach(mcsuPlayer -> {
@@ -60,17 +67,19 @@ public class McsuPlayer {
             McsuPlayer.McsuPlayers.add(new McsuPlayer(p));
 
             for ( McsuTeam team : TeamMain.Teams ) {
-                if (team.getMemberUUIDs().contains(p.getUniqueId().toString())) {
-                    assert McsuPlayer.getPlayerByBukkitPlayer(p) != null;
-                    McsuPlayer.getPlayerByBukkitPlayer(p).setTeam(team);
-                    TeamMain.refreshAllTeamPoints();
+                if (team.getMemberUUIDs() != null) {
+                    if (team.getMemberUUIDs().contains(p.getUniqueId().toString())) {
+                        assert McsuPlayer.getPlayerByBukkitPlayer(p) != null;
+                        McsuPlayer.getPlayerByBukkitPlayer(p).setTeam(team);
+                        TeamMain.refreshAllTeamPoints();
+                    }
                 }
             }
-
-            reloadScoreboard();
         } else {
-            Bukkit.getLogger().info("Register player was called but player already existed!");
+            Bukkit.getLogger().info("Player " + p.getName() + " was attempted to be registered but already exists");
         }
+
+        reloadScoreboard();
 
     }
 

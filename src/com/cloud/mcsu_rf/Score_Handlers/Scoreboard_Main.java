@@ -71,8 +71,9 @@ public class Scoreboard_Main {
 
     public static void reloadScoreboard() {
 
-        for (Player player:
-             Bukkit.getOnlinePlayers()) {
+        for (Player player: Bukkit.getOnlinePlayers()) {
+
+            Bukkit.getLogger().info("Trying to apply scoreboard to player " + player.getName());
             player.setScoreboard(Current_Scoreboard.toBukkitScoreboard());
 
         }

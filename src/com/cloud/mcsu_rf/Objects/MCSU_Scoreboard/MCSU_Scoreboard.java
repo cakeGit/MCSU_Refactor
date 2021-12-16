@@ -13,7 +13,7 @@ import java.util.Objects;
 
 public class MCSU_Scoreboard {
 
-    public static String Name;
+    String Name;
     String Default_Name = ChatColor.RED+"§lMCSU";
 
     ArrayList<Scoreboard_Element> Elements = new ArrayList<>();

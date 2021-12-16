@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Scoreboard_Element {
 
@@ -29,7 +30,7 @@ public class Scoreboard_Element {
 
     public void update() {
 
-        this.Content = new ArrayList(); // empty the array
+        this.Content = new ArrayList<>(); // empty the array
 
         switch (this.Type) {
 
@@ -79,7 +80,7 @@ public class Scoreboard_Element {
 
     public void update(ArrayList<String> args) { // Used for fully custom elements
 
-        if (this.Type == "Custom") {
+        if (Objects.equals(this.Type, "Custom")) {
             this.Content = args;
         } else {
             throw new IllegalArgumentException("Argument given to a Non-Custom Element");

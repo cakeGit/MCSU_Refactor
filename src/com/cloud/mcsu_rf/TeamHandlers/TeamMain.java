@@ -69,13 +69,18 @@ public class TeamMain {
         for (McsuTeam team : Teams) {
             int teamPoints = 0;
 
-            for ( String playerUUID : team.getMemberUUIDs() ) {
+            if (team.getMemberUUIDs() == null) {
+                Bukkit.getLogger().warning("[MCSU]: Team with name" +team.getRawName() + " has null member uuids");
+            } else {
+                for ( String playerUUID : team.getMemberUUIDs() ) {
 
-                teamPoints += Objects.requireNonNull(McsuPlayer.getPlayerByUUID(playerUUID)).getPoints();
+                    teamPoints += Objects.requireNonNull(McsuPlayer.getPlayerByUUID(playerUUID)).getPoints();
 
+                }
+
+                team.setPoints(teamPoints);
             }
 
-            team.setPoints(teamPoints);
         }
     }
 

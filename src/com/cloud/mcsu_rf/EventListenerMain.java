@@ -80,16 +80,7 @@ public class EventListenerMain implements Listener {
 
         }
 
-        McsuPlayer.McsuPlayers.add(new McsuPlayer(p));
-
-        for ( McsuTeam team : TeamMain.Teams ) {
-            if (team.getMemberUUIDs().contains(p.getUniqueId().toString())) {
-                assert McsuPlayer.getPlayerByBukkitPlayer(p) != null;
-                McsuPlayer.getPlayerByBukkitPlayer(p).setTeam(team);
-            }
-        }
-
-        reloadScoreboard();
+        McsuPlayer.registerPlayer(p);
         //Scoreboard_Main.animateScoreboard(p);
 
         e.setJoinMessage(joinMessage);
