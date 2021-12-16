@@ -2,6 +2,7 @@ package com.cloud.mcsu_rf.Objects.Extended_Objects.Game_Function;
 
 import com.cloud.mcsu_rf.EventListenerMain;
 import com.cloud.mcsu_rf.Objects.EventListener;
+import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 
 import java.util.ArrayList;
@@ -15,6 +16,8 @@ public class GameFunctionBase {
     public void setEnabled(boolean enabled) {
 
         for (String eventName : this.boundEventNames) {
+
+            Bukkit.getLogger().info("Enabling/dissabling " + eventName + " binding to an instance of " + this.getClass().getSimpleName());
 
             if (enabled) {
                 EventListenerMain.addEventListener(new EventListener(eventName, this::onBoundEvent)); // some weir adutogen code - passes the event to runEventHandler

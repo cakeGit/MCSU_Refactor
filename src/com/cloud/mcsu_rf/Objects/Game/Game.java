@@ -83,6 +83,12 @@ public class Game {
         GameInitEvent event = new GameInitEvent(this);
         Bukkit.getPluginManager().callEvent(event);
 
+       for (GameState gameState : this.gameStates) { // trust me this has a purpose
+            if ( gameState.getEnabled() ) {
+                gameState.setEnabled(true);
+           }
+        }
+
         if (this.startIntervalEnabled) {
             Timer startTimer = new Timer(-1, DefaultStartLength)
                     .setOnTickIncrease(timer -> {

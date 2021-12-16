@@ -70,11 +70,15 @@ public class TeamMain {
             int teamPoints = 0;
 
             if (team.getMemberUUIDs() == null) {
-                Bukkit.getLogger().warning("[MCSU]: Team with name" +team.getRawName() + " has null member uuids");
+                Bukkit.getLogger().info("[MCSU]: Team with name" +team.getRawName() + " has null member uuids");
             } else {
                 for ( String playerUUID : team.getMemberUUIDs() ) {
 
-                    teamPoints += Objects.requireNonNull(McsuPlayer.getPlayerByUUID(playerUUID)).getPoints();
+                    try {
+                        teamPoints += Objects.requireNonNull(McsuPlayer.getPlayerByUUID(playerUUID)).getPoints();
+                    } catch (NullPointerException e) {
+                        Bukkit.getLogger().info("[MCSU]: Team has player with UUID " + playerUUID + " that is offline i guess");
+                    }
 
                 }
 

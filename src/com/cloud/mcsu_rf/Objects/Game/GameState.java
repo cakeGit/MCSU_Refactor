@@ -17,6 +17,8 @@ public class GameState {
     public GameState addGameFunction(GameFunctionBase gameFunction) { this.gameFunctions.add(gameFunction); return this; }
     public ArrayList<GameFunctionBase> getGameFunctions() { return this.gameFunctions; }
 
+    public boolean getEnabled() { return enabled; }
+
     public void setEnabled(boolean enabled) {
 
         this.enabled = enabled;

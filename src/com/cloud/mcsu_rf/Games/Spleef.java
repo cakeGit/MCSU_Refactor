@@ -29,10 +29,10 @@ public class Spleef {
                                     Bukkit.getLogger().info("Checking if ss");
                                     EventListenerMain.setActivityRule("PVP", true);
                                 }))
-                                /*.addGameFunction(new CustomEventListener("GameCountdownEndEvent", Event -> {
+                                .addGameFunction(new CustomEventListener("GameCountdownEndEvent", Event -> {
                                     Bukkit.getLogger().info("Checking if game 'Spleef' has ended");
                                     checkIfEnded();
-                                }))*/
+                                }))
                 );
 
     }

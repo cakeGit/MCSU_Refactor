@@ -35,7 +35,7 @@ public class McsuPlayer {
         }
 
         Bukkit.getLogger().warning("Could not find any player with UUID of " + UUID);
-        Bukkit.getLogger().warning("All player UUIDs");
+        Bukkit.getLogger().warning("All player UUIDs:");
         for (McsuPlayer mcsuPlayer: McsuPlayers) {
             Bukkit.getLogger().warning(String.valueOf(mcsuPlayer.getBukkitPlayer().getUniqueId()));
         }
