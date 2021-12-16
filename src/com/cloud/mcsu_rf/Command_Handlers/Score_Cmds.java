@@ -53,9 +53,9 @@ public class Score_Cmds {
                         Player.setTeam(team);
                         team.addMember(Player.getBukkitPlayer().getUniqueId().toString());
 
-                        sender.sendMessage(ChatColor.AQUA + "[MCSU]: Successfully set player " + Player.getName() + "'s team to " + team.getName());
+                        sender.sendMessage(ChatColor.AQUA + "[MCSU]: Successfully set player " + Player.getName() + "'s team to " + team.getStyledName());
 
-                        TeamMain.refreshAllTeamPoints();
+                        TeamMain.refreshTeamsCalculatedPoints();
                     } catch (Exception err) {
                         sender.sendMessage(ChatColor.RED + "[MCSU]: Error in setting player team, are you sure that " +args[2] + " is a valid TeamID?");
                     }
@@ -68,7 +68,7 @@ public class Score_Cmds {
                 sender.sendMessage(ChatColor.DARK_GRAY + "------------------------------");
                 sender.sendMessage("All loaded teams:");
                 for (McsuTeam team : TeamMain.Teams) {
-                    sender.sendMessage("  " + team.getName() + ChatColor.GRAY + " (" + team.getTeamID() + ")");
+                    sender.sendMessage("  " + team.getStyledName() + ChatColor.GRAY + " (" + team.getTeamID() + ")");
                 }
                 sender.sendMessage(ChatColor.DARK_GRAY + "------------------------------");
         }

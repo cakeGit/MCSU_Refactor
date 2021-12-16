@@ -17,25 +17,18 @@ public class TeamMain {
     public static List<HashMap> teamList = (List<HashMap>) teamRegister.config.getList("Teams");
 
     static void initTeams() {
-
-        /*if (teamList == null) {
-            teamList = new ArrayList<MCSU_Team>();
-        }
-
-        teamList.add(new MCSU_Team("Pink Pandasas", "sp", ChatColor.LIGHT_PURPLE.toString(), new String[] {} ));
-
-        teamRegister.config.set("Teams", teamList);
-        teamRegister.saveDat();*/
-
         assert teamList != null;
+
         for (HashMap<String, Object> teamHash : teamList) {
             Bukkit.getLogger().info("Loading team from config: " + teamHash.get("Name"));
-            Teams.add(new McsuTeam((String) teamHash.get("Name"), (String) teamHash.get("TeamID"), (String) teamHash.get("ChatColour"), (ArrayList<String>) teamHash.get("memberUUIDs") ));
+            Teams.add(new McsuTeam(
+                    (String) teamHash.get("Name"),
+                    (String) teamHash.get("TeamID"),
+                    (String) teamHash.get("ChatColour"),
+                    (ArrayList<String>) teamHash.get("memberUUIDs"),
+                    (int) teamHash.get("Points"))
+            );
         }
-
-        //teamRegister.config.set("Teams", teamList);
-        //teamRegister.saveDat();
-        //Teams = (ArrayList<MCSU_Team>) teamList;
     }
 
     public static void saveTeamList() {
@@ -55,9 +48,9 @@ public class TeamMain {
     public static ArrayList<McsuTeam> getSortedTeams() {
         ArrayList<McsuTeam> sortedTeams = Teams;
         sortedTeams.sort((t1, t2) -> {
-            if (t1.getPoints() > t2.getPoints())
+            if (t1.getCalculatedPoints() > t2.getCalculatedPoints())
                 return 1;
-            if (t1.getPoints() < t2.getPoints())
+            if (t1.getCalculatedPoints() < t2.getCalculatedPoints())
                 return -1;
             return 0;
         });
@@ -65,27 +58,32 @@ public class TeamMain {
         return sortedTeams;
     }
 
-    public static void refreshAllTeamPoints() {
+    public static void refreshTeamsCalculatedPoints() {
+
         for (McsuTeam team : Teams) {
-            int teamPoints = 0;
+
+            int teamPoints = team.getTeamPoints(); // gets the teams's points from winning games and things
 
             if (team.getMemberUUIDs() == null) {
+
                 Bukkit.getLogger().info("[MCSU]: Team with name" +team.getRawName() + " has null member uuids");
+
             } else {
+
                 for ( String playerUUID : team.getMemberUUIDs() ) {
 
                     try {
                         teamPoints += Objects.requireNonNull(McsuPlayer.getPlayerByUUID(playerUUID)).getPoints();
-                    } catch (NullPointerException e) {
-                        Bukkit.getLogger().info("[MCSU]: Team has player with UUID " + playerUUID + " that is offline i guess");
-                    }
+                    } catch (NullPointerException ignored) { }
 
                 }
 
-                team.setPoints(teamPoints);
+                team.setCalculatedPoints(teamPoints);
+
             }
 
         }
+
     }
 
 }

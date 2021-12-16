@@ -7,8 +7,10 @@ import com.cloud.mcsu_rf.Objects.CustomEvents.GameInitEvent;
 import com.cloud.mcsu_rf.Objects.McsuPlayer;
 import com.cloud.mcsu_rf.Objects.Map.MapLoader;
 import com.cloud.mcsu_rf.Objects.Map.SpawnManager;
+import com.cloud.mcsu_rf.Objects.McsuTeam;
 import com.cloud.mcsu_rf.Objects.Timer;
 import com.cloud.mcsu_rf.ShorthandClasses.Pick;
+import com.cloud.mcsu_rf.TeamHandlers.TeamMain;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -26,22 +28,16 @@ public class Game {
         return Pick.Random(
                 "wow what a sweat lol",
                 "*clap* *clap* *clap* *clap*",
-                "lets gooo",
-                "#fuhamroadredemption",
                 "mcsu????",
                 "pog????/?/???",
                 ":D",
-                "im happy for them",
                 "gg",
-                "i like ya cut g",
-                "ok but who asked",
-                "ratio",
                 "very enterprising",
                 "very christian values",
                 "Mr Ebenezer approves",
                 "Mr Tice approves",
                 "i think that deserves a housepoint",
-                "John Davison could calculate ur moms radius better than u"
+                "my wife has filed for a divorce"
                 );
 
     }
@@ -58,6 +54,7 @@ public class Game {
 
     ArrayList<GameState> gameStates = new ArrayList<>();
     ArrayList<McsuPlayer> alivePlayers = new ArrayList<>();
+    ArrayList<McsuTeam> aliveTeams = new ArrayList<>();
 
     public Game(String Name) {
 
@@ -78,7 +75,9 @@ public class Game {
         this.mapLoader.MapInit(this, world);
         this.mapLoader.getSpawnManager().lobbySpawns(this.mapLoader);
 
-        this.alivePlayers = McsuPlayer.McsuPlayers;
+        this.alivePlayers = (ArrayList<McsuPlayer>) McsuPlayer.McsuPlayers.clone();
+        this.aliveTeams = (ArrayList<McsuTeam>) TeamMain.Teams.clone();
+        checkAliveTeams(false);
 
         GameInitEvent event = new GameInitEvent(this);
         Bukkit.getPluginManager().callEvent(event);
@@ -140,14 +139,15 @@ public class Game {
 
     }
 
-    public void genericGameEnd(McsuPlayer winner) {
+    public void defaultGameEnd(McsuTeam winner) {
         for (GameState gameState : this.gameStates) {
             gameState.setEnabled(false);
         }
 
+        String style = ChatColor.BOLD + "" + ChatColor.WHITE;
+
         for (Player player : Bukkit.getOnlinePlayers()) {
-            String style = ChatColor.BOLD + "" + ChatColor.WHITE;
-            player.sendTitle(winner.getColouredName() + style + " has won " + ChatColor.RESET + this.getName() + style + "!1!!!11!!!!!1!!11", generateEndSplash());
+            player.sendTitle(winner.getStyledName() + style + " has won " + ChatColor.RESET + this.getName() + style + "!1!!!11!!!!!1!!11", generateEndSplash());
         }
 
         EventListenerMain.resetActivityRules();
@@ -160,6 +160,10 @@ public class Game {
 
     public ArrayList<McsuPlayer> getAlivePlayers() { return this.alivePlayers; }
     public void removeFromAlivePlayers(McsuPlayer player) { this.alivePlayers.remove(player); }
+
+    public ArrayList<McsuTeam> getAliveTeams() { return aliveTeams; }
+    public void removeFromAlivePlayers(McsuTeam mcsuTeam) { this.aliveTeams.remove(mcsuTeam); }
+
     public String getName() { return this.Name; }
 
     public ArrayList<GameState> getEnabledGameStates() {
@@ -170,4 +174,38 @@ public class Game {
 
     }
 
+    public void checkAliveTeams( boolean announceElimination ) {
+
+        ArrayList<McsuTeam> newDeadTeams = new ArrayList<>();
+
+        for ( McsuTeam team : this.aliveTeams ) {
+
+            boolean teamAlive = false;
+
+            for ( String playerUUID : team.getMemberUUIDs() ) {
+
+                if ( this.alivePlayers.contains( McsuPlayer.getPlayerByUUID( playerUUID ) ) ) {
+                    teamAlive = true;
+                    break;
+                }
+
+            }
+
+            if ( !teamAlive ) {
+
+                newDeadTeams.add(team);
+
+                if (announceElimination) {
+                    Bukkit.broadcastMessage( team.getStyledName() + " has been eliminated!" );
+                }
+
+            }
+
+        }
+
+        for ( McsuTeam team : newDeadTeams ) { // weird solution to a ConcurrentModificationException
+            this.aliveTeams.remove(team);
+        }
+
+    }
 }

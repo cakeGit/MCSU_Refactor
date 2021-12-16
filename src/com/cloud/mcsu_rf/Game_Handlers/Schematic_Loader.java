@@ -26,7 +26,7 @@ public class Schematic_Loader {
 
 
         File schem = new File(MCSU_Main.FileDir + File.separator + "schematics/"+Schem_File);
-        Bukkit.getLogger().info("Loading schem '" + MCSU_Main.FileDir + File.separator + "schematics/"+Schem_File+".schem" + "'");
+        Bukkit.getLogger().info("Loading schem '" + MCSU_Main.FileDir + File.separator + "schematics/"+Schem_File + "'");
 
         if (schem.exists()) {
             com.sk89q.worldedit.world.World adaptedWorld = BukkitAdapter.adapt(world);
