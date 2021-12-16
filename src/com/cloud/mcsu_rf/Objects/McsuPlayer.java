@@ -34,11 +34,11 @@ public class McsuPlayer {
             }
         }
 
-        Bukkit.getLogger().warning("Could not find any player with UUID of " + UUID);
-        Bukkit.getLogger().warning("All player UUIDs:");
+        Bukkit.getLogger().warning("Could not find any player with UUID of " + UUID + " (are they offline?)");
+        /*Bukkit.getLogger().warning("All player UUIDs:");
         for (McsuPlayer mcsuPlayer: McsuPlayers) {
             Bukkit.getLogger().warning(String.valueOf(mcsuPlayer.getBukkitPlayer().getUniqueId()));
-        }
+        }*/
         return null;
     }
     public static McsuPlayer getPlayerByName(String Name) {
@@ -58,7 +58,8 @@ public class McsuPlayer {
         AtomicBoolean playerExists = new AtomicBoolean(false);
 
         McsuPlayers.forEach(mcsuPlayer -> {
-            if (mcsuPlayer.getBukkitPlayer() == p) {
+            if (mcsuPlayer.getBukkitPlayer().getUniqueId() == p.getUniqueId()) {
+                Bukkit.getLogger().info("Player " + p.getName() + " is already registered!");
                 playerExists.set(true);
             }
         });
@@ -71,7 +72,7 @@ public class McsuPlayer {
                     if (team.getMemberUUIDs().contains(p.getUniqueId().toString())) {
                         assert McsuPlayer.getPlayerByBukkitPlayer(p) != null;
                         McsuPlayer.getPlayerByBukkitPlayer(p).setTeam(team);
-                        TeamMain.refreshAllTeamPoints();
+                        TeamMain.refreshTeamsCalculatedPoints();
                     }
                 }
             }
@@ -93,7 +94,6 @@ public class McsuPlayer {
     public McsuPlayer(Player BukkitPlayer) {
 
         this.bukkitPlayer = BukkitPlayer;
-        McsuPlayers.add(this);
 
     }
 
@@ -117,13 +117,14 @@ public class McsuPlayer {
     }
 
     public int awardPoints(int points) {
+
         this.points += points;
         Bukkit.broadcastMessage("(Debug) " + getColouredName()  + " has recived " + points + " points!");
-        TeamMain.refreshAllTeamPoints();
+        TeamMain.refreshTeamsCalculatedPoints();
         reloadScoreboard();
 
-
         return this.points;
+
     }
 
 

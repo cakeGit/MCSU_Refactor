@@ -47,7 +47,7 @@ public class MapLoader {
 
         this.mapData = mapData;
 
-        Schematic_Loader.loadSchematic(mapData.getSchemFileName(), BlockVector3.at(100, 60, 100), world);
+        Schematic_Loader.loadSchematic(mapData.getSchemFileName(), BlockVector3.at(2000, 60, 0), world);
 
     }
 

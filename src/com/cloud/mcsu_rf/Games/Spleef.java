@@ -22,7 +22,12 @@ public class Spleef {
                         new GameState("main", true)
                                 .addGameFunction(new PointAwarder("Survival", 2))
                                 .addGameFunction(new CustomEventListener("PlayerDeathEvent", Event -> {
-                                    this.game.removeFromAlivePlayers(McsuPlayer.getPlayerByBukkitPlayer(((PlayerDeathEvent) Event).getEntity()));
+                                    this.game.removeFromAlivePlayers(
+                                            McsuPlayer.getPlayerByBukkitPlayer(
+                                                    ( (PlayerDeathEvent) Event ).getEntity()
+                                            )
+                                    );
+                                    this.game.checkAliveTeams( true );
                                     checkIfEnded();
                                 }))
                                 .addGameFunction(new CustomEventListener("GameInitEvent", Event -> {
@@ -30,7 +35,6 @@ public class Spleef {
                                     EventListenerMain.setActivityRule("PVP", true);
                                 }))
                                 .addGameFunction(new CustomEventListener("GameCountdownEndEvent", Event -> {
-                                    Bukkit.getLogger().info("Checking if game 'Spleef' has ended");
                                     checkIfEnded();
                                 }))
                 );
@@ -38,10 +42,23 @@ public class Spleef {
     }
 
     public void checkIfEnded() {
-        if (this.game.getAlivePlayers().size() == 1) {
 
-            this.game.genericGameEnd(this.game.getAlivePlayers().get(0));
+        Bukkit.getLogger().info("Checking if game " + this.game.getName() + " has ended");
+
+        if (this.game.getAliveTeams().size() == 1) {
+
+            Bukkit.getLogger().info("Game " + this.game.getName() + " has ended!");
+
+            this.game.getAliveTeams().get(0).awardTeamPoints(100);
+
+            this.game.defaultGameEnd(this.game.getAliveTeams().get(0));
+
+        } else  {
+
+            Bukkit.getLogger().info(this.game.getName() + " has not ended because " + this.game.getAliveTeams().size()
+                    + " teams are still alive");
 
         }
+
     }
 }

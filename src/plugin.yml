@@ -37,4 +37,9 @@ commands:
     usage: /hub
   spawnsled:
     description: Puts a player in a sled
+  enablepvp:
+    description: command to enable pvp,
+    usage: /enablepvp
+  nick:
+    description: Nicks a player
     usage: /nick <Name>
