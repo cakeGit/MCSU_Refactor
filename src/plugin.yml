@@ -32,7 +32,9 @@ commands:
   team:
     description: Sets the player's team
     usage: /team set <Player Name> <TeamID>
-
   hub:
     description: Teleports you to the Hub,
     usage: /hub
+  nick:
+    description: Nicks a player
+    usage: /nick <Name>

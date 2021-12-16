@@ -21,6 +21,10 @@ public class Game_Cmds {
         }
 
         return true;
+    }
+
+    public static boolean nick(CommandSender sender, String[] args) {
+        return true;
 
     }
 

@@ -37,7 +37,8 @@ public class Cmd_Main implements CommandExecutor {
                 "tppoint",
                 "gamepoint",
                 "goto",
-                "team"
+                "team",
+                "nick"
         };
 
         tpCommands = new String[] {
@@ -76,6 +77,7 @@ public class Cmd_Main implements CommandExecutor {
 
             case "tppoint": return TpPoint_Cmds.tpPoint(Sender, Args);
             case "team": return Score_Cmds.Team(Sender, Args);
+            case "nick": return Game_Cmds.nick(Sender, Args);
 
         }
 
