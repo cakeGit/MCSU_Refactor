@@ -2,6 +2,7 @@ package com.cloud.mcsu_rf.Command_Handlers;
 
 import com.cloud.mcsu_rf.Config_Main;
 import com.cloud.mcsu_rf.Objects.ConfigFile;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -15,15 +16,10 @@ public class TpPoint_Cmds {
 
     static ConfigFile tpPointConfig = Config_Main.getByID("tp");
 
-    public static void createPoint(String name, double x, double y, double z, double rotx, double roty, Boolean isGamePoint) {
+    public static void createPoint(String name, double x, double y, double z, double rotx, double roty) {
 
-        if (isGamePoint) {
-            tpPointConfig.config.set( "UnsortedMapPoints."+name+".Coordinates", (x+" "+y+" "+z) );
-            tpPointConfig.config.set( "UnsortedMapPoints."+name+".Rotation", (rotx+" "+roty) );
-        } else {
-            tpPointConfig.config.set( "TpPoints."+name+".Coordinates", (x+" "+y+" "+z) );
-            tpPointConfig.config.set( "TpPoints."+name+".Rotation", (rotx+" "+roty) );
-        }
+        tpPointConfig.config.set( "TpPoints."+name+".Coordinates", (x+" "+y+" "+z) );
+        tpPointConfig.config.set( "TpPoints."+name+".Rotation", (rotx+" "+roty) );
 
         tpPointConfig.saveDat();
 
@@ -81,26 +77,23 @@ public class TpPoint_Cmds {
 
         switch (args[0]) {
 
-            case "new": {
-                Boolean isGamePoint = false;
-                if (args[1].equals("-p")) { // precise - creates the point with no rounding
-                    createPoint(args[2], pLoc.getX(), pLoc.getY(), pLoc.getZ(), pLoc.getPitch(), pLoc.getYaw(), isGamePoint);
-                } else if (args[1].equals("-h")) { //here= creates the point at player loc with rounding
-                    createPoint(args[2], pXyzRrn[3], pXyzRrn[4], pXyzRrn[5], pPyRrn[6], pPyRrn[7], isGamePoint);
-                } else if (args[1].equals("-a")) { // creates the point at specified thing
-                    createPoint(
-                            args[2],
-                            Double.parseDouble(args[3]),
-                            Double.parseDouble(args[4]),
-                            Double.parseDouble(args[5]),
-                            Double.parseDouble(args[6]),
-                            Double.parseDouble(args[7]),
-                            isGamePoint
-                    );
-                }
-            }
+            case "new":
+                createPoint(args[1], pXyzRrn[0], pXyzRrn[1], pXyzRrn[2], pPyRrn[0], pPyRrn[1]);
+                sender.sendMessage(
+                        ChatColor.GREEN +
+                        "Created point '" +
+                        args[1] + "' at " +
+                        pXyzRrn[0] +" "+
+                        pXyzRrn[1] +" "+
+                        pXyzRrn[2] +
+                        " with rotation " +
+                        pPyRrn[0] +" "+
+                        pPyRrn[1]
+                );
+                break;
             case "list":
                 listPoints(sender);
+                break;
 
         }
 
