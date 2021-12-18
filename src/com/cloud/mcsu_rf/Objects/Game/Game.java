@@ -44,13 +44,16 @@ public class Game {
 
     //defaults
     static int DefaultStartLength = 15;
+    static Sound DefaultGamemodePick = Sound.BLOCK_NOTE_BLOCK_PLING;
     static Sound DefaultStartTimerTickSound = Sound.BLOCK_NOTE_BLOCK_SNARE;
     static Sound DefaultStartTimerEndSound = Sound.ENTITY_FIREWORK_ROCKET_LAUNCH;
 
     String Name;
+    GamemodeManager gamemodeManager;
+    ArrayList<GamemodeOptionChoice> gamemodeChoices;
     MapMetadata mapMetadata;
-    boolean startIntervalEnabled = true;
     MapLoader mapLoader;
+    boolean startIntervalEnabled = true;
     GameMode playerGameMode = GameMode.SURVIVAL;
 
     ArrayList<GameState> gameStates = new ArrayList<>();
@@ -68,6 +71,14 @@ public class Game {
     }
 
     public void initGameLoader(World world) {
+
+        if (gamemodeManager != null) {
+            gamemodeChoices = gamemodeManager.pickOptions();
+        } else {
+            Bukkit.getLogger().info("GamemodeManager is unset");
+        }
+
+        for (Player player : Bukkit.getOnlinePlayers()) { player.sendTitle(this.getName(), ""); }
 
         if (mapLoader == null) {
             mapLoader = new MapLoader().setSpawnManager(new SpawnManager()); // defaults to generic map + spawn loaders
@@ -206,7 +217,7 @@ public class Game {
 
     public void endGame(McsuTeam winner) {
         for (GameState gameState : gameStates) {
-            gameState.setEnabled(false);
+            gameState.reset();
         }
 
         String style = ChatColor.BOLD + "" + ChatColor.WHITE;
@@ -229,6 +240,10 @@ public class Game {
     public MapMetadata getMapMetadata() { return mapMetadata; }
 
 
+    public Game setGamemodeManager(GamemodeManager gamemodeManager) { this.gamemodeManager = gamemodeManager; return this; }
+    public Game setPlayerGamemode(GameMode gameMode) { playerGameMode = gameMode; return this; }
+
+
     public ArrayList<McsuPlayer> getAlivePlayers() { return alivePlayers; }
     public void removeFromAlivePlayers(McsuPlayer player) { alivePlayers.remove(player); }
 
@@ -238,11 +253,15 @@ public class Game {
 
     public String getName() { return this.Name; }
 
-    public Game setPlayerGamemode(GameMode gameMode) { playerGameMode = gameMode; return this; }
-
     public GameState getGamestate(String Name) {
 
         return gameStates.stream().filter(gameState -> Objects.equals(gameState.getName(), Name)).findFirst().orElse(null);
+
+    }
+
+    public GamemodeOptionChoice getGamemodeOptionBlockChoice(String Name) {
+
+        return gamemodeChoices.stream().filter(gamemodeChoice -> Objects.equals(gamemodeChoice.getOptionBlockName(), Name)).findFirst().orElse(null);
 
     }
 

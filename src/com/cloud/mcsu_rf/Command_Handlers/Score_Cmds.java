@@ -2,6 +2,7 @@ package com.cloud.mcsu_rf.Command_Handlers;
 
 import com.cloud.mcsu_rf.Objects.McsuPlayer;
 import com.cloud.mcsu_rf.Objects.McsuTeam;
+import com.cloud.mcsu_rf.ShorthandClasses.Break;
 import com.cloud.mcsu_rf.TeamHandlers.TeamMain;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -65,12 +66,12 @@ public class Score_Cmds {
                 }
                 break;
             case "list":
-                sender.sendMessage(ChatColor.DARK_GRAY + "------------------------------");
+                Break.line(sender);
                 sender.sendMessage("All loaded teams:");
                 for (McsuTeam team : TeamMain.Teams) {
                     sender.sendMessage("  " + team.getStyledName() + ChatColor.GRAY + " (" + team.getTeamID() + ")");
                 }
-                sender.sendMessage(ChatColor.DARK_GRAY + "------------------------------");
+                Break.line(sender);
         }
 
         return true;

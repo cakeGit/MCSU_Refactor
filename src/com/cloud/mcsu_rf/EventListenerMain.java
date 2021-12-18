@@ -23,6 +23,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -160,7 +161,6 @@ public class EventListenerMain implements Listener {
     @EventHandler public void onPlayerDeath(PlayerDeathEvent e) {
 
         latestDeathPos = e.getEntity().getPlayer().getLocation().clone();
-        Bukkit.getLogger().info(latestDeathPos.toString() + " is wher diedings!!?1////???1/11/!1/!?!1");
 
         e.getEntity().getPlayer().setGameMode(GameMode.SPECTATOR);
 
@@ -182,6 +182,8 @@ public class EventListenerMain implements Listener {
     @EventHandler public void onGameInitEvent(GameInitEvent e) { onRegisteredEvent(e); }
     @EventHandler public void onGameCountdownEndEvent(GameCountdownEndEvent e) { onRegisteredEvent(e); }
     @EventHandler public void onGameSpawnsActivatedEvent(GameSpawnsActivatedEvent e) { onRegisteredEvent(e); }
+
+    @EventHandler public void onProjectileHit(ProjectileHitEvent e) { onRegisteredEvent(e); }
 
 
     //Activity rules

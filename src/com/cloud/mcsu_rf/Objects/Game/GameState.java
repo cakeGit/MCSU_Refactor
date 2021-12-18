@@ -8,13 +8,14 @@ public class GameState {
 
     String name;
     boolean enabled;
+    boolean enabledDefault;
     Runnable onEnable;
     Runnable onDisable;
 
     ArrayList<GameFunctionBase> gameFunctions = new ArrayList<>();
 
-    public GameState(String name, boolean enabled) { this.name = name; this.enabled = enabled; }
-    public GameState(String name) { this.name = name; this.enabled = false; }
+    public GameState(String name, boolean enabledDefault) { this.name = name; this.enabled = enabledDefault; this.enabledDefault = enabledDefault; }
+    public GameState(String name) { this.name = name; this.enabled = false; this.enabledDefault = false; }
 
     public GameState addGameFunction(GameFunctionBase gameFunction) { this.gameFunctions.add(gameFunction); return this; }
     public ArrayList<GameFunctionBase> getGameFunctions() { return this.gameFunctions; }
@@ -33,8 +34,16 @@ public class GameState {
 
         }
 
-        if ( enabled ) { onEnable.run(); }
-        else { onDisable.run(); }
+        if ( enabled ) { if (onEnable != null) { onEnable.run(); } }
+        else { if (onDisable != null) { onDisable.run(); } }
+
+    }
+
+    public void reset() {
+
+        setEnabled(false);
+
+        this.enabled = enabledDefault;
 
     }
 

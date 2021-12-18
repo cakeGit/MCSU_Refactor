@@ -3,10 +3,13 @@ package com.cloud.mcsu_rf.Command_Handlers;
 import com.cloud.mcsu_rf.Game_Handlers.Game_Main;
 import com.cloud.mcsu_rf.MCSU_Main;
 import com.cloud.mcsu_rf.Objects.Game.Game;
+import com.cloud.mcsu_rf.Objects.Game.GameState;
+import com.cloud.mcsu_rf.Objects.McsuTeam;
+import com.cloud.mcsu_rf.ShorthandClasses.Break;
+import com.cloud.mcsu_rf.TeamHandlers.TeamMain;
 import org.bukkit.ChatColor;
 import org.bukkit.TreeSpecies;
 import org.bukkit.World;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Boat;
 import org.bukkit.entity.EntityType;
@@ -16,13 +19,14 @@ public class Game_Cmds {
 
     public static MCSU_Main plugin = MCSU_Main.getPlugin(MCSU_Main.class);
 
-    public static boolean listGames(CommandSender Sender, Command Cmd, String Label, String[] Args) {
+    public static boolean listGames(CommandSender sender) {
 
-        Sender.sendMessage("All registered games");
-
+        Break.line(sender);
+        sender.sendMessage("All registered games:");
         for (Game game : Game_Main.RegisteredGames) {
-            Sender.sendMessage("  " + game.getName());
+            sender.sendMessage("  " + game.getName());
         }
+        Break.line(sender);
 
         return true;
     }
@@ -40,26 +44,21 @@ public class Game_Cmds {
         return true;
     }
 
-    public static boolean playGame(CommandSender Sender, Command Cmd, String Label, String[] Args) {
+    public static boolean playGame(CommandSender sender, String[] args) {
 
-        Sender.sendMessage(ChatColor.YELLOW + "Warning: If possible use /queuegame instead");
-        Sender.sendMessage("Loading game " + Args[0]);
-
-        Game game = Game_Main.getRegisteredGame(Args[0]);
+        Game game = Game_Main.getRegisteredGame(args[0]);
 
         if (game == null) {
 
-            Sender.sendMessage(ChatColor.RED + "what game is " + Args[0] + " lol");
+            sender.sendMessage(ChatColor.RED + "[MCSU]: Couldn't find a game with name  " + args[0]);
 
-            for (Game gamase : Game_Main.RegisteredGames) {
-
-                Sender.sendMessage(gamase.getName());
-
-            }
+            listGames(sender);
 
         } else {
 
-            game.initGameLoader( ((Player) Sender).getWorld() );
+            sender.sendMessage("Loading game " + args[0]);
+
+            game.initGameLoader( ((Player) sender).getWorld() );
 
         }
 

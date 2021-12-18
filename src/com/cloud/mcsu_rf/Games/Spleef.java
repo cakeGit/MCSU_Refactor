@@ -2,12 +2,11 @@ package com.cloud.mcsu_rf.Games;
 
 import com.cloud.mcsu_rf.EventListenerMain;
 import com.cloud.mcsu_rf.Inventories.SpleefInventory;
+import com.cloud.mcsu_rf.Objects.Game.*;
 import com.cloud.mcsu_rf.Objects.Game_Functions.HeightActionZone;
 import com.cloud.mcsu_rf.Objects.Game_Functions.CustomEventListener;
 import com.cloud.mcsu_rf.Objects.Game_Functions.PlayerInventoryManager;
 import com.cloud.mcsu_rf.Objects.Game_Functions.PointAwarder;
-import com.cloud.mcsu_rf.Objects.Game.Game;
-import com.cloud.mcsu_rf.Objects.Game.GameState;
 import com.cloud.mcsu_rf.Objects.McsuPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -23,9 +22,19 @@ public class Spleef {
     public void init() {
 
         game = new Game("Spleef")
+                .setGamemodeManager(
+                        new GamemodeManager(
+                                new GamemodeOptionBlock(
+                                        "Tool",
+                                        new GamemodeOption(5, "Shovels"),
+                                        new GamemodeOption(5, "Fireworks")
+                                        )
+                        )
+                )
                 .addGameState(
                         new GameState("base", true)
                                 .onEnable(() -> {
+
                                             EventListenerMain.setActivityRule("TileDrops", false);
                                             EventListenerMain.setActivityRule("TileBreaking", false);
                                             EventListenerMain.setActivityRule("PVP", false);
@@ -69,12 +78,7 @@ public class Spleef {
                                     EventListenerMain.setActivityRule("TileBreaking", true);
                                 }))
                 )
-                .addGameState(
-                        new GameState("afterCountdown", false)
-                                .onEnable( () -> {
-                                    Bukkit.getLogger().info("Countdown End is now enabled!");
-                                })
-                );
+                .addGameState(new GameState("afterCountdown"));
 
 
     }

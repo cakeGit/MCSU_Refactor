@@ -39,7 +39,7 @@ public class Cmd_Main implements CommandExecutor {
                 "gamepoint",
                 "goto",
                 "team",
-                "spawnsled"
+                "spawnsled",
                 "nick",
                 "enablepvp"
         };
@@ -73,8 +73,8 @@ public class Cmd_Main implements CommandExecutor {
 
         switch (Cmd.getName()) { // Operator commands
 
-            case "listgames": return Game_Cmds.listGames(Sender, Cmd, Label, Args);
-            case "playgame": return Game_Cmds.playGame(Sender, Cmd, Label, Args);
+            case "listgames": return Game_Cmds.listGames(Sender);
+            case "playgame": return Game_Cmds.playGame(Sender, Args);
 
             case "givescore": return Score_Cmds.giveScore(Sender, Args);
 
