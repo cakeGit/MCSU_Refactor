@@ -1,10 +1,8 @@
 package com.cloud.mcsu_rf.Objects;
 
 import com.cloud.mcsu_rf.MCSU_Main;
-import com.cloud.mcsu_rf.Objects.Lambdas.TimerEventLambda;
-import org.bukkit.Bukkit;
+import com.cloud.mcsu_rf.Objects.Lambdas.TimerLambda;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitScheduler;
 
 public class Timer {
 
@@ -12,8 +10,8 @@ public class Timer {
     private final int tickIncrease;
     private final Timer thisTimer;
     private boolean stopwatchActive;
-    private TimerEventLambda onTickIncrease = null;
-    private TimerEventLambda onTimerEnd = null;
+    private TimerLambda onTickIncrease = null;
+    private TimerLambda onTimerEnd = null;
 
     public Timer(int tickIncrease, int length) {
 
@@ -56,8 +54,8 @@ public class Timer {
 
     }
 
-    public Timer setOnTickIncrease(TimerEventLambda onTickIncrease) { this.onTickIncrease = onTickIncrease; return this; }
-    public Timer setOnTimerEnd(TimerEventLambda onTickIncrease) { this.onTimerEnd = onTickIncrease; return this; }
+    public Timer setOnTickIncrease(TimerLambda onTickIncrease) { this.onTickIncrease = onTickIncrease; return this; }
+    public Timer setOnTimerEnd(TimerLambda onTickIncrease) { this.onTimerEnd = onTickIncrease; return this; }
 
     public void disable() { this.stopwatchActive = false; }
 

@@ -3,22 +3,26 @@ package com.cloud.mcsu_rf;
 import com.cloud.mcsu_rf.Objects.ActivityRule;
 import com.cloud.mcsu_rf.Objects.CustomEvents.GameCountdownEndEvent;
 import com.cloud.mcsu_rf.Objects.CustomEvents.GameInitEvent;
+import com.cloud.mcsu_rf.Objects.CustomEvents.GameSpawnsActivatedEvent;
 import com.cloud.mcsu_rf.Objects.EventListener;
 import com.cloud.mcsu_rf.Objects.McsuPlayer;
-import com.cloud.mcsu_rf.Objects.McsuTeam;
 import com.cloud.mcsu_rf.ShorthandClasses.Pick;
-import com.cloud.mcsu_rf.TeamHandlers.TeamMain;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.server.ServerListPingEvent;
 
 import java.util.ArrayList;
@@ -32,26 +36,18 @@ public class EventListenerMain implements Listener {
 
     public static ArrayList<EventListener> eventListeners = new ArrayList<>();
 
+    Location latestDeathPos;
+
     public static void addEventListener(EventListener eventListener) { eventListeners.add(eventListener); }
     public static void removeEventListener(EventListener eventListener) { eventListeners.remove(eventListener); }
 
-    public static void executeListenerArrayList(ArrayList<EventListener> listeners, Event event) {
-
-        for (EventListener listener : listeners) {
-
-            listener.getOnEvent().exec(event);
-
-        }
-
-    }
-
     public static void onRegisteredEvent(Event event) {
 
-        for (EventListener eventListener : eventListeners) {
-            if (Objects.equals(eventListener.getEventName(), event.getEventName())) {
-                eventListener.getOnEvent().exec(event);
-            }
-        }
+        ArrayList<EventListener> safeEventListeners = (ArrayList<EventListener>) eventListeners.clone();
+
+        safeEventListeners.stream().filter(listener -> Objects.equals(listener.eventName, event.getEventName())).forEach(eventListener -> {
+            eventListener.getOnEvent().exec(event);
+        });
 
     }
 
@@ -88,14 +84,31 @@ public class EventListenerMain implements Listener {
     }
 
     @EventHandler public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
-        if (!getRuleActive("PVP")) { e.setCancelled(true); }
+        e.setCancelled(!getRuleActive("PVP"));
+
+        onRegisteredEvent(e);
+
+    }
+
+    @EventHandler public void onEntityDamage(EntityDamageEvent e) {
+        if (e.getCause().equals(EntityDamageEvent.DamageCause.FALL)) {
+            e.setCancelled(!getRuleActive("FallDamage"));
+        }
 
         onRegisteredEvent(e);
 
     }
 
     @EventHandler public void onPlayerMove(PlayerMoveEvent e) {
-        if (!getRuleActive("PlayerMovement")) { e.setCancelled(true); }
+        e.setCancelled(!getRuleActive("PlayerMovement"));
+
+        onRegisteredEvent(e);
+
+    }
+
+    @EventHandler public void onBlockBreak(BlockBreakEvent e) {
+        e.setDropItems(getRuleActive("TileDrops"));
+        e.setCancelled(!getRuleActive("TileBreaking"));
 
         onRegisteredEvent(e);
 
@@ -130,11 +143,31 @@ public class EventListenerMain implements Listener {
         }
     }
 
+    @EventHandler public void onPlayerDeath(PlayerDeathEvent e) {
+
+        latestDeathPos = e.getEntity().getPlayer().getLocation().clone();
+        Bukkit.getLogger().info(latestDeathPos.toString() + " is wher diedings!!?1////???1/11/!1/!?!1");
+
+        e.getEntity().getPlayer().setGameMode(GameMode.SPECTATOR);
+
+        onRegisteredEvent(e);
+
+    }
+
+    @EventHandler public void onPlayerRespawn(PlayerRespawnEvent e) {
+
+        e.setRespawnLocation(latestDeathPos);
+
+        onRegisteredEvent(e);
+
+    }
+
 
     //Events that just get passed to registered event with no other code
-    @EventHandler public void onPlayerDeath(PlayerDeathEvent e) { onRegisteredEvent(e); }
+
     @EventHandler public void onGameInitEvent(GameInitEvent e) { onRegisteredEvent(e); }
     @EventHandler public void onGameCountdownEndEvent(GameCountdownEndEvent e) { onRegisteredEvent(e); }
+    @EventHandler public void onGameSpawnsActivatedEvent(GameSpawnsActivatedEvent e) { onRegisteredEvent(e); }
 
 
     //Activity rules
@@ -151,9 +184,11 @@ public class EventListenerMain implements Listener {
 
     public static void registerActivityRules() {
 
-        new ActivityRule("TileDrops", true);
+        new ActivityRule("TileDrops", false);
+        new ActivityRule("TileBreaking", true);
         new ActivityRule("PVP", false);
         new ActivityRule("PlayerMovement", true);
+        new ActivityRule("FallDamage", false);
 
     }
 

@@ -5,10 +5,7 @@ import com.cloud.mcsu_rf.Objects.Game.Game;
 import com.cloud.mcsu_rf.ShorthandClasses.Pick;
 import com.sk89q.worldedit.math.BlockVector3;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.entity.Player;
-import org.bukkit.util.BlockVector;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -46,6 +43,7 @@ public class MapLoader {
         Bukkit.getLogger().info("Picked map '" + mapData.getName() + "'");
 
         this.mapData = mapData;
+        game.setMapMetadata(mapData);
 
         Schematic_Loader.loadSchematic(mapData.getSchemFileName(), BlockVector3.at(2000, 60, 0), world);
 
