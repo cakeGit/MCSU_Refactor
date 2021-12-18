@@ -39,8 +39,7 @@ public class Cmd_Main implements CommandExecutor {
                 "gamepoint",
                 "goto",
                 "team",
-                "spawnsled"
-                "nick",
+                "spawnsled",
                 "enablepvp"
         };
 
