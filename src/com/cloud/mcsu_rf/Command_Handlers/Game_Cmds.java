@@ -86,6 +86,7 @@ public class Game_Cmds {
         Game game = Game_Main.getRegisteredGame(Args[0]);
 
         if (game == null) {
+
             Sender.sendMessage(ChatColor.RED + "what game is " + Args[0] + " lol");
 
             for (Game gamase : Game_Main.RegisteredGames) {
@@ -93,8 +94,11 @@ public class Game_Cmds {
                 Sender.sendMessage(gamase.getName());
 
             }
+
         } else {
+
             game.initGameLoader( ((Player) Sender).getWorld() );
+
         }
 
         return true;

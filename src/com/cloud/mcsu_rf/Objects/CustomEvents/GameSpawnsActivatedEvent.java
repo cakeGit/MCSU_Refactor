@@ -4,16 +4,15 @@ import com.cloud.mcsu_rf.Objects.Game.Game;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import org.jetbrains.annotations.NotNull;
 
-public class GameCountdownEndEvent extends Event implements Cancellable {
+public class GameSpawnsActivatedEvent extends Event implements Cancellable {
 
     private final Game game;
 
     private static final HandlerList HANDLERS_LIST = new HandlerList();
     private boolean isCancelled;
 
-    public GameCountdownEndEvent(Game game){
+    public GameSpawnsActivatedEvent(Game game){
         this.game = game;
         this.isCancelled = false;
     }

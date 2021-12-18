@@ -4,6 +4,8 @@ import com.cloud.mcsu_rf.EventListenerMain;
 import com.cloud.mcsu_rf.Game_Handlers.Game_Main;
 import com.cloud.mcsu_rf.Objects.CustomEvents.GameCountdownEndEvent;
 import com.cloud.mcsu_rf.Objects.CustomEvents.GameInitEvent;
+import com.cloud.mcsu_rf.Objects.CustomEvents.GameSpawnsActivatedEvent;
+import com.cloud.mcsu_rf.Objects.Map.MapMetadata;
 import com.cloud.mcsu_rf.Objects.McsuPlayer;
 import com.cloud.mcsu_rf.Objects.Map.MapLoader;
 import com.cloud.mcsu_rf.Objects.Map.SpawnManager;
@@ -13,13 +15,11 @@ import com.cloud.mcsu_rf.ShorthandClasses.Pick;
 import com.cloud.mcsu_rf.TeamHandlers.TeamMain;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Sound;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Game {
 
@@ -47,10 +47,11 @@ public class Game {
     static Sound DefaultStartTimerTickSound = Sound.BLOCK_NOTE_BLOCK_SNARE;
     static Sound DefaultStartTimerEndSound = Sound.ENTITY_FIREWORK_ROCKET_LAUNCH;
 
-
     String Name;
-    boolean startIntervalEnabled;
+    MapMetadata mapMetadata;
+    boolean startIntervalEnabled = true;
     MapLoader mapLoader;
+    GameMode playerGameMode = GameMode.SURVIVAL;
 
     ArrayList<GameState> gameStates = new ArrayList<>();
     ArrayList<McsuPlayer> alivePlayers = new ArrayList<>();
@@ -68,69 +69,88 @@ public class Game {
 
     public void initGameLoader(World world) {
 
-        if (this.mapLoader == null) {
-            this.mapLoader = new MapLoader().setSpawnManager(new SpawnManager()); // defaults to generic map + spawn loaders
+        if (mapLoader == null) {
+            mapLoader = new MapLoader().setSpawnManager(new SpawnManager()); // defaults to generic map + spawn loaders
         }
 
-        this.mapLoader.MapInit(this, world);
-        this.mapLoader.getSpawnManager().lobbySpawns(this.mapLoader);
+        mapLoader.MapInit(this, world);
+        mapLoader.getSpawnManager().lobbySpawns(mapLoader);
 
-        this.alivePlayers = (ArrayList<McsuPlayer>) McsuPlayer.McsuPlayers.clone();
-        this.aliveTeams = (ArrayList<McsuTeam>) TeamMain.Teams.clone();
+        alivePlayers = (ArrayList<McsuPlayer>) McsuPlayer.McsuPlayers.clone();
+        aliveTeams = (ArrayList<McsuTeam>) TeamMain.Teams.clone();
         checkAliveTeams(false);
 
-        GameInitEvent event = new GameInitEvent(this);
-        Bukkit.getPluginManager().callEvent(event);
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            player.getInventory().clear();
+            player.setGameMode(GameMode.ADVENTURE);
+        }
 
-       for (GameState gameState : this.gameStates) { // trust me this has a purpose
+       for (GameState gameState : gameStates) { // trust me this has a purpose
             if ( gameState.getEnabled() ) {
                 gameState.setEnabled(true);
            }
-        }
+       }
 
-        if (this.startIntervalEnabled) {
+        GameInitEvent initEvent = new GameInitEvent(this);
+        Bukkit.getPluginManager().callEvent(initEvent);
+
+        if (startIntervalEnabled) {
             Timer startTimer = new Timer(-1, DefaultStartLength)
                     .setOnTickIncrease(timer -> {
 
                         for (Player player : Bukkit.getOnlinePlayers()) {
 
 
-                            String message = ChatColor.WHITE + "" + ChatColor.BOLD + this.Name +
+                            String message = ChatColor.WHITE + "" + ChatColor.BOLD + Name +
                                     ChatColor.RESET + "" + ChatColor.RED + " starting in " + timer.getTimeLeft();
 
                             if (timer.getTimeLeft() > 0) {
+
                                 if (timer.getTimeLeft() <= 5) {
-                                    if (timer.getTimeLeft() == 5) { // Will run once
-                                        this.mapLoader.getSpawnManager().gameSpawns(this.mapLoader);
+
+                                    if (timer.getTimeLeft() == 5) {
+
+                                        mapLoader.getSpawnManager().gameSpawns(mapLoader);
                                         EventListenerMain.setActivityRule("PlayerMovement", false);
+
+                                        GameSpawnsActivatedEvent spawnsActivatedEvent = new GameSpawnsActivatedEvent(this);
+                                        Bukkit.getPluginManager().callEvent(spawnsActivatedEvent);
+
                                     }
+
                                     player.sendTitle(message, "Get ready!");
                                     player.playSound(player.getLocation(), DefaultStartTimerTickSound, 1, 1);
+
                                 } else {
                                     player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(message));
                                 }
+
                             }
 
                         }
 
                     })
                     .setOnTimerEnd(timer -> {
+
                         for (Player player : Bukkit.getOnlinePlayers()) {
                             player.playSound(player.getLocation(), DefaultStartTimerEndSound, 1, 1);
                         }
 
-                        this.gameCountdownEnd();
+                        gameCountdownEnd();
 
                     });
 
         }
 
+
     }
 
     public void gameCountdownEnd() {
+
         EventListenerMain.setActivityRule("PlayerMovement", true);
 
         for (Player player : Bukkit.getOnlinePlayers()) {
+            player.setGameMode(playerGameMode);
             player.sendTitle(ChatColor.RED + "" + ChatColor.BOLD + "GO!", "");
         }
 
@@ -139,38 +159,11 @@ public class Game {
 
     }
 
-    public void defaultGameEnd(McsuTeam winner) {
-        for (GameState gameState : this.gameStates) {
-            gameState.setEnabled(false);
-        }
+    public void eliminatePlayer(Player bukkitPlayer) {
 
-        String style = ChatColor.BOLD + "" + ChatColor.WHITE;
-
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            player.sendTitle(winner.getStyledName() + style + " has won " + ChatColor.RESET + this.getName() + style + "!1!!!11!!!!!1!!11", generateEndSplash());
-        }
-
-        EventListenerMain.resetActivityRules();
-    }
-
-    public Game addGameState(GameState gameState) { this.gameStates.add(gameState); return this; }
-    public Game setMapLoader(MapLoader mapLoader) { this.mapLoader = mapLoader; return this; }
-    public Game addStartInterval() { this.startIntervalEnabled = true; return this; }
-
-
-    public ArrayList<McsuPlayer> getAlivePlayers() { return this.alivePlayers; }
-    public void removeFromAlivePlayers(McsuPlayer player) { this.alivePlayers.remove(player); }
-
-    public ArrayList<McsuTeam> getAliveTeams() { return aliveTeams; }
-    public void removeFromAlivePlayers(McsuTeam mcsuTeam) { this.aliveTeams.remove(mcsuTeam); }
-
-    public String getName() { return this.Name; }
-
-    public ArrayList<GameState> getEnabledGameStates() {
-
-        ArrayList<GameState> enabled = new ArrayList<>();
-        this.gameStates.stream().filter(gameState -> gameState.enabled).forEach(enabled::add);
-        return enabled;
+        this.removeFromAlivePlayers(
+                McsuPlayer.getPlayerByBukkitPlayer(bukkitPlayer)
+        );
 
     }
 
@@ -178,13 +171,13 @@ public class Game {
 
         ArrayList<McsuTeam> newDeadTeams = new ArrayList<>();
 
-        for ( McsuTeam team : this.aliveTeams ) {
+        for ( McsuTeam team : aliveTeams ) {
 
             boolean teamAlive = false;
 
             for ( String playerUUID : team.getMemberUUIDs() ) {
 
-                if ( this.alivePlayers.contains( McsuPlayer.getPlayerByUUID( playerUUID ) ) ) {
+                if ( alivePlayers.contains( McsuPlayer.getPlayerByUUID( playerUUID ) ) ) {
                     teamAlive = true;
                     break;
                 }
@@ -197,15 +190,68 @@ public class Game {
 
                 if (announceElimination) {
                     Bukkit.broadcastMessage( team.getStyledName() + " has been eliminated!" );
+                } else {
+                    Bukkit.getLogger().info( team.getStyledName() + " has been eliminated silently as announceElimination is false" );
                 }
 
             }
 
         }
 
-        for ( McsuTeam team : newDeadTeams ) { // weird solution to a ConcurrentModificationException
-            this.aliveTeams.remove(team);
+        for ( McsuTeam team : newDeadTeams ) { // Somewhat weird solution to a ConcurrentModificationException
+            this.removeFromAliveTeams(team);
         }
 
     }
+
+    public void endGame(McsuTeam winner) {
+        for (GameState gameState : gameStates) {
+            gameState.setEnabled(false);
+        }
+
+        String style = ChatColor.BOLD + "" + ChatColor.WHITE;
+
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            player.getInventory().clear();
+        }
+
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            player.sendTitle(winner.getStyledName() + style + " has won " + ChatColor.RESET + getName() + style + "!1!!!11!!!!!1!!11", generateEndSplash());
+        }
+
+        EventListenerMain.resetActivityRules();
+    }
+
+    public Game addGameState(GameState gameState) { gameStates.add(gameState); return this; }
+    public Game setMapLoader(MapLoader mapLoader) { this.mapLoader = mapLoader; return this; }
+
+    public Game setMapMetadata(MapMetadata mapMetadata) { this.mapMetadata = mapMetadata; return this; }
+    public MapMetadata getMapMetadata() { return mapMetadata; }
+
+
+    public ArrayList<McsuPlayer> getAlivePlayers() { return alivePlayers; }
+    public void removeFromAlivePlayers(McsuPlayer player) { alivePlayers.remove(player); }
+
+    public ArrayList<McsuTeam> getAliveTeams() { return aliveTeams; }
+    public void removeFromAliveTeams(McsuTeam mcsuTeam) { aliveTeams.remove(mcsuTeam); }
+
+
+    public String getName() { return this.Name; }
+
+    public Game setPlayerGamemode(GameMode gameMode) { playerGameMode = gameMode; return this; }
+
+    public GameState getGamestate(String Name) {
+
+        return gameStates.stream().filter(gameState -> Objects.equals(gameState.getName(), Name)).findFirst().orElse(null);
+
+    }
+
+    public ArrayList<GameState> getEnabledGameStates() {
+
+        ArrayList<GameState> enabled = new ArrayList<>();
+        gameStates.stream().filter(gameState -> gameState.enabled).forEach(enabled::add);
+        return enabled;
+
+    }
+
 }

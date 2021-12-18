@@ -37,10 +37,13 @@ public class MapMetadata {
     String Name;
     String Game;
     String SchemFileName;
+    ConfigFile configFile;
 
     public MapMetadata(ConfigFile configFile) {
 
-        configFile.config.getList("Points.Lobby").forEach(
+        this.configFile = configFile;
+
+        ( (List) get("Points.Lobby") ).forEach(
                 Element -> {
                     HashMap<String, Object> ElementHashmap = (HashMap<String, Object>) Element;
 
@@ -48,7 +51,7 @@ public class MapMetadata {
                 }
         );
 
-        configFile.config.getList("Points.Game").forEach(
+        ( (List) get("Points.Game") ).forEach(
                 Element -> {
                     HashMap<String, Object> ElementHashmap = (HashMap<String, Object>) Element;
 
@@ -61,9 +64,9 @@ public class MapMetadata {
                 }
         );
 
-        this.Name = (String) configFile.config.get("MapData.Name");
-        this.Game = (String) configFile.config.get("MapData.Game");
-        this.SchemFileName = (String) configFile.config.get("MapData.SchemFile");
+        this.Name = (String) get("MapData.Name");
+        this.Game = (String) get("MapData.Game");
+        this.SchemFileName = (String) get("MapData.SchemFile");
 
         RegisteredMapMetadata.add(this);
 
@@ -73,6 +76,8 @@ public class MapMetadata {
 
     public ArrayList<MapPoint> getGamePoints() { return GamePoints; }
     public ArrayList<MapPoint> getLobbyPoints() { return LobbyPoints; }
+    @Deprecated public ConfigFile getConfigFile() { return configFile; }
+    public Object get(String key) { return configFile.config.get(key); }
     public String getGame() { return Game; }
     public String getName() { return Name; }
     public String getSchemFileName() { return SchemFileName; }

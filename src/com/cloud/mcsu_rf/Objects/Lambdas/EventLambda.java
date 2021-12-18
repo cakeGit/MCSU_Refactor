@@ -2,4 +2,4 @@ package com.cloud.mcsu_rf.Objects.Lambdas;
 
 import org.bukkit.event.Event;
 
-public interface OnEventLambda { void exec(Event event); }
+public interface EventLambda { void exec(Event event); }

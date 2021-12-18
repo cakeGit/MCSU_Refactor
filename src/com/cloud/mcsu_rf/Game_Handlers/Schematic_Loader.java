@@ -29,10 +29,12 @@ public class Schematic_Loader {
         Bukkit.getLogger().info("Loading schem '" + MCSU_Main.FileDir + File.separator + "schematics/"+Schem_File + "'");
 
         if (schem.exists()) {
+            Bukkit.getLogger().info("Schem file '" + Schem_File + "' exists!");
             com.sk89q.worldedit.world.World adaptedWorld = BukkitAdapter.adapt(world);
             EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(adaptedWorld, -1);
             Bukkit.getScheduler().runTaskAsynchronously(
                     MCSU_Main.instance, () -> {
+                        Bukkit.getLogger().info("Beginning schem loading...");
                         try {
                             ClipboardFormat format = ClipboardFormats.findByFile(schem);
                             ClipboardReader reader = format.getReader(new FileInputStream(schem));
@@ -40,7 +42,12 @@ public class Schematic_Loader {
                             Operation operation = new ClipboardHolder(clipboard).createPaste(editSession).to(Paste_To).ignoreAirBlocks(false).build();
                             Operations.complete(operation);
                             editSession.flushSession();
+
+                            Bukkit.getLogger().info("Successfully loaded schem file '" + Schem_File + "' at " + Paste_To.toString());
+
                         } catch (WorldEditException | IOException e) {
+                            Bukkit.getLogger().info("Could not load schem file '" + Schem_File + "'");
+
                             e.printStackTrace();
                         }
                     }
