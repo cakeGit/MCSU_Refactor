@@ -39,6 +39,7 @@ public class Cmd_Main implements CommandExecutor {
                 "gamepoint",
                 "goto",
                 "team",
+                "spawnsled"
                 "nick",
                 "enablepvp"
         };
@@ -79,7 +80,7 @@ public class Cmd_Main implements CommandExecutor {
 
             case "tppoint": return TpPoint_Cmds.tpPoint(Sender, Args);
             case "team": return Score_Cmds.Team(Sender, Args);
-            case "nick": return Game_Cmds.nick(Sender, Args);
+            case "spawnsled": return Game_Cmds.spawnSled(Sender, Args);
 
             case "enablepvp": EventListenerMain.setActivityRule("PVP", true); return true;
 

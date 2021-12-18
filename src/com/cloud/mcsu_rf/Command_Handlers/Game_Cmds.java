@@ -4,8 +4,12 @@ import com.cloud.mcsu_rf.Game_Handlers.Game_Main;
 import com.cloud.mcsu_rf.MCSU_Main;
 import com.cloud.mcsu_rf.Objects.Game.Game;
 import org.bukkit.ChatColor;
+import org.bukkit.TreeSpecies;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Boat;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 public class Game_Cmds {
@@ -23,9 +27,17 @@ public class Game_Cmds {
         return true;
     }
 
-    public static boolean nick(CommandSender sender, String[] args) {
+    public static boolean spawnSled(CommandSender sender, String[] args) {
+        if(sender instanceof Player) {
+            Player p = (Player) sender;
+            World w = p.getWorld();
+            Boat b = (Boat) w.spawnEntity(p.getLocation(), EntityType.BOAT);
+            b.setWoodType(TreeSpecies.GENERIC);
+            b.addPassenger(p);
+        } else {
+            sender.sendMessage(ChatColor.RED+"Only players can run this command.");
+        }
         return true;
-
     }
 
     public static boolean playGame(CommandSender Sender, Command Cmd, String Label, String[] Args) {

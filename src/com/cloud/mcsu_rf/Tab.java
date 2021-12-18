@@ -15,7 +15,7 @@ public class Tab {
     public static String r = "§c";
     public static String w = "§f";
     public static String n = "\n";
-    public static ChatColor b = ChatColor.BOLD;
+    public static String b = "§l";
 
     public static void showTab(Player player, int online) {
         setHeader(defaultHeader);
