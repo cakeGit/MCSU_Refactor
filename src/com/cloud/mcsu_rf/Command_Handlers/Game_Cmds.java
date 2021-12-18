@@ -8,12 +8,11 @@ import com.cloud.mcsu_rf.Objects.McsuTeam;
 import com.cloud.mcsu_rf.ShorthandClasses.Break;
 import com.cloud.mcsu_rf.TeamHandlers.TeamMain;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.TreeSpecies;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Boat;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 
 public class Game_Cmds {
 
@@ -37,7 +36,46 @@ public class Game_Cmds {
             World w = p.getWorld();
             Boat b = (Boat) w.spawnEntity(p.getLocation(), EntityType.BOAT);
             b.setWoodType(TreeSpecies.GENERIC);
-            b.addPassenger(p);
+            WanderingTrader santa = (WanderingTrader) w.spawnEntity(p.getLocation(), EntityType.WANDERING_TRADER);
+            String wh = "§f";
+            String r = "§c";
+            santa.setCustomName(ChatColor.BOLD+r+"S"+wh+"a"+r+"n"+wh+"t"+r+"a");
+            santa.setCustomNameVisible(true);
+            b.addPassenger(santa);
+            String[] reindeerNames = {
+                    "Dasher",
+                    "Dancer",
+                    "Prancer",
+                    "Vixen",
+                    "Comet",
+                    "Cupid",
+                    "Donner",
+                    "Blitzen",
+                    "Rudolph"
+            };
+            //String direction;
+            int distance = 2;
+            for(int i = 0; i < 9; i++) {
+                Location spawnLoc = p.getLocation();
+                /*
+                if(p.getLocation().getYaw() == -180) {
+                    direction = "North";
+                } else if(p.getLocation().getYaw() == -90) {
+                    direction = "East";
+                } else if(p.getLocation().getYaw() == 0) {
+                    direction = "South";
+                } else if(p.getLocation().getYaw() == 90) {
+                    direction = "West";
+                }
+                 */
+                spawnLoc.setZ(p.getLocation().getZ()-distance);
+                TraderLlama reindeer = (TraderLlama) w.spawnEntity(spawnLoc, EntityType.TRADER_LLAMA);
+                distance += 2;
+                //reindeer.setLeashHolder(santa);
+                reindeer.setAI(false);
+                reindeer.setCustomName(ChatColor.GOLD+reindeerNames[i]);
+                reindeer.setCustomNameVisible(true);
+            }
         } else {
             sender.sendMessage(ChatColor.RED+"Only players can run this command.");
         }

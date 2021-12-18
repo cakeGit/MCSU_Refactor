@@ -41,6 +41,7 @@ public class Cmd_Main implements CommandExecutor {
                 "team",
                 "spawnsled",
                 "nick",
+                "spawnsled",
                 "enablepvp"
         };
 
