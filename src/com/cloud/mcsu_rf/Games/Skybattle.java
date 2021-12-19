@@ -30,47 +30,51 @@ public class Skybattle {
                 .addGameState(
                         new GameState("base", true)
                                 .onEnable(() -> {
-                                    killZoneY = (int) game.getMapMetadata().get("GameData.KillZoneY");
+                                            EventListenerMain.setActivityRule("Crafting", true);
+                                            EventListenerMain.setActivityRule("PVP", true);
+                                            EventListenerMain.setActivityRule("Crafting", true);
+                                            EventListenerMain.setActivityRule("FallDamage", true);
+
+                                            killZoneY = (int) game.getMapMetadata().get("GameData.KillZoneY");
                                             Bukkit.getLogger().info(String.valueOf(killZoneY));
 
                                             skybattleInventory = new SkybattleInventory();
 
-                                    game.getGamestate("base")
-                                                    .addGameFunction(new CustomEventListener("GameSpawnsActivatedEvent", Event -> {
+                                            game.getGamestate("afterCountdown").addGameFunction(
 
-                                                        for (Player player : Bukkit.getOnlinePlayers()) {
-                                                            skybattleInventory.loadInventory(player);
-                                                        }
+                                                    //Done in here because it has to load off config
+                                                    new HeightActionZone(
+                                                            killZoneY,
+                                                            true
+                                                    )
+                                                            .setWhilePlayerInside(player -> {
+                                                                if (
+                                                                        game.getAlivePlayers().contains(
+                                                                                McsuPlayer.getByBukkitPlayer(player)
+                                                                        )
+                                                                ) {
+                                                                    player.setHealth(0);
+                                                                }
+                                                            })
 
-                                                    }), true);
-                                    game.getGamestate("afterCountdown").addGameFunction(
-                                            new HeightActionZone(
-                                                    killZoneY,
-                                                    true
-                                            )
-                                                    .setWhilePlayerInside(player -> {
-                                                        if (
-                                                                game.getAlivePlayers().contains(
-                                                                        McsuPlayer.getPlayerByBukkitPlayer(player)
-                                                                )
-                                                        ) {
-                                                            player.setHealth(0);
-                                                        }
-                                                    })
-                                    );
-                                    game.getGamestate("base")
-                                            .addGameFunction(new CustomEventListener("BlockPlaceEvent", Event -> {
-
-                                                BlockPlaceEvent blockPlaceEvent = (BlockPlaceEvent) Event;
-
-                                                Player player = blockPlaceEvent.getPlayer();
-
-                                                skybattleInventory.reloadInventory(player);
-
-                                            }), true);
+                                            );
 
                                         }
+
                                 )
+                                .addGameFunction(new CustomEventListener("BlockPlaceEvent", Event -> {
+
+                                    BlockPlaceEvent placeEvent = (BlockPlaceEvent) Event;
+                                    skybattleInventory.reloadInventory(placeEvent.getHand(), placeEvent.getPlayer());
+
+                                }))
+                                .addGameFunction(new CustomEventListener("GameSpawnsActivatedEvent", Event -> {
+
+                                    for (Player player : Bukkit.getOnlinePlayers()) {
+                                        skybattleInventory.loadInventory(player);
+                                    }
+
+                                }), true)
                                 .addGameFunction(new PointAwarder("Survival", 2))
                                 .addGameFunction(new CustomEventListener("PlayerDeathEvent", Event -> {
 

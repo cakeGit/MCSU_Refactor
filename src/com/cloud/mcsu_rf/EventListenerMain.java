@@ -21,6 +21,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockExplodeEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -195,7 +196,11 @@ public class EventListenerMain implements Listener {
     }
 
     @EventHandler public void onPrepareItemCraftEvent(PrepareItemCraftEvent e) {
-        e.getInventory().setResult( new ItemStack(Material.AIR) );
+        if (!getRuleActive("CraftingEnabled")) { e.getInventory().setResult( new ItemStack(Material.AIR) ); }
+    }
+
+    @EventHandler public void onBlockPlaceEvent(BlockPlaceEvent e) {
+        onRegisteredEvent(e);
     }
 
 
@@ -229,6 +234,7 @@ public class EventListenerMain implements Listener {
         new ActivityRule("PlayerMovement", true);
         new ActivityRule("FallDamage", false);
         new ActivityRule("ExplosionDamage", true);
+        new ActivityRule("Crafting", false);
 
     }
 
