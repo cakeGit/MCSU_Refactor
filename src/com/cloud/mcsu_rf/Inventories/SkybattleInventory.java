@@ -31,7 +31,7 @@ public class SkybattleInventory {
         playerInventory.setItem(2,new ItemStack(Material.COOKED_BEEF,8));
         player.getInventory().setChestplate(new ItemStack(Material.IRON_CHESTPLATE,1));
         ItemStack blocks = new ItemStack(Material.WHITE_CONCRETE,64);
-        McsuTeam team = TeamMain.getTeamById(McsuPlayer.getPlayerByBukkitPlayer(player).getTeamID());
+        McsuTeam team = TeamMain.getTeamById(McsuPlayer.getByBukkitPlayer(player).getTeamID());
         switch (team.getChatColour()) {
             case "§c":
                 blocks.setType(Material.RED_CONCRETE);
@@ -63,7 +63,7 @@ public class SkybattleInventory {
 
     public void reloadInventory(Player player) {
         ItemStack blocks = new ItemStack(Material.WHITE_CONCRETE,64);
-        McsuTeam team = TeamMain.getTeamById(McsuPlayer.getPlayerByBukkitPlayer(player).getTeamID());
+        McsuTeam team = TeamMain.getTeamById(McsuPlayer.getByBukkitPlayer(player).getTeamID());
         switch (team.getChatColour()) {
             case "§c":
                 blocks.setType(Material.RED_CONCRETE);

@@ -51,7 +51,7 @@ public class Skybattle {
                                                     .setWhilePlayerInside(player -> {
                                                         if (
                                                                 game.getAlivePlayers().contains(
-                                                                        McsuPlayer.getPlayerByBukkitPlayer(player)
+                                                                        McsuPlayer.getByBukkitPlayer(player)
                                                                 )
                                                         ) {
                                                             player.setHealth(0);
