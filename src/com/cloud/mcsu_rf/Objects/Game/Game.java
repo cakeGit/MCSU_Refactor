@@ -229,7 +229,7 @@ public class Game {
         }
 
         for (Player player : Bukkit.getOnlinePlayers()) {
-            player.sendTitle(winner.getStyledName() + style + " has won " + ChatColor.RESET + getName() + style + "!1!!!11!!!!!1!!11", generateEndSplash());
+            player.sendTitle(winner.getStyledName() + style + " win " + ChatColor.RESET + getName() + style + "!", generateEndSplash());
         }
 
         EventListenerMain.resetActivityRules();
