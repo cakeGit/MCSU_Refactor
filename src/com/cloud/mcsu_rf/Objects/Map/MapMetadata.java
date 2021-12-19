@@ -38,6 +38,7 @@ public class MapMetadata {
     String Game;
     String SchemFileName;
     ConfigFile configFile;
+    String gameSpawnType;
 
     public MapMetadata(ConfigFile configFile) {
 
@@ -67,6 +68,7 @@ public class MapMetadata {
         this.Name = (String) get("MapData.Name");
         this.Game = (String) get("MapData.Game");
         this.SchemFileName = (String) get("MapData.SchemFile");
+        this.gameSpawnType = (String) get("MapData.GameSpawnType");
 
         RegisteredMapMetadata.add(this);
 
@@ -81,4 +83,5 @@ public class MapMetadata {
     public String getGame() { return Game; }
     public String getName() { return Name; }
     public String getSchemFileName() { return SchemFileName; }
+    public String getGameSpawnType() { return gameSpawnType; }
 }

@@ -1,6 +1,6 @@
 package com.cloud.mcsu_rf.Objects.Map;
 
-import com.cloud.mcsu_rf.Game_Handlers.Schematic_Loader;
+import com.cloud.mcsu_rf.Game_Handlers.FaweFunctions;
 import com.cloud.mcsu_rf.Objects.Game.Game;
 import com.cloud.mcsu_rf.ShorthandClasses.Pick;
 import com.sk89q.worldedit.math.BlockVector3;
@@ -45,7 +45,7 @@ public class MapLoader {
         this.mapData = mapData;
         game.setMapMetadata(mapData);
 
-        Schematic_Loader.loadSchematic(mapData.getSchemFileName(), BlockVector3.at(2000, 60, 0), world);
+        FaweFunctions.loadSchematic(mapData.getSchemFileName(), BlockVector3.at(2000, 60, 0), world);
 
     }
 

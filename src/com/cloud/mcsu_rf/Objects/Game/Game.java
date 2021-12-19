@@ -172,7 +172,7 @@ public class Game {
     public void eliminatePlayer(Player bukkitPlayer) {
 
         this.removeFromAlivePlayers(
-                McsuPlayer.getPlayerByBukkitPlayer(bukkitPlayer)
+                McsuPlayer.getByBukkitPlayer(bukkitPlayer)
         );
 
     }
@@ -215,6 +215,8 @@ public class Game {
     }
 
     public void endGame(McsuTeam winner) {
+        EventListenerMain.resetActivityRules();
+
         for (GameState gameState : gameStates) {
             gameState.reset();
         }
@@ -227,6 +229,20 @@ public class Game {
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.sendTitle(winner.getStyledName() + style + " has won " + ChatColor.RESET + getName() + style + "!1!!!11!!!!!1!!11", generateEndSplash());
+        }
+
+        EventListenerMain.resetActivityRules();
+    }
+
+    public void endGame() {
+        EventListenerMain.resetActivityRules();
+
+        for (GameState gameState : gameStates) {
+            gameState.reset();
+        }
+
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            player.getInventory().clear();
         }
 
         EventListenerMain.resetActivityRules();

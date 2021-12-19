@@ -11,22 +11,29 @@ import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormats;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardReader;
 import com.sk89q.worldedit.function.operation.Operation;
 import com.sk89q.worldedit.function.operation.Operations;
+import com.sk89q.worldedit.function.pattern.Pattern;
 import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldedit.regions.CuboidRegion;
+import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.session.ClipboardHolder;
+import com.sk89q.worldedit.world.block.BaseBlock;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.World;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.sql.Time;
+import java.util.Vector;
 
-public class Schematic_Loader {
+public class FaweFunctions {
 
     public static void loadSchematic(String Schem_File, BlockVector3 Paste_To, World world) {
 
-
         File schem = new File(MCSU_Main.FileDir + File.separator + "schematics/"+Schem_File);
         Bukkit.getLogger().info("Loading schem '" + MCSU_Main.FileDir + File.separator + "schematics/"+Schem_File + "'");
+        Bukkit.broadcastMessage("Beginnning map loading");
 
         if (schem.exists()) {
             Bukkit.getLogger().info("Schem file '" + Schem_File + "' exists!");
@@ -43,20 +50,22 @@ public class Schematic_Loader {
                             Operations.complete(operation);
                             editSession.flushSession();
 
-                            Bukkit.getLogger().info("Successfully loaded schem file '" + Schem_File + "' at " + Paste_To.toString());
-
                         } catch (WorldEditException | IOException e) {
                             Bukkit.getLogger().info("Could not load schem file '" + Schem_File + "'");
 
                             e.printStackTrace();
                         }
+                        Bukkit.getLogger().info("Successfully loaded schem file '" + Schem_File + "' at " + Paste_To.toString());
                     }
             );
+
+
+
+            Bukkit.broadcastMessage("Map finished ");
+
         } else  {
             Bukkit.getLogger().info("Couldn't find file '" + MCSU_Main.FileDir + File.separator + "schematics/"+Schem_File+".schem" + "'");
         }
-
-
 
     }
 

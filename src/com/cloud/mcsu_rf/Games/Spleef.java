@@ -9,9 +9,10 @@ import com.cloud.mcsu_rf.Objects.Game_Functions.PointAwarder;
 import com.cloud.mcsu_rf.Objects.McsuPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.entity.Entity;
+import org.bukkit.Material;
+import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.entity.Snowball;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
@@ -23,7 +24,7 @@ public class Spleef {
     Game game;
 
     int killZoneY;
-    int explosionPower = 4;
+    int explosionPower = 3;
     SpleefInventory spleefInventory;
     String toolGamemodeChoice;
 
@@ -80,17 +81,6 @@ public class Spleef {
 
                                                             spleefInventory.reloadInventory(player);
 
-                                                        }), true)
-                                                        .addGameFunction(new CustomEventListener("ProjectileHitEvent", Event -> {
-
-                                                            ProjectileHitEvent hitEvent = (ProjectileHitEvent) Event;
-
-                                                            Location hitLocation = hitEvent.getHitBlock().getLocation();
-
-                                                            for (int i = 0; i < explosionPower; i++) {
-                                                                hitEvent.getEntity().getWorld().createExplosion(hitLocation, 2F, false);
-                                                            }
-
                                                         }), true);
 
                                             }
@@ -110,7 +100,7 @@ public class Spleef {
                                                             .setWhilePlayerInside(player -> {
                                                                 if (
                                                                         game.getAlivePlayers().contains(
-                                                                                McsuPlayer.getPlayerByBukkitPlayer(player)
+                                                                                McsuPlayer.getByBukkitPlayer(player)
                                                                         )
                                                                 ) {
                                                                     player.setHealth(0);
@@ -135,6 +125,22 @@ public class Spleef {
                                 .addGameFunction(new CustomEventListener("GameCountdownEndEvent", Event -> {
                                     game.getGamestate("afterCountdown").setEnabled(true);
                                     EventListenerMain.setActivityRule("TileBreaking", true);
+                                }))
+                                .addGameFunction(new CustomEventListener("ProjectileHitEvent", Event -> {
+
+                                    ProjectileHitEvent hitEvent = (ProjectileHitEvent) Event;
+
+                                    if (hitEvent.getEntity() instanceof Snowball) {
+                                        hitEvent.getHitBlock().setType(Material.AIR);
+                                    } else if (hitEvent.getEntity() instanceof Firework) {
+                                        Location hitLocation = hitEvent.getHitBlock().getLocation();
+
+                                        hitEvent.getEntity().getWorld().createExplosion(hitLocation, 2.2F, false);
+                                        for (int i = 0; i < explosionPower; i++) {
+                                            hitEvent.getEntity().getWorld().createExplosion(hitLocation, 1F, false);
+                                        }
+                                    }
+
                                 }))
                 )
                 .addGameState(new GameState("afterCountdown"));
@@ -162,4 +168,5 @@ public class Spleef {
         }
 
     }
+
 }

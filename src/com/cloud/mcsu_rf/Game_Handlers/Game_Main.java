@@ -1,5 +1,6 @@
 package com.cloud.mcsu_rf.Game_Handlers;
 
+import com.cloud.mcsu_rf.Games.BlockSumo;
 import com.cloud.mcsu_rf.Games.Spleef;
 import com.cloud.mcsu_rf.MCSU_Main;
 import com.cloud.mcsu_rf.Objects.Game.Game;
@@ -27,7 +28,8 @@ public class Game_Main {
 
     public static void registerGames() {
 
-        Spleef spleef = new Spleef(); spleef.init();
+        new Spleef().init();
+        new BlockSumo().init();
 
     }
 
