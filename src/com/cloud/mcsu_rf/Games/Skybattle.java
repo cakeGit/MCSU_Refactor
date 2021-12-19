@@ -34,6 +34,7 @@ public class Skybattle {
                                     EventListenerMain.setActivityRule("TileBreaking", false);
                                     EventListenerMain.setActivityRule("PVP", false);
                                     EventListenerMain.setActivityRule("ExplosionDamage", false);
+                                    EventListenerMain.setActivityRule("Crafting", true);
                                     killZoneY = (int) game.getMapMetadata().get("GameData.KillZoneY");
                                             Bukkit.getLogger().info(String.valueOf(killZoneY));
 
@@ -92,6 +93,7 @@ public class Skybattle {
                                     EventListenerMain.setActivityRule("TileBreaking", true);
                                     EventListenerMain.setActivityRule("PVP", true);
                                     EventListenerMain.setActivityRule("ExplosionDamage", true);
+                                    EventListenerMain.setActivityRule("Crafting", true);
                                     game.getGamestate("afterCountdown").setEnabled(true);
                                 }))
                 )

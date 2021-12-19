@@ -48,7 +48,7 @@ public class Spleef {
                                             EventListenerMain.setActivityRule("TileBreaking", false);
                                             EventListenerMain.setActivityRule("PVP", false);
                                             EventListenerMain.setActivityRule("ExplosionDamage", false);
-
+                                            EventListenerMain.setActivityRule("Crafting", true);
                                             killZoneY = (int) game.getMapMetadata().get("GameData.KillZoneY");
                                             Bukkit.getLogger().info(String.valueOf(killZoneY));
 
@@ -125,6 +125,7 @@ public class Spleef {
                                 .addGameFunction(new CustomEventListener("GameCountdownEndEvent", Event -> {
                                     game.getGamestate("afterCountdown").setEnabled(true);
                                     EventListenerMain.setActivityRule("TileBreaking", true);
+                                    EventListenerMain.setActivityRule("Crafting", false);
                                 }))
                                 .addGameFunction(new CustomEventListener("ProjectileHitEvent", Event -> {
 

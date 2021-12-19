@@ -179,7 +179,13 @@ public class EventListenerMain implements Listener {
 
     @EventHandler public void onPlayerDeath(PlayerDeathEvent e) {
 
-        latestDeathPos = e.getEntity().getPlayer().getLocation().clone();
+        if(e.getEntity().getPlayer().getLocation().getY() < 0) {
+            Location loc = e.getEntity().getPlayer().getLocation().clone();
+            loc.setY(100);
+            latestDeathPos = loc;
+        } else {
+            latestDeathPos = e.getEntity().getPlayer().getLocation().clone();
+        }
 
         e.getEntity().getPlayer().setGameMode(GameMode.SPECTATOR);
 
@@ -196,7 +202,9 @@ public class EventListenerMain implements Listener {
     }
 
     @EventHandler public void onPrepareItemCraftEvent(PrepareItemCraftEvent e) {
-        e.getInventory().setResult( new ItemStack(Material.AIR) );
+        if(!getRuleActive("Crafting")) e.getInventory().setResult( new ItemStack(Material.AIR));
+
+        onRegisteredEvent(e);
     }
 
 
@@ -231,7 +239,7 @@ public class EventListenerMain implements Listener {
         new ActivityRule("PlayerMovement", true);
         new ActivityRule("FallDamage", false);
         new ActivityRule("ExplosionDamage", true);
-
+        new ActivityRule("Crafting", true);
     }
 
     public static ActivityRule getActivityRule(String name) {

@@ -30,67 +30,129 @@ public class SkybattleInventory {
         playerInventory.setItem(1,ironpick);
         playerInventory.setItem(2,new ItemStack(Material.COOKED_BEEF,8));
         player.getInventory().setChestplate(new ItemStack(Material.IRON_CHESTPLATE,1));
-        ItemStack blocks = new ItemStack(Material.WHITE_CONCRETE,64);
         McsuTeam team = TeamMain.getTeamById(McsuPlayer.getByBukkitPlayer(player).getTeamID());
         switch (team.getChatColour()) {
             case "§c":
-                blocks.setType(Material.RED_CONCRETE);
-                blocks.setAmount(64);
+                ItemStack redBlocks = new ItemStack(Material.RED_CONCRETE,64);
+                player.getInventory().setItemInOffHand(redBlocks);
+                break;
             case "§a":
-                blocks.setType(Material.GREEN_CONCRETE);
-                blocks.setAmount(64);
+                ItemStack greenBlocks = new ItemStack(Material.GREEN_CONCRETE,64);
+                player.getInventory().setItemInOffHand(greenBlocks);
+                break;
             case "§e":
-                blocks.setType(Material.YELLOW_CONCRETE);
-                blocks.setAmount(64);
+                ItemStack yellowBlocks = new ItemStack(Material.YELLOW_CONCRETE,64);
+                player.getInventory().setItemInOffHand(yellowBlocks);
+                break;
             case "§b":
-                blocks.setType(Material.LIGHT_BLUE_CONCRETE);
-                blocks.setAmount(64);
+                ItemStack aquaBlocks = new ItemStack(Material.LIGHT_BLUE_CONCRETE,64);
+                player.getInventory().setItemInOffHand(aquaBlocks);
+                break;
             case "§d":
-                blocks.setType(Material.PINK_CONCRETE);
-                blocks.setAmount(64);
+                ItemStack pinkBlocks = new ItemStack(Material.PINK_CONCRETE,64);
+                player.getInventory().setItemInOffHand(pinkBlocks);
+                break;
             case "§f":
-                blocks.setType(Material.WHITE_CONCRETE);
-                blocks.setAmount(64);
+                ItemStack whiteBlocks = new ItemStack(Material.WHITE_CONCRETE,64);
+                player.getInventory().setItemInOffHand(whiteBlocks);
+                break;
             case "§7":
-                blocks.setType(Material.GRAY_CONCRETE);
-                blocks.setAmount(64);
+                ItemStack grayBlocks = new ItemStack(Material.GRAY_CONCRETE,64);
+                player.getInventory().setItemInOffHand(grayBlocks);
+                break;
             case "§9":
-                blocks.setType(Material.BLUE_CONCRETE);
-                blocks.setAmount(64);
+                ItemStack blueBlocks = new ItemStack(Material.BLUE_CONCRETE,64);
+                player.getInventory().setItemInOffHand(blueBlocks);
+                break;
         }
-        player.getInventory().setItemInOffHand(blocks);
     }
 
     public void reloadInventory(Player player) {
-        ItemStack blocks = new ItemStack(Material.WHITE_CONCRETE,64);
-        McsuTeam team = TeamMain.getTeamById(McsuPlayer.getByBukkitPlayer(player).getTeamID());
-        switch (team.getChatColour()) {
-            case "§c":
-                blocks.setType(Material.RED_CONCRETE);
-                blocks.setAmount(64);
-            case "§a":
-                blocks.setType(Material.GREEN_CONCRETE);
-                blocks.setAmount(64);
-            case "§e":
-                blocks.setType(Material.YELLOW_CONCRETE);
-                blocks.setAmount(64);
-            case "§b":
-                blocks.setType(Material.LIGHT_BLUE_CONCRETE);
-                blocks.setAmount(64);
-            case "§d":
-                blocks.setType(Material.PINK_CONCRETE);
-                blocks.setAmount(64);
-            case "§f":
-                blocks.setType(Material.WHITE_CONCRETE);
-                blocks.setAmount(64);
-            case "§7":
-                blocks.setType(Material.GRAY_CONCRETE);
-                blocks.setAmount(64);
-            case "§9":
-                blocks.setType(Material.BLUE_CONCRETE);
-                blocks.setAmount(64);
+        if(player.getInventory().getItemInOffHand().getType().equals(Material.BLUE_CONCRETE) ||
+                player.getInventory().getItemInOffHand().getType().equals(Material.RED_CONCRETE) ||
+                player.getInventory().getItemInOffHand().getType().equals(Material.GREEN_CONCRETE) ||
+                player.getInventory().getItemInOffHand().getType().equals(Material.YELLOW_CONCRETE) ||
+                player.getInventory().getItemInOffHand().getType().equals(Material.LIGHT_BLUE_CONCRETE) ||
+                player.getInventory().getItemInOffHand().getType().equals(Material.PINK_CONCRETE) ||
+                player.getInventory().getItemInOffHand().getType().equals(Material.GRAY_CONCRETE) ||
+                player.getInventory().getItemInOffHand().getType().equals(Material.WHITE_CONCRETE)) {
+            switch(player.getInventory().getItemInOffHand().getType()) {
+                case BLUE_CONCRETE:
+                    ItemStack blueBlocks = new ItemStack(Material.BLUE_CONCRETE,64);
+                    player.getInventory().setItemInOffHand(blueBlocks);
+                    break;
+                case RED_CONCRETE:
+                    ItemStack redBlocks = new ItemStack(Material.RED_CONCRETE,64);
+                    player.getInventory().setItemInOffHand(redBlocks);
+                    break;
+                case GREEN_CONCRETE:
+                    ItemStack greenBlocks = new ItemStack(Material.GREEN_CONCRETE,64);
+                    player.getInventory().setItemInOffHand(greenBlocks);
+                    break;
+                case YELLOW_CONCRETE:
+                    ItemStack yellowBlocks = new ItemStack(Material.YELLOW_CONCRETE,64);
+                    player.getInventory().setItemInOffHand(yellowBlocks);
+                    break;
+                case LIGHT_BLUE_CONCRETE:
+                    ItemStack aquaBlocks = new ItemStack(Material.LIGHT_BLUE_CONCRETE,64);
+                    player.getInventory().setItemInOffHand(aquaBlocks);
+                    break;
+                case PINK_CONCRETE:
+                    ItemStack pinkBlocks = new ItemStack(Material.PINK_CONCRETE,64);
+                    player.getInventory().setItemInOffHand(pinkBlocks);
+                    break;
+                case GRAY_CONCRETE:
+                    ItemStack grayBlocks = new ItemStack(Material.GRAY_CONCRETE,64);
+                    player.getInventory().setItemInOffHand(grayBlocks);
+                    break;
+                case WHITE_CONCRETE:
+                    ItemStack whiteBlocks = new ItemStack(Material.WHITE_CONCRETE,64);
+                    player.getInventory().setItemInOffHand(whiteBlocks);
+                    break;
+            }
+        } else if(player.getInventory().getItemInMainHand().getType().equals(Material.BLUE_CONCRETE) ||
+                player.getInventory().getItemInMainHand().getType().equals(Material.RED_CONCRETE) ||
+                player.getInventory().getItemInMainHand().getType().equals(Material.GREEN_CONCRETE) ||
+                player.getInventory().getItemInMainHand().getType().equals(Material.YELLOW_CONCRETE) ||
+                player.getInventory().getItemInMainHand().getType().equals(Material.LIGHT_BLUE_CONCRETE) ||
+                player.getInventory().getItemInMainHand().getType().equals(Material.PINK_CONCRETE) ||
+                player.getInventory().getItemInMainHand().getType().equals(Material.GRAY_CONCRETE) ||
+                player.getInventory().getItemInMainHand().getType().equals(Material.WHITE_CONCRETE)) {
+            switch(player.getInventory().getItemInMainHand().getType()) {
+                case BLUE_CONCRETE:
+                    ItemStack blueBlocks = new ItemStack(Material.BLUE_CONCRETE,64);
+                    player.getInventory().setItemInMainHand(blueBlocks);
+                    break;
+                case RED_CONCRETE:
+                    ItemStack redBlocks = new ItemStack(Material.RED_CONCRETE,64);
+                    player.getInventory().setItemInMainHand(redBlocks);
+                    break;
+                case GREEN_CONCRETE:
+                    ItemStack greenBlocks = new ItemStack(Material.GREEN_CONCRETE,64);
+                    player.getInventory().setItemInMainHand(greenBlocks);
+                    break;
+                case YELLOW_CONCRETE:
+                    ItemStack yellowBlocks = new ItemStack(Material.YELLOW_CONCRETE,64);
+                    player.getInventory().setItemInMainHand(yellowBlocks);
+                    break;
+                case LIGHT_BLUE_CONCRETE:
+                    ItemStack aquaBlocks = new ItemStack(Material.LIGHT_BLUE_CONCRETE,64);
+                    player.getInventory().setItemInMainHand(aquaBlocks);
+                    break;
+                case PINK_CONCRETE:
+                    ItemStack pinkBlocks = new ItemStack(Material.PINK_CONCRETE,64);
+                    player.getInventory().setItemInMainHand(pinkBlocks);
+                    break;
+                case GRAY_CONCRETE:
+                    ItemStack grayBlocks = new ItemStack(Material.GRAY_CONCRETE,64);
+                    player.getInventory().setItemInMainHand(grayBlocks);
+                    break;
+                case WHITE_CONCRETE:
+                    ItemStack whiteBlocks = new ItemStack(Material.WHITE_CONCRETE,64);
+                    player.getInventory().setItemInMainHand(whiteBlocks);
+                    break;
+            }
         }
-        player.getInventory().setItemInOffHand(blocks);
     }
 
 }
