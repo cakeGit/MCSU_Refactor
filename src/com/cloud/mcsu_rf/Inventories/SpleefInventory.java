@@ -108,8 +108,8 @@ public class SpleefInventory {
             fireworkMeta.addEffect(
                     FireworkEffect
                             .builder()
-                            .withFade(Color.WHITE)
-                            .withColor(Color.AQUA)
+                            .withFade(Color.AQUA)
+                            .withColor(Color.WHITE)
                             .trail(true)
                             .build()
             );

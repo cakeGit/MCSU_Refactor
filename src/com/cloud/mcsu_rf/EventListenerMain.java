@@ -23,6 +23,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.*;
+import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -194,6 +195,10 @@ public class EventListenerMain implements Listener {
 
     }
 
+    @EventHandler public void onPrepareItemCraftEvent(PrepareItemCraftEvent e) {
+        e.getInventory().setResult( new ItemStack(Material.AIR) );
+    }
+
 
     //Events that just get passed to registered event with no other code
 
@@ -201,7 +206,7 @@ public class EventListenerMain implements Listener {
     @EventHandler public void onGameCountdownEndEvent(GameCountdownEndEvent e) { onRegisteredEvent(e); }
     @EventHandler public void onGameSpawnsActivatedEvent(GameSpawnsActivatedEvent e) { onRegisteredEvent(e); Bukkit.broadcastMessage("Game Spawns Activated"); }
 
-    @EventHandler public void onProjectileHit(ProjectileHitEvent e) { onRegisteredEvent(e); }
+    @EventHandler public void onProjectileHitEvent(ProjectileHitEvent e) { onRegisteredEvent(e); }
     @EventHandler public void onEntityShootBowEvent(EntityShootBowEvent e) { onRegisteredEvent(e); }
     @EventHandler public void onSkybattleBlockPlaceEvent(BlockPlaceEvent e) { onRegisteredEvent(e); }
 

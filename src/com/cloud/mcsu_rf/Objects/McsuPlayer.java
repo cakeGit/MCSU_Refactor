@@ -18,7 +18,7 @@ public class McsuPlayer {
 
     public static ArrayList<McsuPlayer> McsuPlayers = new ArrayList<>();
 
-    public static McsuPlayer getPlayerByBukkitPlayer(Player bukkitPlayer) {
+    public static McsuPlayer getByBukkitPlayer(Player bukkitPlayer) {
         for (McsuPlayer mcsuPlayer: McsuPlayers) {
             if (mcsuPlayer.getBukkitPlayer() == bukkitPlayer) {
                 return mcsuPlayer;
@@ -70,8 +70,8 @@ public class McsuPlayer {
             for ( McsuTeam team : TeamMain.Teams ) {
                 if (team.getMemberUUIDs() != null) {
                     if (team.getMemberUUIDs().contains(p.getUniqueId().toString())) {
-                        assert McsuPlayer.getPlayerByBukkitPlayer(p) != null;
-                        McsuPlayer.getPlayerByBukkitPlayer(p).setTeam(team);
+                        assert McsuPlayer.getByBukkitPlayer(p) != null;
+                        McsuPlayer.getByBukkitPlayer(p).setTeam(team);
                         TeamMain.refreshTeamsCalculatedPoints();
                     }
                 }
