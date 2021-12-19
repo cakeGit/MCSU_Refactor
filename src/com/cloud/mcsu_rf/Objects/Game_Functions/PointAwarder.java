@@ -13,14 +13,12 @@ public class PointAwarder extends GameFunctionBase {
 
     }
 
-    public void runEventHandler(Event event) {
+    public void onBoundEvent(Event event) {
 
-        switch (event.getEventName()) {
-            case "PlayerDeathEvent":
-                for (McsuPlayer mcsuPlayer : McsuPlayer.McsuPlayers) {
-                    mcsuPlayer.awardPoints(2);
-                }
-                break;
+        if ("PlayerDeathEvent".equals(event.getEventName())) {
+            for (McsuPlayer mcsuPlayer : McsuPlayer.McsuPlayers) {
+                mcsuPlayer.awardPoints(2);
+            }
         }
 
     }

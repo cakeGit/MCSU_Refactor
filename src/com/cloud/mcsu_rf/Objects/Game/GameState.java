@@ -17,7 +17,14 @@ public class GameState {
     public GameState(String name, boolean enabledDefault) { this.name = name; this.enabled = enabledDefault; this.enabledDefault = enabledDefault; }
     public GameState(String name) { this.name = name; this.enabled = false; this.enabledDefault = false; }
 
-    public GameState addGameFunction(GameFunctionBase gameFunction) { this.gameFunctions.add(gameFunction); return this; }
+    public GameState addGameFunction(GameFunctionBase gameFunction, boolean checkEnabled) {
+        gameFunctions.add(gameFunction);
+        if (checkEnabled) { gameFunction.setEnabled(true); }
+        return this;
+    }
+
+    public GameState addGameFunction(GameFunctionBase gameFunction) { gameFunctions.add(gameFunction); return this; }
+
     public ArrayList<GameFunctionBase> getGameFunctions() { return this.gameFunctions; }
 
     public boolean getEnabled() { return enabled; }

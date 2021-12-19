@@ -53,7 +53,7 @@ public class GameFunctionBase {
 
                 EventListenerMain.removeEventListener(
                         listener
-                ); // some weir adutogen code - passes the event to runEventHandler
+                );
             }
 
         }

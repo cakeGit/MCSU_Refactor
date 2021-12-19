@@ -5,19 +5,24 @@ import com.cloud.mcsu_rf.Inventories.SpleefInventory;
 import com.cloud.mcsu_rf.Objects.Game.*;
 import com.cloud.mcsu_rf.Objects.Game_Functions.HeightActionZone;
 import com.cloud.mcsu_rf.Objects.Game_Functions.CustomEventListener;
-import com.cloud.mcsu_rf.Objects.Game_Functions.PlayerInventoryManager;
 import com.cloud.mcsu_rf.Objects.Game_Functions.PointAwarder;
 import com.cloud.mcsu_rf.Objects.McsuPlayer;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
 
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Objects;
 
 public class Spleef {
 
     Game game;
 
-    public int killZoneY;
+    int killZoneY;
+    SpleefInventory spleefInventory;
+    String toolGamemodeChoice;
 
     public void init() {
 
@@ -26,7 +31,7 @@ public class Spleef {
                         new GamemodeManager(
                                 new GamemodeOptionBlock(
                                         "Tool",
-                                        new GamemodeOption(5, "Shovels"),
+                                        new GamemodeOption(0, "Shovels"),
                                         new GamemodeOption(5, "Fireworks")
                                         )
                         )
@@ -38,9 +43,59 @@ public class Spleef {
                                             EventListenerMain.setActivityRule("TileDrops", false);
                                             EventListenerMain.setActivityRule("TileBreaking", false);
                                             EventListenerMain.setActivityRule("PVP", false);
+                                            EventListenerMain.setActivityRule("ExplosionDamage", false);
 
                                             killZoneY = (int) game.getMapMetadata().get("GameData.KillZoneY");
                                             Bukkit.getLogger().info(String.valueOf(killZoneY));
+
+                                            toolGamemodeChoice =
+                                                    game.getGamemodeOptionBlockChoice("Tool")
+                                                    .getGamemodeOption()
+                                                    .getName();
+
+                                            spleefInventory = new SpleefInventory(
+                                                    toolGamemodeChoice
+                                            );
+
+                                            game.getGamestate("base")
+                                                    .addGameFunction(new CustomEventListener("GameSpawnsActivatedEvent", Event -> {
+
+                                                        for (Player player : Bukkit.getOnlinePlayers()) {
+                                                            spleefInventory.loadInventory(player);
+                                                        }
+
+                                                    }), true);
+
+                                            if (Objects.equals(toolGamemodeChoice, "Fireworks")) {
+
+                                                game.getGamestate("base")
+                                                        .addGameFunction(new CustomEventListener("EntityShootBowEvent", Event -> {
+
+                                                            EntityShootBowEvent shootEvent = (EntityShootBowEvent) Event;
+
+                                                            Player player = (Player) shootEvent.getEntity();
+
+                                                            spleefInventory.reloadInventory(player);
+
+                                                        }), true)
+                                                        .addGameFunction(new CustomEventListener("ProjectileHitEvent", Event -> {
+
+                                                            ProjectileHitEvent hitEvent = (ProjectileHitEvent) Event;
+
+                                                            Location hitLocation = hitEvent.getHitBlock().getLocation();
+
+                                                            hitEvent.getEntity().getWorld().createExplosion(hitLocation, 2, false);
+
+                                                        }), true);
+
+                                            }
+
+
+                                            Bukkit.broadcastMessage(
+                                                    game.getGamemodeOptionBlockChoice("Tool")
+                                                            .getGamemodeOption()
+                                                            .getName() + " a the rapist"
+                                            );
 
                                             game.getGamestate("afterCountdown").addGameFunction(
                                                     new HeightActionZone(
@@ -61,7 +116,6 @@ public class Spleef {
                                         }
                                 )
                                 .addGameFunction(new PointAwarder("Survival", 2))
-                                .addGameFunction(new PlayerInventoryManager(new SpleefInventory()))
                                 .addGameFunction(new CustomEventListener("PlayerDeathEvent", Event -> {
 
                                     game.eliminatePlayer(

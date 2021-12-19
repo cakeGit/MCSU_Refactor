@@ -73,7 +73,7 @@ public class Game {
     public void initGameLoader(World world) {
 
         if (gamemodeManager != null) {
-            gamemodeChoices = gamemodeManager.pickOptions();
+            gamemodeChoices = (ArrayList<GamemodeOptionChoice>) gamemodeManager.pickOptions().clone();
         } else {
             Bukkit.getLogger().info("GamemodeManager is unset");
         }
@@ -109,8 +109,17 @@ public class Game {
             Timer startTimer = new Timer(-1, DefaultStartLength)
                     .setOnTickIncrease(timer -> {
 
-                        for (Player player : Bukkit.getOnlinePlayers()) {
+                        if (timer.getTimeLeft() == 5) {
 
+                            mapLoader.getSpawnManager().gameSpawns(mapLoader);
+                            EventListenerMain.setActivityRule("PlayerMovement", false);
+
+                            GameSpawnsActivatedEvent spawnsActivatedEvent = new GameSpawnsActivatedEvent(this);
+                            Bukkit.getPluginManager().callEvent(spawnsActivatedEvent);
+
+                        }
+
+                        for (Player player : Bukkit.getOnlinePlayers()) {
 
                             String message = ChatColor.WHITE + "" + ChatColor.BOLD + Name +
                                     ChatColor.RESET + "" + ChatColor.RED + " starting in " + timer.getTimeLeft();
@@ -118,16 +127,6 @@ public class Game {
                             if (timer.getTimeLeft() > 0) {
 
                                 if (timer.getTimeLeft() <= 5) {
-
-                                    if (timer.getTimeLeft() == 5) {
-
-                                        mapLoader.getSpawnManager().gameSpawns(mapLoader);
-                                        EventListenerMain.setActivityRule("PlayerMovement", false);
-
-                                        GameSpawnsActivatedEvent spawnsActivatedEvent = new GameSpawnsActivatedEvent(this);
-                                        Bukkit.getPluginManager().callEvent(spawnsActivatedEvent);
-
-                                    }
 
                                     player.sendTitle(message, "Get ready!");
                                     player.playSound(player.getLocation(), DefaultStartTimerTickSound, 1, 1);

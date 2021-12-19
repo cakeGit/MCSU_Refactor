@@ -20,10 +20,8 @@ import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.event.block.BlockExplodeEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -51,7 +49,10 @@ public class EventListenerMain implements Listener {
 
         ArrayList<EventListener> safeEventListeners = (ArrayList<EventListener>) eventListeners.clone();
 
-        safeEventListeners.stream().filter(listener -> Objects.equals(listener.eventName, event.getEventName())).forEach(eventListener -> {
+        if (event.getEventName().equals("GameSpawnsActivatedEvent")) { Bukkit.broadcastMessage("onRegistered event received GameSpawnsActivatedEvent"); }
+
+        safeEventListeners.stream().filter(listener -> event.getEventName().equals(listener.getEventName())).forEach(eventListener -> {
+            if (event.getEventName().equals("GameSpawnsActivatedEvent")) { Bukkit.broadcastMessage("GameSpawnsActivatedEvent activated inside stream"); }
             eventListener.getOnEvent().exec(event);
         });
 
@@ -105,7 +106,13 @@ public class EventListenerMain implements Listener {
 
     @EventHandler public void onEntityDamage(EntityDamageEvent e) {
         if (e.getCause().equals(EntityDamageEvent.DamageCause.FALL)) {
-            e.setCancelled(!getRuleActive("FallDamage"));
+            if (!getRuleActive("FallDamage")) e.setDamage(0);
+        } else if (
+                e.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_EXPLOSION)
+                        ||
+                        e.getCause().equals(EntityDamageEvent.DamageCause.BLOCK_EXPLOSION)
+        ) {
+            if (!getRuleActive("ExplosionDamage")) e.setDamage(0);
         }
 
         onRegisteredEvent(e);
@@ -125,6 +132,14 @@ public class EventListenerMain implements Listener {
 
         onRegisteredEvent(e);
 
+    }
+
+    @EventHandler public void onBlockExplode(BlockExplodeEvent e) {
+        if (!getRuleActive("TileDrops")) e.setYield(0);
+        Bukkit.broadcastMessage("explodeQQ!!!");
+        e.setCancelled(!getRuleActive("TileBreaking"));
+
+        onRegisteredEvent(e);
     }
 
     @EventHandler public void onServerListPing(ServerListPingEvent e) {
@@ -181,9 +196,10 @@ public class EventListenerMain implements Listener {
 
     @EventHandler public void onGameInitEvent(GameInitEvent e) { onRegisteredEvent(e); }
     @EventHandler public void onGameCountdownEndEvent(GameCountdownEndEvent e) { onRegisteredEvent(e); }
-    @EventHandler public void onGameSpawnsActivatedEvent(GameSpawnsActivatedEvent e) { onRegisteredEvent(e); }
+    @EventHandler public void onGameSpawnsActivatedEvent(GameSpawnsActivatedEvent e) { onRegisteredEvent(e); Bukkit.broadcastMessage("Game Spawns Activated"); }
 
     @EventHandler public void onProjectileHit(ProjectileHitEvent e) { onRegisteredEvent(e); }
+    @EventHandler public void onEntityShootBowEvent(EntityShootBowEvent e) { onRegisteredEvent(e); }
 
 
     //Activity rules
@@ -205,6 +221,7 @@ public class EventListenerMain implements Listener {
         new ActivityRule("PVP", false);
         new ActivityRule("PlayerMovement", true);
         new ActivityRule("FallDamage", false);
+        new ActivityRule("ExplosionDamage", true);
 
     }
 
