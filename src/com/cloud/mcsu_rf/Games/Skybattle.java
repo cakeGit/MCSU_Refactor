@@ -30,6 +30,10 @@ public class Skybattle {
                 .addGameState(
                         new GameState("base", true)
                                 .onEnable(() -> {
+                                    EventListenerMain.setActivityRule("TileDrops", false);
+                                    EventListenerMain.setActivityRule("TileBreaking", false);
+                                    EventListenerMain.setActivityRule("PVP", false);
+                                    EventListenerMain.setActivityRule("ExplosionDamage", false);
                                     killZoneY = (int) game.getMapMetadata().get("GameData.KillZoneY");
                                             Bukkit.getLogger().info(String.valueOf(killZoneY));
 
@@ -84,6 +88,10 @@ public class Skybattle {
 
                                 }))
                                 .addGameFunction(new CustomEventListener("GameCountdownEndEvent", Event -> {
+                                    EventListenerMain.setActivityRule("TileDrops", true);
+                                    EventListenerMain.setActivityRule("TileBreaking", true);
+                                    EventListenerMain.setActivityRule("PVP", true);
+                                    EventListenerMain.setActivityRule("ExplosionDamage", true);
                                     game.getGamestate("afterCountdown").setEnabled(true);
                                 }))
                 )
