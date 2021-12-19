@@ -112,12 +112,15 @@ public class EventListenerMain implements Listener {
                         ||
                         e.getCause().equals(EntityDamageEvent.DamageCause.BLOCK_EXPLOSION)
         ) {
-            if (!getRuleActive("ExplosionDamage")) e.setDamage(0);
+            if (!getRuleActive("ExplosionDamage")) {
+                e.setDamage(0);
+            }
         }
 
         onRegisteredEvent(e);
 
     }
+
 
     @EventHandler public void onPlayerMove(PlayerMoveEvent e) {
         e.setCancelled(!getRuleActive("PlayerMovement"));
@@ -136,7 +139,6 @@ public class EventListenerMain implements Listener {
 
     @EventHandler public void onBlockExplode(BlockExplodeEvent e) {
         if (!getRuleActive("TileDrops")) e.setYield(0);
-        Bukkit.broadcastMessage("explodeQQ!!!");
         e.setCancelled(!getRuleActive("TileBreaking"));
 
         onRegisteredEvent(e);

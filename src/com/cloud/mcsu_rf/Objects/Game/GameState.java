@@ -17,9 +17,9 @@ public class GameState {
     public GameState(String name, boolean enabledDefault) { this.name = name; this.enabled = enabledDefault; this.enabledDefault = enabledDefault; }
     public GameState(String name) { this.name = name; this.enabled = false; this.enabledDefault = false; }
 
-    public GameState addGameFunction(GameFunctionBase gameFunction, boolean checkEnabled) {
+    public GameState addGameFunction(GameFunctionBase gameFunction, boolean isTemporary) {
         gameFunctions.add(gameFunction);
-        if (checkEnabled) { gameFunction.setEnabled(true); }
+        if (isTemporary) { gameFunction.setEnabled(enabled); gameFunction.setIsTemporary(true); }
         return this;
     }
 
@@ -49,6 +49,8 @@ public class GameState {
     public void reset() {
 
         setEnabled(false);
+
+        gameFunctions.removeIf(GameFunctionBase::getIsTemporary);
 
         this.enabled = enabledDefault;
 

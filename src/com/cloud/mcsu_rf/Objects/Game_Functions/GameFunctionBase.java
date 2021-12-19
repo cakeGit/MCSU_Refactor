@@ -12,6 +12,8 @@ public class GameFunctionBase {
     ArrayList<String> boundEventNames = new ArrayList<>();
     ArrayList<EventListener> eventListeners = new ArrayList<>();
 
+    boolean isTemporary = false;
+
     public GameFunctionBase() { }
 
     public void setEnabled(boolean enabled) {
@@ -61,8 +63,10 @@ public class GameFunctionBase {
     }
 
 
-    public ArrayList<String> getBoundEventNames() { return this.boundEventNames; }
+    public ArrayList<String> getBoundEventNames() { return boundEventNames; }
 
+    public void setIsTemporary(boolean temporary) { isTemporary = temporary; }
+    public boolean getIsTemporary() { return isTemporary; }
 
     //Common methods
 
