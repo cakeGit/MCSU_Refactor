@@ -9,7 +9,7 @@ import com.cloud.mcsu_rf.Objects.MCSU_Scoreboard.MCSU_Scoreboard;
 import com.cloud.mcsu_rf.Objects.MCSU_Scoreboard.Scoreboard_Element;
 import com.cloud.mcsu_rf.Objects.McsuPlayer;
 import com.cloud.mcsu_rf.Score_Handlers.Scoreboard_Main;
-import com.cloud.mcsu_rf.ShorthandClasses.Pick;
+import com.cloud.mcsu_rf.Game_Handlers.ShorthandClasses.Pick;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -51,10 +51,7 @@ public class EventListenerMain implements Listener {
 
         ArrayList<EventListener> safeEventListeners = (ArrayList<EventListener>) eventListeners.clone();
 
-        if (event.getEventName().equals("GameSpawnsActivatedEvent")) { Bukkit.broadcastMessage("onRegistered event received GameSpawnsActivatedEvent"); }
-
         safeEventListeners.stream().filter(listener -> event.getEventName().equals(listener.getEventName())).forEach(eventListener -> {
-            if (event.getEventName().equals("GameSpawnsActivatedEvent")) { Bukkit.broadcastMessage("GameSpawnsActivatedEvent activated inside stream"); }
             eventListener.getOnEvent().exec(event);
         });
 

@@ -1,6 +1,8 @@
 package com.cloud.mcsu_rf.Command_Handlers;
 
 import com.cloud.mcsu_rf.EventListenerMain;
+import com.cloud.mcsu_rf.Inventories.BlockSumoInventory;
+import com.cloud.mcsu_rf.LootTables.BlockSumoLoot;
 import com.cloud.mcsu_rf.MCSU_Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -39,7 +41,8 @@ public class Cmd_Main implements CommandExecutor {
                 "gamepoint",
                 "goto",
                 "team",
-                "enablepvp"
+                "enablepvp",
+                "blocksumoloot"
         };
 
         tpCommands = new String[] {
@@ -81,6 +84,10 @@ public class Cmd_Main implements CommandExecutor {
             case "spawnsled": return Game_Cmds.spawnSled(Sender, Args);
 
             case "enablepvp": EventListenerMain.setActivityRule("PVP", true); return true;
+
+            case "blocksumoloot":
+                new BlockSumoInventory().givePowerUp(((Player) Sender));
+                return true;
 
         }
 

@@ -1,124 +1,64 @@
 package com.cloud.mcsu_rf.Inventories;
 
+import com.cloud.mcsu_rf.LootTables.BlockSumoLoot;
+import com.cloud.mcsu_rf.Objects.McsuPlayer;
+import com.cloud.mcsu_rf.Objects.McsuItemStack;
+import com.cloud.mcsu_rf.TeamHandlers.TeamMain;
+import com.cloud.mcsu_rf.TeamSwitchStatements;
 import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.FireworkEffect;
 import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.FireworkMeta;
 
-import java.util.Objects;
+public class BlockSumoInventory extends InventoryBase {
 
-public class BlockSumoInventory {
-
-    String tool;
-
-    public BlockSumoInventory(String tool) {
-        this.tool = tool;
-
-        Bukkit.broadcastMessage("create the?/ \""+tool+"\"");
-    }
-
-    public void loadInventory(Player player) {
+    public void load(Player player) {
 
         Inventory playerInventory = player.getInventory();
 
-        ItemStack toolItemStack;
+        playerInventory.setItem(
+                0,
+                new McsuItemStack(Material.SHEARS,1)
+                        .setUnbreakable(true)
+        );
 
-        Bukkit.broadcastMessage("Loading inventory with tool \""+tool+"\"");
+        ItemStack blocks = TeamSwitchStatements.colouredWoolItem(McsuPlayer.getByBukkitPlayer(player).getTeamID());
+        player.getInventory().setItemInOffHand(blocks);
 
-        switch (tool) {
-            case "Shovels":
-                Bukkit.broadcastMessage("Loading shovlers");
-                toolItemStack = new ItemStack(
-                        Material.NETHERITE_SHOVEL
-                );
-                toolItemStack.addEnchantment(
-                        Enchantment.DIG_SPEED,
-                        5
-                );
-
-                playerInventory.setItem(
-                        0,
-                        toolItemStack
-                );
-
-                break;
-            case "Fireworks":
-
-                Bukkit.broadcastMessage("Loading fireworkes");
-
-                toolItemStack = new ItemStack(
-                        Material.CROSSBOW
-                );
-                toolItemStack.addEnchantment(
-                        Enchantment.QUICK_CHARGE,
-                        3
-                );
-                toolItemStack.addEnchantment(
-                        Enchantment.DURABILITY,
-                        3
-                );
-
-                ItemStack fireworksItemStack = new ItemStack(
-                        Material.FIREWORK_ROCKET
-                );
-
-                fireworksItemStack.setAmount(64);
-                FireworkMeta fireworkMeta = (FireworkMeta) fireworksItemStack.getItemMeta();
-                fireworkMeta.addEffect(
-                        FireworkEffect
-                        .builder()
-                        .withFade(Color.WHITE)
-                        .withColor(Color.AQUA)
-                        .trail(true)
-                        .build()
-                );
-                fireworksItemStack.setItemMeta(fireworkMeta);
-
-                playerInventory.setItem(
-                        0,
-                        toolItemStack
-                );
-                player.getInventory().setItemInOffHand(
-                        fireworksItemStack
-                );
-
-                break;
-        }
+        manager.addBoundEvent("BlockPlaceEvent");
 
     }
 
-    public void reloadInventory(Player player) {
+    public void onBoundEvent(Event event) {
 
-        if (Objects.equals(tool, "Fireworks")) {
+        if(event.getEventName().equals("BlockPlaceEvent")) {
+            BlockPlaceEvent placeEvent = (BlockPlaceEvent) event;
 
-            Inventory playerInventory = player.getInventory();
-
-            ItemStack fireworksItemStack = new ItemStack(
-                    Material.FIREWORK_ROCKET
-            );
-
-            fireworksItemStack.setAmount(64);
-            FireworkMeta fireworkMeta = (FireworkMeta) fireworksItemStack.getItemMeta();
-            fireworkMeta.addEffect(
-                    FireworkEffect
-                            .builder()
-                            .withFade(Color.AQUA)
-                            .withColor(Color.WHITE)
-                            .trail(true)
-                            .build()
-            );
-            fireworksItemStack.setItemMeta(fireworkMeta);
-
-            player.getInventory().setItemInOffHand(
-                    fireworksItemStack
-            );
-
+            if (
+                    placeEvent.getBlockPlaced().getState().getData().toItemStack(64)
+                            ==
+                            TeamSwitchStatements.colouredWoolItem(
+                                    McsuPlayer.getByBukkitPlayer(placeEvent.getPlayer()).getTeamID()
+                            )
+            ) {
+                Bukkit.broadcastMessage("Thing match team");
+            }
         }
+
+
+
+    }
+
+    public void givePowerUp(Player player) {
+
+        Inventory playerInventory = player.getInventory();
+        playerInventory.addItem(
+                BlockSumoLoot.powerupLootTable.generate()
+                );
 
     }
 

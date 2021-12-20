@@ -2,21 +2,15 @@ package com.cloud.mcsu_rf.Games;
 
 import com.cloud.mcsu_rf.EventListenerMain;
 import com.cloud.mcsu_rf.Inventories.SkybattleInventory;
-import com.cloud.mcsu_rf.Inventories.SpleefInventory;
 import com.cloud.mcsu_rf.Objects.Game.*;
-import com.cloud.mcsu_rf.Objects.Game_Functions.CustomEventListener;
-import com.cloud.mcsu_rf.Objects.Game_Functions.HeightActionZone;
-import com.cloud.mcsu_rf.Objects.Game_Functions.PointAwarder;
+import com.cloud.mcsu_rf.Objects.GameFunctions.CustomEventListener;
+import com.cloud.mcsu_rf.Objects.GameFunctions.HeightActionZone;
+import com.cloud.mcsu_rf.Objects.GameFunctions.PointAwarder;
 import com.cloud.mcsu_rf.Objects.McsuPlayer;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.entity.ProjectileHitEvent;
-
-import java.util.Objects;
 
 public class Skybattle {
 
@@ -70,7 +64,7 @@ public class Skybattle {
                                         skybattleInventory.loadInventory(player);
                                     }
 
-                                }), true)
+                                }))
                                 .addGameFunction(new PointAwarder("Survival", 2))
                                 .addGameFunction(new CustomEventListener("PlayerDeathEvent", Event -> {
 

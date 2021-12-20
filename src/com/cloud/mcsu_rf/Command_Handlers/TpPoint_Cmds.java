@@ -65,7 +65,7 @@ public class TpPoint_Cmds {
         Double[] pXyzRrn = pXyzRrnArrList.toArray(new Double[0]);
 
 
-        double[] pPy = new double[] { pLoc.getPitch(), pLoc.getYaw() };
+        double[] pPy = new double[] {  pLoc.getYaw(), pLoc.getPitch() };
         ArrayList<Double> pPyRrnArrList = new ArrayList<>();
 
         for (double pos : pPy) {

@@ -1,4 +1,4 @@
-package com.cloud.mcsu_rf.Objects.GamePlayers;
+package com.cloud.mcsu_rf.GamePlayers;
 
 import org.bukkit.entity.Player;
 

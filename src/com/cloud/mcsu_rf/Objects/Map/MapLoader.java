@@ -2,7 +2,7 @@ package com.cloud.mcsu_rf.Objects.Map;
 
 import com.cloud.mcsu_rf.Game_Handlers.FaweFunctions;
 import com.cloud.mcsu_rf.Objects.Game.Game;
-import com.cloud.mcsu_rf.ShorthandClasses.Pick;
+import com.cloud.mcsu_rf.Game_Handlers.ShorthandClasses.Pick;
 import com.sk89q.worldedit.math.BlockVector3;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -30,19 +30,18 @@ public class MapLoader {
 
         ArrayList<MapMetadata> gameMaps = new ArrayList<>();
 
-        for (MapMetadata mapData : MapMetadata.RegisteredMapMetadata) {
+        for (MapMetadata registeredMapData : MapMetadata.RegisteredMapMetadata) {
 
-            if (Objects.equals(mapData.getGame(), game.getName())) {
-                gameMaps.add(mapData);
-                Bukkit.getLogger().info("Found map with matching game name called '" + mapData.getName() + "'");
+            if (Objects.equals(registeredMapData.getGame(), game.getName())) {
+                gameMaps.add(registeredMapData);
+                Bukkit.getLogger().info("Found map with matching game name called '" + registeredMapData.getName() + "'");
             }
 
         }
 
-        MapMetadata mapData = Pick.Random(gameMaps);
-        Bukkit.getLogger().info("Picked map '" + mapData.getName() + "'");
+        mapData = Pick.Random(gameMaps);
+        Bukkit.broadcastMessage("Picked map '" + mapData.getName() + "'");
 
-        this.mapData = mapData;
         game.setMapMetadata(mapData);
 
         FaweFunctions.loadSchematic(mapData.getSchemFileName(), BlockVector3.at(2000, 60, 0), world);

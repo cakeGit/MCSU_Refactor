@@ -1,7 +1,7 @@
 package com.cloud.mcsu_rf.Objects.Map;
 
 import com.cloud.mcsu_rf.Objects.McsuPlayer;
-import com.cloud.mcsu_rf.ShorthandClasses.Pick;
+import com.cloud.mcsu_rf.Game_Handlers.ShorthandClasses.Pick;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -29,6 +29,12 @@ public class SpawnManager {
                     (float) (double) lobbySpawn.Rotation[0],
                     (float) (double)  lobbySpawn.Rotation[1]
             ));
+
+            /*Bukkit.broadcastMessage(lobbySpawn.Coordinates[0] +" "+
+                    lobbySpawn.Coordinates[1] +" "+
+                    lobbySpawn.Coordinates[2] +" "+
+                    (float) (double) lobbySpawn.Rotation[0]+" "+
+                    (float) (double)  lobbySpawn.Rotation[1]);*/
         }
 
     }
@@ -38,6 +44,8 @@ public class SpawnManager {
         MapMetadata mapData = mapLoader.getMapData();
         World world = mapLoader.getWorld();
 
+        /*Bukkit.broadcastMessage("Loading spawns for " + mapData.getGame() + " - " + mapData.getName());*/
+
         switch (mapData.getGameSpawnType()) {
             case "Team":
                 for (Player player : Bukkit.getOnlinePlayers()) {
@@ -46,7 +54,8 @@ public class SpawnManager {
                     boolean foundPoint = false;
 
                     for (MapPoint gamePoint : mapData.getGamePoints()) {
-                        if (Objects.equals(gamePoint.Id, playerTeamId)) {
+                        if (Objects.equals(gamePoint.getId(), playerTeamId)) {
+
                             player.teleport( new Location(
                                     world,
                                     gamePoint.Coordinates[0],
@@ -57,10 +66,12 @@ public class SpawnManager {
                             ));
 
                             foundPoint = true;
+                        } else {
+                            Bukkit.broadcastMessage("Found a point with ID " + gamePoint.getId());
                         }
                     }
 
-                    if (!foundPoint) { Bukkit.broadcastMessage("Couldn't find a point for team with id "+playerTeamId); }
+                    if (!foundPoint) { Bukkit.broadcastMessage(ChatColor.RED + "[MCSU]: Couldn't find a point for team with id "+playerTeamId); }
                 }
 
                 break;

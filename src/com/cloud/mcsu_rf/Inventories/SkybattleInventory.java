@@ -9,7 +9,7 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-public class SkybattleInventory {
+public class SkybattleInventory extends InventoryBase {
 
     public void loadInventory(Player player) {
 

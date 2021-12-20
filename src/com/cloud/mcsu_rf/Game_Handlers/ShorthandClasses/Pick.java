@@ -1,4 +1,4 @@
-package com.cloud.mcsu_rf.ShorthandClasses;
+package com.cloud.mcsu_rf.Game_Handlers.ShorthandClasses;
 
 import java.util.ArrayList;
 import java.util.Random;

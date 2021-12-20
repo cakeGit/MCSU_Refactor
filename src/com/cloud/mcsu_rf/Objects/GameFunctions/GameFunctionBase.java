@@ -1,4 +1,4 @@
-package com.cloud.mcsu_rf.Objects.Game_Functions;
+package com.cloud.mcsu_rf.Objects.GameFunctions;
 
 import com.cloud.mcsu_rf.EventListenerMain;
 import com.cloud.mcsu_rf.Objects.EventListener;
@@ -9,10 +9,10 @@ import java.util.ArrayList;
 
 public class GameFunctionBase {
 
-    ArrayList<String> boundEventNames = new ArrayList<>();
-    ArrayList<EventListener> eventListeners = new ArrayList<>();
+    protected ArrayList<String> boundEventNames = new ArrayList<>();
+    protected ArrayList<EventListener> eventListeners = new ArrayList<>();
 
-    boolean isTemporary = false;
+    protected boolean isTemporary = false;
 
     public GameFunctionBase() { }
 
@@ -25,12 +25,12 @@ public class GameFunctionBase {
             onEnable();
 
             for (String eventName : this.boundEventNames) {
-                Bukkit.getLogger().info(
+                /*Bukkit.getLogger().info(
                         "Enabling " +
                                 eventName +
                                 " binding to an instance of " +
                                 this.getClass().getSimpleName()
-                );
+                );*/
 
                 EventListener newListener = new EventListener(eventName, this::onBoundEvent);
                 eventListeners.add(newListener);
@@ -41,17 +41,17 @@ public class GameFunctionBase {
 
             onDisable();
 
-            Bukkit.getLogger().info(
+            /*Bukkit.getLogger().info(
                     "Disabling all listener bindings for gameFunction " +
                             this.getClass().getSimpleName()
-            );
+            );*/
 
             for ( EventListener listener : eventListeners ) {
 
-                Bukkit.getLogger().info(
+                /*Bukkit.getLogger().info(
                         "Unbinding " +
                                 listener.getEventName()
-                );
+                );*/
 
                 EventListenerMain.removeEventListener(
                         listener

@@ -1,4 +1,4 @@
-package com.cloud.mcsu_rf.Objects.Game_Functions;
+package com.cloud.mcsu_rf.Objects.GameFunctions;
 
 import com.cloud.mcsu_rf.Objects.McsuPlayer;
 import org.bukkit.event.Event;

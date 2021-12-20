@@ -1,4 +1,4 @@
-package com.cloud.mcsu_rf.ShorthandClasses;
+package com.cloud.mcsu_rf.Game_Handlers.ShorthandClasses;
 
 import com.cloud.mcsu_rf.Objects.Enums.CharacterSize;
 

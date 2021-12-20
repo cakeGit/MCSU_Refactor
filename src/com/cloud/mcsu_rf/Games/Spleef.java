@@ -3,9 +3,9 @@ package com.cloud.mcsu_rf.Games;
 import com.cloud.mcsu_rf.EventListenerMain;
 import com.cloud.mcsu_rf.Inventories.SpleefInventory;
 import com.cloud.mcsu_rf.Objects.Game.*;
-import com.cloud.mcsu_rf.Objects.Game_Functions.HeightActionZone;
-import com.cloud.mcsu_rf.Objects.Game_Functions.CustomEventListener;
-import com.cloud.mcsu_rf.Objects.Game_Functions.PointAwarder;
+import com.cloud.mcsu_rf.Objects.GameFunctions.HeightActionZone;
+import com.cloud.mcsu_rf.Objects.GameFunctions.CustomEventListener;
+import com.cloud.mcsu_rf.Objects.GameFunctions.PointAwarder;
 import com.cloud.mcsu_rf.Objects.McsuPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -84,13 +84,6 @@ public class Spleef {
                                                         }), true);
 
                                             }
-
-
-                                            Bukkit.broadcastMessage(
-                                                    game.getGamemodeOptionBlockChoice("Tool")
-                                                            .getGamemodeOption()
-                                                            .getName() + " a the rapist"
-                                            );
 
                                             game.getGamestate("afterCountdown").addGameFunction(
                                                     new HeightActionZone(

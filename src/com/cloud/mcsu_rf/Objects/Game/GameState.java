@@ -1,6 +1,6 @@
 package com.cloud.mcsu_rf.Objects.Game;
 
-import com.cloud.mcsu_rf.Objects.Game_Functions.GameFunctionBase;
+import com.cloud.mcsu_rf.Objects.GameFunctions.GameFunctionBase;
 
 import java.util.ArrayList;
 

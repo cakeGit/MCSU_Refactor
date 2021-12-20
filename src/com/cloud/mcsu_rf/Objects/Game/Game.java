@@ -1,7 +1,6 @@
 package com.cloud.mcsu_rf.Objects.Game;
 
 import com.cloud.mcsu_rf.EventListenerMain;
-import com.cloud.mcsu_rf.Game_Handlers.FaweFunctions;
 import com.cloud.mcsu_rf.Game_Handlers.Game_Main;
 import com.cloud.mcsu_rf.Objects.CustomEvents.GameCountdownEndEvent;
 import com.cloud.mcsu_rf.Objects.CustomEvents.GameInitEvent;
@@ -12,7 +11,7 @@ import com.cloud.mcsu_rf.Objects.Map.MapLoader;
 import com.cloud.mcsu_rf.Objects.Map.SpawnManager;
 import com.cloud.mcsu_rf.Objects.McsuTeam;
 import com.cloud.mcsu_rf.Objects.Timer;
-import com.cloud.mcsu_rf.ShorthandClasses.Pick;
+import com.cloud.mcsu_rf.Game_Handlers.ShorthandClasses.Pick;
 import com.cloud.mcsu_rf.TeamHandlers.TeamMain;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;

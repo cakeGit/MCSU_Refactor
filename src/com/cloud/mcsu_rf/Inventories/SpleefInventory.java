@@ -7,20 +7,25 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 
 import java.util.Objects;
 
-public class SpleefInventory {
+public class SpleefInventory extends InventoryBase {
 
     String tool;
 
     public SpleefInventory(String tool) {
+
         this.tool = tool;
 
-        Bukkit.broadcastMessage("create the?/ \""+tool+"\"");
+    }
+
+    public void onBoundEvent(Event event) {
+
     }
 
     public void loadInventory(Player player) {
@@ -29,11 +34,9 @@ public class SpleefInventory {
 
         ItemStack toolItemStack;
 
-        Bukkit.broadcastMessage("Loading inventory with tool \""+tool+"\"");
-
         switch (tool) {
             case "Shovels":
-                Bukkit.broadcastMessage("Loading shovlers");
+
                 toolItemStack = new ItemStack(
                         Material.NETHERITE_SHOVEL
                 );
@@ -49,8 +52,6 @@ public class SpleefInventory {
 
                 break;
             case "Fireworks":
-
-                Bukkit.broadcastMessage("Loading fireworkes");
 
                 toolItemStack = new ItemStack(
                         Material.CROSSBOW

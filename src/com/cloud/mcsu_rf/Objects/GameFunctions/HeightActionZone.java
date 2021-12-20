@@ -1,4 +1,4 @@
-package com.cloud.mcsu_rf.Objects.Game_Functions;
+package com.cloud.mcsu_rf.Objects.GameFunctions;
 
 import org.bukkit.Location;
 

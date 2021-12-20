@@ -19,12 +19,12 @@ public class GamemodeOptionBlock {
             totalWeight += option.getWeight();
         }
 
-        int pickedInt = new Random().nextInt(totalWeight);
+        int pickedInt = new Random().nextInt(totalWeight)+1;
 
         int currentWeight = 0;
 
         for ( GamemodeOption option : options ) {
-            if ( numberInside( currentWeight, currentWeight+option.getWeight(), pickedInt ) ) {
+            if ( numberInside( currentWeight, currentWeight+option.getWeight(), pickedInt ) && option.getWeight() != 0) {
                 return option;
             }
 

@@ -12,7 +12,7 @@ public class MapPoint {
     String Id;
 
     public MapPoint(String Coordinates, String Rotation) {
-        Bukkit.getLogger().info("(MapPoint) Parsing coordinates '" + Coordinates + "'");
+        //Bukkit.getLogger().info("(MapPoint) Parsing coordinates '" + Coordinates + "'");
         String[] CrdArr = Coordinates.split(" ");
 
         ArrayList<Double> CrdArrList = new ArrayList<>();
@@ -22,7 +22,7 @@ public class MapPoint {
 
         this.Coordinates = CrdArrList.toArray(new Double[0]);
 
-        Bukkit.getLogger().info("(MapPoint) Parsing rotation '" + Rotation + "'");
+        //Bukkit.getLogger().info("(MapPoint) Parsing rotation '" + Rotation + "'");
         String[] rotArr = Rotation.split(" ");
 
         ArrayList<Double> rotArrList = new ArrayList<>();

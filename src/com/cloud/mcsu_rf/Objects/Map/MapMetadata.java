@@ -20,12 +20,12 @@ public class MapMetadata {
 
         if (Maps != null) {
             Maps.forEach(mapMetadataFilename -> {
-                RegisteredMapMetadata.add(new MapMetadata( new ConfigFile(
+                new MapMetadata( new ConfigFile(
                         (String) mapMetadataFilename,
                         "",
                         mapMetadataFilename + ".yml",
                         "/mapMetadata/"
-                )));
+                ));
             });
         }
 
@@ -48,7 +48,11 @@ public class MapMetadata {
                 Element -> {
                     HashMap<String, Object> ElementHashmap = (HashMap<String, Object>) Element;
 
-                    LobbyPoints.add( new MapPoint(ElementHashmap.get("Coordinates").toString(), ElementHashmap.get("Rotation").toString()) );
+                    LobbyPoints.add(
+                            new MapPoint(
+                                    ElementHashmap.get("Coordinates").toString(),
+                                    ElementHashmap.get("Rotation").toString())
+                    );
                 }
         );
 
@@ -72,7 +76,7 @@ public class MapMetadata {
 
         RegisteredMapMetadata.add(this);
 
-        Bukkit.getLogger().info("Indexed map metadata for  a " + this.Game + " map '" + this.Name + "'");
+        Bukkit.broadcastMessage("Indexed map metadata for a " + this.Game + " map '" + this.Name + "'");
 
     }
 

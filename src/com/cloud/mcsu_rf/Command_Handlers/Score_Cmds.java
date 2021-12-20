@@ -2,7 +2,7 @@ package com.cloud.mcsu_rf.Command_Handlers;
 
 import com.cloud.mcsu_rf.Objects.McsuPlayer;
 import com.cloud.mcsu_rf.Objects.McsuTeam;
-import com.cloud.mcsu_rf.ShorthandClasses.Break;
+import com.cloud.mcsu_rf.Game_Handlers.ShorthandClasses.Break;
 import com.cloud.mcsu_rf.TeamHandlers.TeamMain;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
