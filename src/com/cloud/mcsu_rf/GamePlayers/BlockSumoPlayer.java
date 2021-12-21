@@ -12,6 +12,7 @@ public class BlockSumoPlayer {
     int maxLives = 3;
     int lives = 3;
     Player player;
+    boolean spawnProt = false;
 
     public BlockSumoPlayer(Player player, int lives) {
 
@@ -30,6 +31,9 @@ public class BlockSumoPlayer {
     public int getLives() { return lives; }
     public void removeLife() { this.lives -= 1; }
     public Player toBukkit() { return player; }
+
+    public void setSpawnProt(boolean spawnProt) { this.spawnProt = spawnProt; }
+    public boolean hasSpawnProt() { return this.spawnProt; }
 
     public String getLivesString() {
         return  (lives == 0 ? ChatColor.GRAY + " -- DEAD -- ": ChatColor.RED + "Lives: ") +

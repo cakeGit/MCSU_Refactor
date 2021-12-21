@@ -78,16 +78,19 @@ public class Skybattle {
 
                                 }, "PlayerDeathEvent"))
                                 .addGameFunction(new CustomEventListener(Event -> {
-                                    EventListenerMain.setActivityRule("TileDrops", true);
-                                    EventListenerMain.setActivityRule("TileBreaking", true);
-                                    EventListenerMain.setActivityRule("PVP", true);
-                                    EventListenerMain.setActivityRule("ExplosionDamage", true);
-                                    EventListenerMain.setActivityRule("Crafting", true);
-                                    EventListenerMain.setActivityRule("FallDamage", true);
                                     game.getGamestate("afterCountdown").setEnabled(true);
                                 }, "GameCountdownEndEvent"))
                 )
-                .addGameState(new GameState("afterCountdown"));
+                .addGameState(new GameState("afterCountdown")
+                        .onEnable(() -> {
+                            EventListenerMain.setActivityRule("TileDrops", true);
+                            EventListenerMain.setActivityRule("TileBreaking", true);
+                            EventListenerMain.setActivityRule("PVP", true);
+                            EventListenerMain.setActivityRule("ExplosionDamage", true);
+                            EventListenerMain.setActivityRule("Crafting", true);
+                            EventListenerMain.setActivityRule("FallDamage", true);
+                        })
+                );
 
 
     }

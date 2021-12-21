@@ -43,10 +43,10 @@ public class Game {
     }
 
     //defaults
-    static int DefaultStartLength = 15;
-    static Sound DefaultGamemodePick = Sound.BLOCK_NOTE_BLOCK_PLING;
-    static Sound DefaultStartTimerTickSound = Sound.BLOCK_NOTE_BLOCK_SNARE;
-    static Sound DefaultStartTimerEndSound = Sound.ENTITY_FIREWORK_ROCKET_LAUNCH;
+    static final int DefaultStartLength = 15;
+    public static final Sound DefaultGamemodePickSound = Sound.BLOCK_NOTE_BLOCK_PLING;
+    public static final Sound DefaultStartTimerTickSound = Sound.BLOCK_NOTE_BLOCK_SNARE;
+    public static final Sound DefaultStartTimerEndSound = Sound.ENTITY_FIREWORK_ROCKET_LAUNCH;
 
     //static
     static ArrayList<McsuPlayer> alivePlayers = new ArrayList<>();
@@ -273,6 +273,7 @@ public class Game {
 
     public World getWorld() { return world; }
     public String getName() { return this.Name; }
+    public MapLoader getMapLoader() {  return mapLoader; }
 
     public GameState getGamestate(String Name) {
 

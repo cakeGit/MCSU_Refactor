@@ -57,6 +57,23 @@ public class EventListenerMain implements Listener {
             eventListener.getOnEvent().exec(event);
         });
 
+        postListenersHandler(event);
+
+    }
+
+    public static void postListenersHandler(Event event) {
+        switch(event.getEventName()) {
+            case "BlockPlaceEvent":
+                BlockPlaceEvent placeEvent = (BlockPlaceEvent) event;
+                if (!placeEvent.isCancelled()) {
+                    Block blockPlaced = placeEvent.getBlockPlaced();
+                    if (getRuleActive("AutoIgniteTNT") && blockPlaced.getBlockData().getMaterial() == Material.TNT) {
+                        blockPlaced.setType(Material.AIR);
+                        TNTPrimed tnt = (TNTPrimed) blockPlaced.getWorld().spawnEntity(blockPlaced.getLocation().add(new Location(blockPlaced.getWorld(), 0.5, 0, 0.5)), EntityType.PRIMED_TNT);
+                        tnt.setFuseTicks(40);
+                    }
+                }
+        }
     }
 
     @EventHandler public void onPlayerJoin(PlayerJoinEvent e) { onRegisteredEvent(e);
@@ -76,7 +93,7 @@ public class EventListenerMain implements Listener {
                 joinMessage = ChatColor.BLUE + pName + ChatColor.WHITE + " has joined the pain :("; // OG join message :)
                 break;
             case "WaitWhosCandice":
-                joinMessage = ChatColor.BLUE + pName + ChatColor.WHITE + " has joined mCSU!!11!11! \n hol up is candice tho? "; // OG join message :)
+                joinMessage = ChatColor.BLUE + pName + ChatColor.WHITE + " has joined mCSU!!11!11! \nhol up is candice tho? "; // OG join message :)
                 break;
             case "goshroom":
                 p.getInventory().setHelmet(new ItemStack(Material.RED_MUSHROOM,1));
@@ -100,14 +117,12 @@ public class EventListenerMain implements Listener {
 
     @EventHandler public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
         e.setCancelled(!getRuleActive("PVP"));
-
         onRegisteredEvent(e);
-
     }
 
     @EventHandler public void onEntityDamage(EntityDamageEvent e) {
         if (e.getCause().equals(EntityDamageEvent.DamageCause.FALL)) {
-            if (!getRuleActive("FallDamage")) e.setDamage(0);
+            if (!getRuleActive("FallDamage")) e.setCancelled(true);
         } else if (
                 e.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_EXPLOSION)
                         ||
@@ -116,18 +131,29 @@ public class EventListenerMain implements Listener {
             if (!getRuleActive("ExplosionDamage")) {
                 e.setDamage(0);
             }
+        } else if (
+                e.getCause().equals(EntityDamageEvent.DamageCause.VOID)
+                        &&
+                        ((Player) e.getEntity()).getGameMode() == GameMode.SPECTATOR
+        ) {
+            e.setCancelled(true);
         }
 
         onRegisteredEvent(e);
-
     }
 
+    @EventHandler public void onPlayerTeleport(PlayerTeleportEvent e) {
+        if (e.getCause() == PlayerTeleportEvent.TeleportCause.ENDER_PEARL && !getRuleActive("PearlDamage")){
+            e.getPlayer().setNoDamageTicks(1);
+        }
+
+        onRegisteredEvent(e);
+    }
 
     @EventHandler public void onPlayerMove(PlayerMoveEvent e) {
         e.setCancelled(!getRuleActive("PlayerMovement"));
 
         onRegisteredEvent(e);
-
     }
 
     @EventHandler public void onBlockBreak(BlockBreakEvent e) {
@@ -135,7 +161,6 @@ public class EventListenerMain implements Listener {
         e.setCancelled(!getRuleActive("TileBreaking"));
 
         onRegisteredEvent(e);
-
     }
 
     @EventHandler public void onBlockExplode(BlockExplodeEvent e) {
@@ -171,6 +196,7 @@ public class EventListenerMain implements Listener {
         MCSU_Scoreboard sb = new MCSU_Scoreboard(new Scoreboard_Element[] { new Scoreboard_Element("Bottom_Line_Break"), new Scoreboard_Element("Team_Totals"), new Scoreboard_Element("Line_Break"), new Scoreboard_Element("Online_Players_Leave"), new Scoreboard_Element("Top_Line_Break") });
         Scoreboard_Main.Current_Scoreboard = sb;
         reloadScoreboard();
+        McsuPlayer.McsuPlayers.remove(McsuPlayer.fromBukkit(e.getPlayer()));
         for(Player player : Bukkit.getOnlinePlayers()) {
             Tab.showTab(player,Bukkit.getOnlinePlayers().size()-1);
         }
@@ -206,14 +232,8 @@ public class EventListenerMain implements Listener {
         onRegisteredEvent(e);
     }
 
-    @EventHandler public void onBlockPlaceEvent(BlockPlaceEvent e) {
-        Block blockPlaced = e.getBlockPlaced();
-        if (getRuleActive("AutoIgniteTNT") && blockPlaced.getBlockData().getMaterial() == Material.TNT) {
-            blockPlaced.setType(Material.AIR);
-            blockPlaced.getWorld().spawnEntity(blockPlaced.getLocation().add(new Location(blockPlaced.getWorld(), 0.5, 0, 0.5)), EntityType.PRIMED_TNT);
-        } else {
-            Bukkit.getLogger().info(e.getBlockPlaced().getBlockData().getMaterial().toString());
-        }
+    @EventHandler public void onFoodLevelChangeEvent(FoodLevelChangeEvent e) {
+        if(!getRuleActive("Hunger")) e.setFoodLevel(20);
 
         onRegisteredEvent(e);
     }
@@ -229,6 +249,9 @@ public class EventListenerMain implements Listener {
     @EventHandler public void onEntityShootBowEvent(EntityShootBowEvent e) { onRegisteredEvent(e); }
     @EventHandler public void onPlayerInteractEvent(PlayerInteractEvent e) { onRegisteredEvent(e); }
     @EventHandler public void onInventoryClickEvent(InventoryClickEvent e) { onRegisteredEvent(e); }
+    @EventHandler public void onBlockPlaceEvent(BlockPlaceEvent e) { onRegisteredEvent(e); }
+    @EventHandler public void onEntityExplodeEvent(EntityExplodeEvent e) { onRegisteredEvent(e); }
+
 
     //Activity rules
 
@@ -252,6 +275,8 @@ public class EventListenerMain implements Listener {
         new ActivityRule("ExplosionDamage", true);
         new ActivityRule("Crafting", false);
         new ActivityRule("AutoIgniteTNT", true);
+        new ActivityRule("Hunger", false);
+        new ActivityRule("PearlDamage", false);
 
     }
 

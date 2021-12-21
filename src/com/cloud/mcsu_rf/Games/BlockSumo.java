@@ -1,5 +1,6 @@
 package com.cloud.mcsu_rf.Games;
 
+import com.cloud.mcsu_rf.EventListenerMain;
 import com.cloud.mcsu_rf.GamePlayers.BlockSumoPlayer;
 import com.cloud.mcsu_rf.Inventories.BlockSumoInventory;
 import com.cloud.mcsu_rf.LootTables.BlockSumoLoot;
@@ -19,14 +20,21 @@ import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.ArrayList;
 
 public class BlockSumo {
 
@@ -51,6 +59,7 @@ public class BlockSumo {
                                         event -> game.getGamestate("afterCountdown").setEnabled(true),
                                         "GameCountdownEndEvent"
                                 ))
+
                                 .onEnable(() -> {
 
                                     killZoneY = (int) game.getMapMetadata().get("GameData.KillZoneY");
@@ -84,7 +93,14 @@ public class BlockSumo {
                                     game.getGamestate("lobby").setEnabled(true);
 
                                 })
+
                                 .addGameFunction(inventoryManager)
+                                .addGameFunction(new CustomEventListener(event -> {
+                                    EntityExplodeEvent explodeEvent = (EntityExplodeEvent) event;
+                                    explodeEvent.setCancelled(true);
+                                    game.getWorld().createExplosion(explodeEvent.getLocation(),10,false,false);
+                                }, "EntityExplodeEvent"))
+
                                 .addGameFunction(new CustomEventListener(event -> {
 
                                     Player player;
@@ -96,31 +112,42 @@ public class BlockSumo {
 
                                     PlayerInventory playerInv = player.getInventory();
 
-                                    if (playerInv.getChestplate().getData().getItemType() == Material.LEGACY_LEATHER_CHESTPLATE) {
+                                    try {
+                                        if (playerInv.getChestplate().getData().getItemType() == Material.LEGACY_LEATHER_CHESTPLATE) {
 
-                                        playerInv.setHelmet(TeamSwitchStatements.toColouredLeatherArmour(
-                                                McsuPlayer.fromBukkit(player).getTeamID(),
-                                                new ItemStack(Material.LEATHER_HELMET)
-                                        ));
+                                            playerInv.setHelmet(TeamSwitchStatements.toColouredLeatherArmour(
+                                                    McsuPlayer.fromBukkit(player).getTeamID(),
+                                                    new ItemStack(Material.LEATHER_HELMET)
+                                            ));
 
-                                        playerInv.setChestplate(TeamSwitchStatements.toColouredLeatherArmour(
-                                                McsuPlayer.fromBukkit(player).getTeamID(),
-                                                new ItemStack(Material.LEATHER_CHESTPLATE)
-                                        ));
+                                            playerInv.setChestplate(TeamSwitchStatements.toColouredLeatherArmour(
+                                                    McsuPlayer.fromBukkit(player).getTeamID(),
+                                                    new ItemStack(Material.LEATHER_CHESTPLATE)
+                                            ));
 
-                                        playerInv.setLeggings(TeamSwitchStatements.toColouredLeatherArmour(
-                                                McsuPlayer.fromBukkit(player).getTeamID(),
-                                                new ItemStack(Material.LEATHER_LEGGINGS)
-                                        ));
+                                            playerInv.setLeggings(TeamSwitchStatements.toColouredLeatherArmour(
+                                                    McsuPlayer.fromBukkit(player).getTeamID(),
+                                                    new ItemStack(Material.LEATHER_LEGGINGS)
+                                            ));
 
-                                        playerInv.setBoots(TeamSwitchStatements.toColouredLeatherArmour(
-                                                McsuPlayer.fromBukkit(player).getTeamID(),
-                                                new ItemStack(Material.LEATHER_BOOTS)
-                                        ));
+                                            playerInv.setBoots(TeamSwitchStatements.toColouredLeatherArmour(
+                                                    McsuPlayer.fromBukkit(player).getTeamID(),
+                                                    new ItemStack(Material.LEATHER_BOOTS)
+                                            ));
 
-                                    }
+                                        }
+                                    } catch (NullPointerException ignored) { }
 
                                 }, "InventoryClickEvent", "PlayerInteractEvent"))
+
+                                .addGameFunction(new CustomEventListener(event -> {
+                                    EntityDamageByEntityEvent damageByEntityEvent = (EntityDamageByEntityEvent) event;
+                                    if (BlockSumoPlayer.fromBukkit((Player) damageByEntityEvent.getEntity()).hasSpawnProt()
+                                            ||
+                                            BlockSumoPlayer.fromBukkit((Player) damageByEntityEvent.getDamager()).hasSpawnProt()) {
+                                        damageByEntityEvent.setCancelled(true);
+                                    }
+                                }, "EntityDamageByEntityEvent"))
 
                 )
                 .addGameState(
@@ -129,6 +156,11 @@ public class BlockSumo {
                 .addGameState(
                         new GameState("afterCountdown")
                                 .onEnable(()-> {
+                                    EventListenerMain.setActivityRule("TileDrops", false);
+                                    EventListenerMain.setActivityRule("TileBreaking", true);
+                                    EventListenerMain.setActivityRule("PVP", true);
+                                    EventListenerMain.setActivityRule("ExplosionDamage", false);
+                                    EventListenerMain.setActivityRule("PearlDamage", false);
 
                                     game.getGamestate("lobby").setEnabled(false);
 
@@ -166,14 +198,53 @@ public class BlockSumo {
                                         event -> {
 
                                             PlayerDeathEvent deathEvent = (PlayerDeathEvent) event;
-                                            BlockSumoPlayer sumoPlayer = BlockSumoPlayer.fromBukkit(deathEvent.getEntity().getPlayer());
+                                            Player deathEventPlayer = deathEvent.getEntity().getPlayer();
+                                            BlockSumoPlayer sumoPlayer = BlockSumoPlayer.fromBukkit(deathEventPlayer);
 
                                             displayLivesTimer.run(); // Runs an off-beat display to update immediately
                                             sumoPlayer.removeLife();
 
                                             if (sumoPlayer.getLives() == 0) {
                                                 game.eliminatePlayer(sumoPlayer.toBukkit());
+                                                game.checkAliveTeams(true);
                                                 checkIfEnded();
+                                            } else {
+                                                new BukkitRunnable() {
+                                                    int timeLeft = 5;
+
+                                                    @Override
+                                                    public void run() {
+
+                                                        if (timeLeft == 0) {
+                                                            SpawnManager.tpPlayerToGameSpawn(game.getMapLoader(), deathEventPlayer);
+                                                            deathEventPlayer.sendTitle(ChatColor.RED +""+ ChatColor.BOLD + "Go!", "", 0, 20, 10);
+
+                                                            deathEventPlayer.playSound(deathEventPlayer.getLocation(), Game.DefaultStartTimerTickSound, 1, 1);
+                                                            deathEventPlayer.setGameMode(GameMode.SURVIVAL);
+
+                                                            sumoPlayer.setSpawnProt(true);
+                                                            deathEventPlayer.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 60, 1));
+
+                                                            new BukkitRunnable() {
+                                                                @Override
+                                                                public void run() {
+                                                                    Bukkit.broadcastMessage("Spwan prot off");
+                                                                    sumoPlayer.setSpawnProt(false);
+                                                                }
+                                                            }.runTaskLater(MCSU_Main.Mcsu_Plugin, 60L);
+
+                                                            cancel();
+                                                        } else {
+                                                            deathEventPlayer.sendTitle(
+                                                                    ChatColor.RED + "Respawning in " + ChatColor.WHITE +""+ ChatColor.BOLD +""+  timeLeft,
+                                                                    ChatColor.RED +""+ sumoPlayer.getLives() + " lives left!"
+                                                            );
+                                                            deathEventPlayer.playSound(deathEventPlayer.getLocation(), Game.DefaultStartTimerTickSound, 1, 1);
+                                                        }
+
+                                                        timeLeft -= 1;
+                                                    }
+                                                }.runTaskTimer(MCSU_Main.Mcsu_Plugin, 0L, 20L);
                                             }
                                         },
                                         "PlayerDeathEvent"
@@ -193,6 +264,8 @@ public class BlockSumo {
 
             powerupTimer.cancel();
             displayLivesTimer.cancel();
+
+            BlockSumoPlayer.BlockSumoPlayers = new ArrayList<>();
 
             game.getAliveTeams().get(0).awardTeamPoints(100);
             game.endGame(game.getAliveTeams().get(0));

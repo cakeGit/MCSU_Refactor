@@ -130,9 +130,7 @@ public class Spleef {
                                         Location hitLocation = hitEvent.getHitBlock().getLocation();
 
                                         hitEvent.getEntity().getWorld().createExplosion(hitLocation, 2.2F, false);
-                                        for (int i = 0; i < explosionPower; i++) {
-                                            hitEvent.getEntity().getWorld().createExplosion(hitLocation, 1F, false);
-                                        }
+                                        hitEvent.getEntity().getWorld().createExplosion(hitLocation, 10F, false, false);
                                     }
 
                                 }, "ProjectileHitEvent"))

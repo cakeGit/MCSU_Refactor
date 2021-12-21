@@ -9,6 +9,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Objects;
 
 public class SpawnManager {
@@ -43,55 +44,54 @@ public class SpawnManager {
 
     }
 
-    public void gameSpawns(MapLoader mapLoader) { //Will randomly place ppl in the spawns
+    public static void tpPlayerToGameSpawn(MapLoader mapLoader, Player player) {
 
         MapMetadata mapData = mapLoader.getMapData();
         World world = mapLoader.getWorld();
 
-        /*Bukkit.broadcastMessage("Loading spawns for " + mapData.getGame() + " - " + mapData.getName());*/
-
         switch (mapData.getGameSpawnType()) {
             case "Team":
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    String playerTeamId = McsuPlayer.fromBukkit(player).getTeamID();
 
-                    boolean foundPoint = false;
+                String playerTeamId = McsuPlayer.fromBukkit(player).getTeamID();
 
-                    for (MapPoint gameSpawn : mapData.getGamePoints()) {
-                        if (Objects.equals(gameSpawn.getId(), playerTeamId)) {
+                boolean foundPoint = false;
 
-                            teleportToMapPoint(player, gameSpawn, world);
+                for (MapPoint gameSpawn : mapData.getGamePoints()) {
+                    if (Objects.equals(gameSpawn.getId(), playerTeamId)) {
 
-                            foundPoint = true;
-                        }
+                        teleportToMapPoint(player, gameSpawn, world);
+
+                        foundPoint = true;
                     }
-
-                    if (!foundPoint) { Bukkit.broadcastMessage(ChatColor.RED + "[MCSU]: Couldn't find a point for team with id "+playerTeamId); }
                 }
+
+                if (!foundPoint) { Bukkit.broadcastMessage(ChatColor.RED + "[MCSU]: Couldn't find a point for team with id "+playerTeamId); }
 
                 break;
             default:
                 ArrayList<MapPoint> unusedPoints = (ArrayList<MapPoint>) mapData.getGamePoints().clone();
 
-                for (Player player : Bukkit.getOnlinePlayers()) {
-
-                    if (unusedPoints.size() == 0) {
-                        Bukkit.broadcastMessage(ChatColor.RED + "[MCSU]: umm so i kinda dont have enough game spawns...");
-                    }
-
-                    MapPoint gameSpawn = unusedPoints.get(0);
-
-                    teleportToMapPoint(player, gameSpawn, world);
-
-                    Bukkit.getLogger().info(unusedPoints.size() + " spawns still unused ");
-
-                    unusedPoints.remove(gameSpawn);
-
+                if (unusedPoints.size() == 0) {
+                    Bukkit.broadcastMessage(ChatColor.RED + "[MCSU]: umm so i kinda dont have enough game spawns...");
                 }
+
+                MapPoint gameSpawn = unusedPoints.get(0);
+
+                teleportToMapPoint(player, gameSpawn, world);
+
+                Bukkit.getLogger().info(unusedPoints.size() + " spawns still unused ");
+
+                unusedPoints.remove(gameSpawn);
+
                 break;
         }
+    }
 
+    public void gameSpawns(MapLoader mapLoader) { //Will randomly place ppl in the spawns
 
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            tpPlayerToGameSpawn(mapLoader, player);
+        }
 
     }
 
