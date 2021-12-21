@@ -15,7 +15,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -23,11 +27,9 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.*;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -204,6 +206,18 @@ public class EventListenerMain implements Listener {
         onRegisteredEvent(e);
     }
 
+    @EventHandler public void onBlockPlaceEvent(BlockPlaceEvent e) {
+        Block blockPlaced = e.getBlockPlaced();
+        if (getRuleActive("AutoIgniteTNT") && blockPlaced.getBlockData().getMaterial() == Material.TNT) {
+            blockPlaced.setType(Material.AIR);
+            blockPlaced.getWorld().spawnEntity(blockPlaced.getLocation().add(new Location(blockPlaced.getWorld(), 0.5, 0, 0.5)), EntityType.PRIMED_TNT);
+        } else {
+            Bukkit.getLogger().info(e.getBlockPlaced().getBlockData().getMaterial().toString());
+        }
+
+        onRegisteredEvent(e);
+    }
+
 
     //Events that just get passed to registered event with no other code
 
@@ -213,7 +227,8 @@ public class EventListenerMain implements Listener {
 
     @EventHandler public void onProjectileHitEvent(ProjectileHitEvent e) { onRegisteredEvent(e); }
     @EventHandler public void onEntityShootBowEvent(EntityShootBowEvent e) { onRegisteredEvent(e); }
-    @EventHandler public void onBlockPlaceEvent(BlockPlaceEvent e) { onRegisteredEvent(e); }
+    @EventHandler public void onPlayerInteractEvent(PlayerInteractEvent e) { onRegisteredEvent(e); }
+    @EventHandler public void onInventoryClickEvent(InventoryClickEvent e) { onRegisteredEvent(e); }
 
     //Activity rules
 
@@ -236,6 +251,7 @@ public class EventListenerMain implements Listener {
         new ActivityRule("FallDamage", false);
         new ActivityRule("ExplosionDamage", true);
         new ActivityRule("Crafting", false);
+        new ActivityRule("AutoIgniteTNT", true);
 
     }
 

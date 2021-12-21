@@ -13,6 +13,17 @@ import java.util.Objects;
 
 public class SpawnManager {
 
+    public static void teleportToMapPoint(Player player, MapPoint mapPoint, World world) {
+        player.teleport( new Location(
+                world,
+                mapPoint.Coordinates[0],
+                mapPoint.Coordinates[1],
+                mapPoint.Coordinates[2],
+                (float) (double) mapPoint.Rotation[0],
+                (float) (double)  mapPoint.Rotation[1]
+        ));
+    }
+
     public void lobbySpawns(MapLoader mapLoader) {
 
         MapMetadata mapData = mapLoader.getMapData();
@@ -21,14 +32,7 @@ public class SpawnManager {
         for (Player player : Bukkit.getOnlinePlayers()) {
             MapPoint lobbySpawn = Pick.Random(mapData.getLobbyPoints());
 
-            player.teleport( new Location(
-                    world,
-                    lobbySpawn.Coordinates[0],
-                    lobbySpawn.Coordinates[1],
-                    lobbySpawn.Coordinates[2],
-                    (float) (double) lobbySpawn.Rotation[0],
-                    (float) (double)  lobbySpawn.Rotation[1]
-            ));
+            teleportToMapPoint(player, lobbySpawn, world);
 
             /*Bukkit.broadcastMessage(lobbySpawn.Coordinates[0] +" "+
                     lobbySpawn.Coordinates[1] +" "+
@@ -49,25 +53,16 @@ public class SpawnManager {
         switch (mapData.getGameSpawnType()) {
             case "Team":
                 for (Player player : Bukkit.getOnlinePlayers()) {
-                    String playerTeamId = McsuPlayer.getByBukkitPlayer(player).getTeamID();
+                    String playerTeamId = McsuPlayer.fromBukkit(player).getTeamID();
 
                     boolean foundPoint = false;
 
-                    for (MapPoint gamePoint : mapData.getGamePoints()) {
-                        if (Objects.equals(gamePoint.getId(), playerTeamId)) {
+                    for (MapPoint gameSpawn : mapData.getGamePoints()) {
+                        if (Objects.equals(gameSpawn.getId(), playerTeamId)) {
 
-                            player.teleport( new Location(
-                                    world,
-                                    gamePoint.Coordinates[0],
-                                    gamePoint.Coordinates[1],
-                                    gamePoint.Coordinates[2],
-                                    (float) (double) gamePoint.Rotation[0],
-                                    (float) (double)  gamePoint.Rotation[1]
-                            ));
+                            teleportToMapPoint(player, gameSpawn, world);
 
                             foundPoint = true;
-                        } else {
-                            Bukkit.broadcastMessage("Found a point with ID " + gamePoint.getId());
                         }
                     }
 
@@ -86,14 +81,7 @@ public class SpawnManager {
 
                     MapPoint gameSpawn = unusedPoints.get(0);
 
-                    player.teleport( new Location(
-                            world,
-                            gameSpawn.Coordinates[0],
-                            gameSpawn.Coordinates[1],
-                            gameSpawn.Coordinates[2],
-                            (float) (double) gameSpawn.Rotation[0],
-                            (float) (double)  gameSpawn.Rotation[1]
-                    ));
+                    teleportToMapPoint(player, gameSpawn, world);
 
                     Bukkit.getLogger().info(unusedPoints.size() + " spawns still unused ");
 

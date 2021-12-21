@@ -1,12 +1,11 @@
 package com.cloud.mcsu_rf.Objects.GameFunctions;
 
-import com.cloud.mcsu_rf.Inventories.BlockSumoInventory;
 import com.cloud.mcsu_rf.Inventories.InventoryBase;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
-public class InventoryManager extends GameFunctionBase {
+public class InventoryManager extends GameFunction {
 
     protected InventoryBase inventory;
 
@@ -14,15 +13,18 @@ public class InventoryManager extends GameFunctionBase {
 
         inventory.setManager(this);
         this.inventory = inventory;
+        inventory.init();
         boundEventNames.add("GameSpawnsActivatedEvent");
 
     }
 
-    public void addBoundEvent(String boundEventName) {
-        boundEventNames.add(boundEventName);
+    public void bindEvent(String eventName) {
+        boundEventNames.add(eventName);
     }
 
     public void onBoundEvent(Event event) {
+
+        inventory.onBoundEvent(event);
 
         if(event.getEventName().equals("GameSpawnsActivatedEvent")) {
             for (Player player : Bukkit.getOnlinePlayers())
@@ -30,4 +32,6 @@ public class InventoryManager extends GameFunctionBase {
         }
 
     }
+
+    public void emitInventoryEvent(String inventoryEventName) { inventory.onInventoryEvent(inventoryEventName); }
 }

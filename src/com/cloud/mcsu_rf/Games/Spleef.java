@@ -3,7 +3,7 @@ package com.cloud.mcsu_rf.Games;
 import com.cloud.mcsu_rf.EventListenerMain;
 import com.cloud.mcsu_rf.Inventories.SpleefInventory;
 import com.cloud.mcsu_rf.Objects.Game.*;
-import com.cloud.mcsu_rf.Objects.GameFunctions.HeightActionZone;
+import com.cloud.mcsu_rf.Objects.GameFunctions.ActionZones.HeightActionZone;
 import com.cloud.mcsu_rf.Objects.GameFunctions.CustomEventListener;
 import com.cloud.mcsu_rf.Objects.GameFunctions.PointAwarder;
 import com.cloud.mcsu_rf.Objects.McsuPlayer;
@@ -62,18 +62,18 @@ public class Spleef {
                                             );
 
                                             game.getGamestate("base")
-                                                    .addGameFunction(new CustomEventListener("GameSpawnsActivatedEvent", Event -> {
+                                                    .addGameFunction(new CustomEventListener(Event -> {
 
                                                         for (Player player : Bukkit.getOnlinePlayers()) {
                                                             spleefInventory.loadInventory(player);
                                                         }
 
-                                                    }), true);
+                                                    }, "GameSpawnsActivatedEvent"), true);
 
                                             if (Objects.equals(toolGamemodeChoice, "Fireworks")) {
 
                                                 game.getGamestate("base")
-                                                        .addGameFunction(new CustomEventListener("EntityShootBowEvent", Event -> {
+                                                        .addGameFunction(new CustomEventListener(Event -> {
 
                                                             EntityShootBowEvent shootEvent = (EntityShootBowEvent) Event;
 
@@ -81,7 +81,7 @@ public class Spleef {
 
                                                             spleefInventory.reloadInventory(player);
 
-                                                        }), true);
+                                                        }, "EntityShootBowEvent"), true);
 
                                             }
 
@@ -93,7 +93,7 @@ public class Spleef {
                                                             .setWhilePlayerInside(player -> {
                                                                 if (
                                                                         game.getAlivePlayers().contains(
-                                                                                McsuPlayer.getByBukkitPlayer(player)
+                                                                                McsuPlayer.fromBukkit(player)
                                                                         )
                                                                 ) {
                                                                     player.setHealth(0);
@@ -104,7 +104,7 @@ public class Spleef {
                                         }
                                 )
                                 .addGameFunction(new PointAwarder("Survival", 2))
-                                .addGameFunction(new CustomEventListener("PlayerDeathEvent", Event -> {
+                                .addGameFunction(new CustomEventListener(Event -> {
 
                                     game.eliminatePlayer(
                                             ( (PlayerDeathEvent) Event ).getEntity()
@@ -114,13 +114,13 @@ public class Spleef {
 
                                     checkIfEnded();
 
-                                }))
-                                .addGameFunction(new CustomEventListener("GameCountdownEndEvent", Event -> {
+                                }, "PlayerDeathEvent"))
+                                .addGameFunction(new CustomEventListener(Event -> {
                                     game.getGamestate("afterCountdown").setEnabled(true);
                                     EventListenerMain.setActivityRule("TileBreaking", true);
                                     EventListenerMain.setActivityRule("Crafting", false);
-                                }))
-                                .addGameFunction(new CustomEventListener("ProjectileHitEvent", Event -> {
+                                }, "GameCountdownEndEvent"))
+                                .addGameFunction(new CustomEventListener(Event -> {
 
                                     ProjectileHitEvent hitEvent = (ProjectileHitEvent) Event;
 
@@ -135,7 +135,7 @@ public class Spleef {
                                         }
                                     }
 
-                                }))
+                                }, "ProjectileHitEvent"))
                 )
                 .addGameState(new GameState("afterCountdown"));
 

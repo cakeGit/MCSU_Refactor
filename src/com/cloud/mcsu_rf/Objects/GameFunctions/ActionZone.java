@@ -9,22 +9,22 @@ import org.bukkit.util.BlockVector;
 
 import java.util.ArrayList;
 
-public class ActionZone extends GameFunctionBase {
+public class ActionZone extends GameFunction {
 
     public static boolean pointInside(double a, double b, double point) {
         return Math.abs(a-point) + Math.abs(b-point) == Math.abs(a-b);
     }
 
-    BlockVector from;
-    BlockVector to;
+    protected BlockVector from;
+    protected BlockVector to;
 
-    ArrayList<Player> playersInside = new ArrayList<>();
+    protected ArrayList<Player> playersInside = new ArrayList<>();
 
-    PlayerLambda onEnterEvent;
-    PlayerLambda onExitEvent;
-    PlayerLambda whilePlayerInside;
+    protected PlayerLambda onEnterEvent;
+    protected PlayerLambda onExitEvent;
+    protected PlayerLambda whilePlayerInside;
 
-    boolean complexEventProcessing = false;
+    protected boolean complexEventProcessing = false;
 
     public ActionZone(BlockVector from, BlockVector to) {
 
