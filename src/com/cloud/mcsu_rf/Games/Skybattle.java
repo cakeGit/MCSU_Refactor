@@ -92,7 +92,6 @@ public class Skybattle {
                         })
                 );
 
-
     }
 
     public void checkIfEnded() {

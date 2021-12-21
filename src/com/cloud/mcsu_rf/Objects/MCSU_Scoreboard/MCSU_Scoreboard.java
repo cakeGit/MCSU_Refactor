@@ -1,11 +1,12 @@
 package com.cloud.mcsu_rf.Objects.MCSU_Scoreboard;
 
+import com.cloud.mcsu_rf.Config_Main;
+import com.cloud.mcsu_rf.Objects.McsuTeam;
 import com.cloud.mcsu_rf.Score_Handlers.Scoreboard_Main;
+import com.cloud.mcsu_rf.TeamHandlers.TeamMain;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Score;
-import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -57,6 +58,16 @@ public class MCSU_Scoreboard {
         this.update();
         Scoreboard Scoreboard = Scoreboard_Main.Scoreboard_Manager.getNewScoreboard();
         Objective Objective = Scoreboard.registerNewObjective(this.Name, "dummy", this.Name);
+
+        for(McsuTeam mcsuTeam : TeamMain.Teams) {
+            Team team = Scoreboard.registerNewTeam(mcsuTeam.getTeamID());
+            team.setDisplayName(mcsuTeam.getStyledName());
+            team.setColor(ChatColor.getByChar(mcsuTeam.getChatColour()));
+            team.setPrefix(mcsuTeam.getChatColour()+"["+mcsuTeam.getTeamID().toUpperCase()+" ]");
+            for(String uuids : mcsuTeam.getMemberUUIDs()) {
+                team.addEntry(Bukkit.getPlayer(uuids).getName());
+            }
+        }
 
         Objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 
