@@ -24,13 +24,13 @@ public class SkybattleInventory extends InventoryBase {
         playerInventory.setItem(2,new ItemStack(Material.COOKED_BEEF,8));
         player.getInventory().setChestplate(new ItemStack(Material.IRON_CHESTPLATE,1));
 
-        ItemStack blocks = TeamSwitchStatements.colouredConcreteItem(McsuPlayer.getByBukkitPlayer(player).getTeamID());
+        ItemStack blocks = TeamSwitchStatements.colouredConcreteItem(McsuPlayer.fromBukkit(player).getTeamID());
 
         player.getInventory().setItemInOffHand(blocks);
     }
 
     public void reloadInventory(EquipmentSlot equipmentSlot, Player player) {
-        ItemStack blocks = TeamSwitchStatements.colouredConcreteItem(McsuPlayer.getByBukkitPlayer(player).getTeamID());
+        ItemStack blocks = TeamSwitchStatements.colouredConcreteItem(McsuPlayer.fromBukkit(player).getTeamID());
         player.getInventory().setItem(equipmentSlot, blocks);
     }
 
