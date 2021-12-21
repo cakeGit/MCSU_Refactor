@@ -83,6 +83,7 @@ public class Skybattle {
                                     EventListenerMain.setActivityRule("PVP", true);
                                     EventListenerMain.setActivityRule("ExplosionDamage", true);
                                     EventListenerMain.setActivityRule("Crafting", true);
+                                    EventListenerMain.setActivityRule("FallDamage", true);
                                     game.getGamestate("afterCountdown").setEnabled(true);
                                 }, "GameCountdownEndEvent"))
                 )
