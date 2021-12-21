@@ -44,15 +44,15 @@ public class Score_Cmds {
                     try {
                         try {
                             McsuTeam oldTeam = TeamMain.getTeamById(Player.getTeamID());
-                            oldTeam.removeMember(Player.getBukkitPlayer().getUniqueId().toString());
+                            oldTeam.removeMember(Player.toBukkit().getUniqueId().toString());
                         } catch (Exception e) {
-                            Bukkit.getLogger().info(Player.getBukkitPlayer().getName() + " did not seem have a valid team prior to /team set, " +
+                            Bukkit.getLogger().info(Player.toBukkit().getName() + " did not seem have a valid team prior to /team set, " +
                                     "could this be causing errors?");
                         }
 
                         McsuTeam team = TeamMain.getTeamById(args[2]);
                         Player.setTeam(team);
-                        team.addMember(Player.getBukkitPlayer().getUniqueId().toString());
+                        team.addMember(Player.toBukkit().getUniqueId().toString());
 
                         sender.sendMessage(ChatColor.AQUA + "[MCSU]: Successfully set player " + Player.getName() + "'s team to " + team.getStyledName());
 

@@ -4,7 +4,7 @@ import com.cloud.mcsu_rf.EventListenerMain;
 import com.cloud.mcsu_rf.Inventories.SkybattleInventory;
 import com.cloud.mcsu_rf.Objects.Game.*;
 import com.cloud.mcsu_rf.Objects.GameFunctions.CustomEventListener;
-import com.cloud.mcsu_rf.Objects.GameFunctions.HeightActionZone;
+import com.cloud.mcsu_rf.Objects.GameFunctions.ActionZones.HeightActionZone;
 import com.cloud.mcsu_rf.Objects.GameFunctions.PointAwarder;
 import com.cloud.mcsu_rf.Objects.McsuPlayer;
 import org.bukkit.Bukkit;
@@ -40,7 +40,7 @@ public class Skybattle {
                                                             .setWhilePlayerInside(player -> {
                                                                 if (
                                                                         game.getAlivePlayers().contains(
-                                                                                McsuPlayer.getByBukkitPlayer(player)
+                                                                                McsuPlayer.fromBukkit(player)
                                                                         )
                                                                 ) {
                                                                     player.setHealth(0);
@@ -52,21 +52,21 @@ public class Skybattle {
                                         }
 
                                 )
-                                .addGameFunction(new CustomEventListener("BlockPlaceEvent", Event -> {
+                                .addGameFunction(new CustomEventListener(Event -> {
 
                                     BlockPlaceEvent placeEvent = (BlockPlaceEvent) Event;
                                     skybattleInventory.reloadInventory(placeEvent.getHand(), placeEvent.getPlayer());
 
-                                }))
-                                .addGameFunction(new CustomEventListener("GameSpawnsActivatedEvent", Event -> {
+                                }, "BlockPlaceEvent"))
+                                .addGameFunction(new CustomEventListener(Event -> {
 
                                     for (Player player : Bukkit.getOnlinePlayers()) {
                                         skybattleInventory.loadInventory(player);
                                     }
 
-                                }))
+                                }, "GameSpawnsActivatedEvent"))
                                 .addGameFunction(new PointAwarder("Survival", 2))
-                                .addGameFunction(new CustomEventListener("PlayerDeathEvent", Event -> {
+                                .addGameFunction(new CustomEventListener(Event -> {
 
                                     game.eliminatePlayer(
                                             ( (PlayerDeathEvent) Event ).getEntity()
@@ -76,15 +76,15 @@ public class Skybattle {
 
                                     checkIfEnded();
 
-                                }))
-                                .addGameFunction(new CustomEventListener("GameCountdownEndEvent", Event -> {
+                                }, "PlayerDeathEvent"))
+                                .addGameFunction(new CustomEventListener(Event -> {
                                     EventListenerMain.setActivityRule("TileDrops", true);
                                     EventListenerMain.setActivityRule("TileBreaking", true);
                                     EventListenerMain.setActivityRule("PVP", true);
                                     EventListenerMain.setActivityRule("ExplosionDamage", true);
                                     EventListenerMain.setActivityRule("Crafting", true);
                                     game.getGamestate("afterCountdown").setEnabled(true);
-                                }))
+                                }, "GameCountdownEndEvent"))
                 )
                 .addGameState(new GameState("afterCountdown"));
 

@@ -18,9 +18,9 @@ public class McsuPlayer {
 
     public static ArrayList<McsuPlayer> McsuPlayers = new ArrayList<>();
 
-    public static McsuPlayer getByBukkitPlayer(Player bukkitPlayer) {
+    public static McsuPlayer fromBukkit(Player bukkitPlayer) {
         for (McsuPlayer mcsuPlayer: McsuPlayers) {
-            if (mcsuPlayer.getBukkitPlayer() == bukkitPlayer) {
+            if (mcsuPlayer.toBukkit() == bukkitPlayer) {
                 return mcsuPlayer;
             }
         }
@@ -29,7 +29,7 @@ public class McsuPlayer {
     }
     public static McsuPlayer getPlayerByUUID(String UUID) {
         for (McsuPlayer mcsuPlayer: McsuPlayers) {
-            if (Objects.equals(mcsuPlayer.getBukkitPlayer().getUniqueId().toString(), UUID)) {
+            if (Objects.equals(mcsuPlayer.toBukkit().getUniqueId().toString(), UUID)) {
                 return mcsuPlayer;
             }
         }
@@ -43,7 +43,7 @@ public class McsuPlayer {
     }
     public static McsuPlayer getPlayerByName(String Name) {
         for (McsuPlayer mcsuPlayer: McsuPlayers) {
-            if (Objects.equals(mcsuPlayer.getBukkitPlayer().getName(), Name)) {
+            if (Objects.equals(mcsuPlayer.toBukkit().getName(), Name)) {
                 return mcsuPlayer;
             }
         }
@@ -58,7 +58,7 @@ public class McsuPlayer {
         AtomicBoolean playerExists = new AtomicBoolean(false);
 
         McsuPlayers.forEach(mcsuPlayer -> {
-            if (mcsuPlayer.getBukkitPlayer().getUniqueId() == p.getUniqueId()) {
+            if (mcsuPlayer.toBukkit().getUniqueId() == p.getUniqueId()) {
                 Bukkit.getLogger().info("Player " + p.getName() + " is already registered!");
                 playerExists.set(true);
             }
@@ -70,8 +70,8 @@ public class McsuPlayer {
             for ( McsuTeam team : TeamMain.Teams ) {
                 if (team.getMemberUUIDs() != null) {
                     if (team.getMemberUUIDs().contains(p.getUniqueId().toString())) {
-                        assert McsuPlayer.getByBukkitPlayer(p) != null;
-                        McsuPlayer.getByBukkitPlayer(p).setTeam(team);
+                        assert McsuPlayer.fromBukkit(p) != null;
+                        McsuPlayer.fromBukkit(p).setTeam(team);
                         TeamMain.refreshTeamsCalculatedPoints();
                     }
                 }
@@ -98,7 +98,7 @@ public class McsuPlayer {
     }
 
     public String getTeamID() { return this.teamID; }
-    public Player getBukkitPlayer() { return this.bukkitPlayer; }
+    public Player toBukkit() { return this.bukkitPlayer; }
     public int getPoints() { return this.points; }
     public String getColouredName() { return this.Colour + this.bukkitPlayer.getName() + ChatColor.RESET; }
     public String getName() { return this.bukkitPlayer.getName(); }

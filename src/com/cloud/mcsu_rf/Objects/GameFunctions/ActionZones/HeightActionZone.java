@@ -1,5 +1,6 @@
-package com.cloud.mcsu_rf.Objects.GameFunctions;
+package com.cloud.mcsu_rf.Objects.GameFunctions.ActionZones;
 
+import com.cloud.mcsu_rf.Objects.GameFunctions.ActionZone;
 import org.bukkit.Location;
 
 public class HeightActionZone extends ActionZone {
@@ -14,7 +15,5 @@ public class HeightActionZone extends ActionZone {
 
     }
 
-    public boolean testLocationInsideZone(Location loc) {
-        return loc.getY() < activationHeight;
-    }
+    public boolean testLocationInsideZone(Location loc) { return loc.getY() < activationHeight; }
 }

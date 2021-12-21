@@ -1,5 +1,6 @@
 package com.cloud.mcsu_rf.Objects;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
@@ -29,12 +30,20 @@ public class McsuItemStack extends ItemStack {
         return this;
     }
 
+    public McsuItemStack setName(String name) {
+        ItemMeta itemMeta = getItemMeta();
+        itemMeta.setDisplayName(ChatColor.RESET + name);
+        setItemMeta(itemMeta);
+        return this;
+    }
+
+
     public McsuItemStack setBasicLore(String lore) {
         getItemMeta().setLore(Arrays.asList(lore));
         return this;
     }
 
-    public boolean isConcrete() {
+    /*public boolean isConcrete() {
         List<Material> concretes = Arrays.asList(
                 Material.WHITE_CONCRETE,
                 Material.ORANGE_CONCRETE,
@@ -54,6 +63,6 @@ public class McsuItemStack extends ItemStack {
                 Material.BLACK_CONCRETE
         );
         return  concretes.contains(material);
-    }
+    }*/
 
 }

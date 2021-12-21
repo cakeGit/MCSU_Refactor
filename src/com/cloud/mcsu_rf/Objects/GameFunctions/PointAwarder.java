@@ -3,7 +3,7 @@ package com.cloud.mcsu_rf.Objects.GameFunctions;
 import com.cloud.mcsu_rf.Objects.McsuPlayer;
 import org.bukkit.event.Event;
 
-public class PointAwarder extends GameFunctionBase {
+public class PointAwarder extends GameFunction {
 
     public PointAwarder(String Goal, int pointValue) {
 

@@ -25,15 +25,15 @@ public class LootTable {
 
         int pickedInt = new Random().nextInt(totalWeight)+1;
 
-        Bukkit.broadcastMessage("Picked int "+pickedInt);
+        //Bukkit.broadcastMessage("Picked int "+pickedInt);
 
         int currentWeight = 0;
 
         for ( LootOption option : options ) {
 
-            Bukkit.broadcastMessage("Current weight "+currentWeight);
+            //Bukkit.broadcastMessage("Current weight "+currentWeight);
             if ( numberInside( currentWeight, currentWeight+option.getWeight(), pickedInt ) && option.getWeight() != 0) {
-                Bukkit.broadcastMessage("args: " + currentWeight +", "+ (currentWeight+option.getWeight()) +", "+ pickedInt);
+                //Bukkit.broadcastMessage("args: " + currentWeight +", "+ (currentWeight+option.getWeight()) +", "+ pickedInt);
                 return option;
             }
 

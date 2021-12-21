@@ -48,7 +48,12 @@ public class Game {
     static Sound DefaultStartTimerTickSound = Sound.BLOCK_NOTE_BLOCK_SNARE;
     static Sound DefaultStartTimerEndSound = Sound.ENTITY_FIREWORK_ROCKET_LAUNCH;
 
+    //static
+    static ArrayList<McsuPlayer> alivePlayers = new ArrayList<>();
+
+    //Other vars
     String Name;
+    World world;
     GamemodeManager gamemodeManager;
     ArrayList<GamemodeOptionChoice> gamemodeChoices;
     MapMetadata mapMetadata;
@@ -57,7 +62,6 @@ public class Game {
     GameMode playerGameMode = GameMode.SURVIVAL;
 
     ArrayList<GameState> gameStates = new ArrayList<>();
-    ArrayList<McsuPlayer> alivePlayers = new ArrayList<>();
     ArrayList<McsuTeam> aliveTeams = new ArrayList<>();
 
     public Game(String Name) {
@@ -71,6 +75,8 @@ public class Game {
     }
 
     public void initGameLoader(World world) {
+
+        this.world = world;
 
         if (gamemodeManager != null) {
             gamemodeChoices = (ArrayList<GamemodeOptionChoice>) gamemodeManager.pickOptions().clone();
@@ -172,7 +178,7 @@ public class Game {
     public void eliminatePlayer(Player bukkitPlayer) {
 
         this.removeFromAlivePlayers(
-                McsuPlayer.getByBukkitPlayer(bukkitPlayer)
+                McsuPlayer.fromBukkit(bukkitPlayer)
         );
 
     }
@@ -259,13 +265,13 @@ public class Game {
     public Game setPlayerGamemode(GameMode gameMode) { playerGameMode = gameMode; return this; }
 
 
-    public ArrayList<McsuPlayer> getAlivePlayers() { return alivePlayers; }
+    public static ArrayList<McsuPlayer> getAlivePlayers() { return alivePlayers; }
     public void removeFromAlivePlayers(McsuPlayer player) { alivePlayers.remove(player); }
 
     public ArrayList<McsuTeam> getAliveTeams() { return aliveTeams; }
     public void removeFromAliveTeams(McsuTeam mcsuTeam) { aliveTeams.remove(mcsuTeam); }
 
-
+    public World getWorld() { return world; }
     public String getName() { return this.Name; }
 
     public GameState getGamestate(String Name) {

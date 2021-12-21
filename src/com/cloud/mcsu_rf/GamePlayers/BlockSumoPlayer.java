@@ -1,6 +1,6 @@
 package com.cloud.mcsu_rf.GamePlayers;
 
-import com.cloud.mcsu_rf.TeamHandlers.TeamMain;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -9,20 +9,34 @@ public class BlockSumoPlayer {
 
     public static ArrayList<BlockSumoPlayer> BlockSumoPlayers = new ArrayList<>();
 
+    int maxLives = 3;
     int lives = 3;
     Player player;
 
-    public BlockSumoPlayer(Player player) {
+    public BlockSumoPlayer(Player player, int lives) {
+
+        this.maxLives = lives;
+        this.lives = lives;
         this.player = player;
+
         BlockSumoPlayers.add(this);
+
     }
 
-    public static BlockSumoPlayer getPlayer(Player player) {
-        return BlockSumoPlayers.stream().filter(blockSumoPlayer -> blockSumoPlayer.getPlayer().equals(player)).findFirst().orElse(null);
+    public static BlockSumoPlayer fromBukkit(Player player) {
+        return BlockSumoPlayers.stream().filter(blockSumoPlayer -> blockSumoPlayer.toBukkit().equals(player)).findFirst().orElse(null);
     }
 
     public int getLives() { return lives; }
     public void removeLife() { this.lives -= 1; }
-    public Player getPlayer() { return player; }
+    public Player toBukkit() { return player; }
 
+    public String getLivesString() {
+        return  (lives == 0 ? ChatColor.GRAY + " -- DEAD -- ": ChatColor.RED + "Lives: ") +
+                ChatColor.RED +""+
+                "❤ ".repeat(lives)+
+                ChatColor.GRAY +
+                "☠ ".repeat(maxLives-lives) +
+                (lives == 0 ? " -- DEAD -- " : "");
+    }
 }

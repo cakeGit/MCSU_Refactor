@@ -2,19 +2,18 @@ package com.cloud.mcsu_rf.Objects.GameFunctions;
 
 import com.cloud.mcsu_rf.EventListenerMain;
 import com.cloud.mcsu_rf.Objects.EventListener;
-import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 
 import java.util.ArrayList;
 
-public class GameFunctionBase {
+public class GameFunction {
 
     protected ArrayList<String> boundEventNames = new ArrayList<>();
     protected ArrayList<EventListener> eventListeners = new ArrayList<>();
 
     protected boolean isTemporary = false;
 
-    public GameFunctionBase() { }
+    public GameFunction() { }
 
     public void setEnabled(boolean enabled) {
 

@@ -1,7 +1,9 @@
 package com.cloud.mcsu_rf;
 
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 public class TeamSwitchStatements {
 
@@ -19,7 +21,7 @@ public class TeamSwitchStatements {
             case "y":
                 blocks.setType(Material.YELLOW_CONCRETE);
                 break;
-            case "s":
+            case "a":
                 blocks.setType(Material.LIGHT_BLUE_CONCRETE);
                 break;
             case "p":
@@ -53,7 +55,7 @@ public class TeamSwitchStatements {
             case "y":
                 blocks.setType(Material.YELLOW_WOOL);
                 break;
-            case "s":
+            case "a":
                 blocks.setType(Material.LIGHT_BLUE_WOOL);
                 break;
             case "p":
@@ -72,4 +74,38 @@ public class TeamSwitchStatements {
 
         return blocks;
     }
+
+    public static ItemStack toColouredLeatherArmour(String teamId, ItemStack armourPiece) {
+
+        ItemStack item = new ItemStack(armourPiece);
+        LeatherArmorMeta meta = (LeatherArmorMeta) item.getItemMeta();
+        meta.setColor(toColour(teamId));
+        item.setItemMeta(meta);
+        return item;
+
+    }
+
+    public static Color toColour(String teamId) {
+        switch (teamId) {
+            case "r":
+                return Color.RED;
+            case "g":
+                return Color.GREEN;
+            case "y":
+                return Color.YELLOW;
+            case "a":
+                return Color.AQUA;
+            case "p":
+                return Color.fromRGB(255,105,180);
+            case "w":
+                return Color.WHITE;
+            case "gr":
+                return Color.GRAY;
+            case "b":
+                return Color.BLUE;
+        }
+
+        return Color.WHITE;
+    }
+
 }

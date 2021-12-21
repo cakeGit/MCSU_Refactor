@@ -28,25 +28,27 @@ public class BlockSumoLoot {
                 ),
                 new LootOption(
                         2,
-                        new ItemStack(Material.STICK)
+                        new ItemStack(Material.COBWEB, 4)
                 ),
                 new LootOption(
-                        2,
+                        1,
                         new ItemStack(Material.LEATHER_CHESTPLATE)
                 ),
                 new LootOption(
                         3,
                         new McsuItemStack(Material.STICK)
                                 .forceAddEnchantment(Enchantment.KNOCKBACK, 1)
-                ),
-                new LootOption(
-                        3,
-                        new McsuItemStack(Material.STICK)
-                                .forceAddEnchantment(Enchantment.KNOCKBACK, 2)
+                                .setName("Stick - Knockback I")
                 ),
                 new LootOption(
                         1,
-                        new ItemStack(Material.NETHERITE_BOOTS)
+                        new McsuItemStack(Material.STICK)
+                                .forceAddEnchantment(Enchantment.KNOCKBACK, 2)
+                                .setName("Stick - Knockback II")
+                ),
+                new LootOption(
+                        2,
+                        new ItemStack(Material.ENDER_PEARL)
                 )
         );
 
