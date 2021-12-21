@@ -30,9 +30,9 @@ commands:
   goto:
     description: Goes to the specified tpPoint
     usage: /goto <tpPoint>
-  team:
+  mcsuteam:
     description: Sets the player's team
-    usage: /team set <Player Name> <TeamID>
+    usage: /mcsuteam set <Player Name> <TeamID>
   hub:
     description: Teleports you to the Hub,
     usage: /hub
