@@ -89,7 +89,6 @@ public class Skybattle {
                 )
                 .addGameState(new GameState("afterCountdown"));
 
-
     }
 
     public void checkIfEnded() {

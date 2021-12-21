@@ -121,7 +121,6 @@ public class BlockSumo {
                                     }
 
                                 }, "InventoryClickEvent", "PlayerInteractEvent"))
-
                 )
                 .addGameState(
                         new GameState("lobby")
