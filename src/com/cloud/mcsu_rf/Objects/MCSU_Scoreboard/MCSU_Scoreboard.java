@@ -4,6 +4,7 @@ import com.cloud.mcsu_rf.Config_Main;
 import com.cloud.mcsu_rf.Objects.McsuTeam;
 import com.cloud.mcsu_rf.Score_Handlers.Scoreboard_Main;
 import com.cloud.mcsu_rf.TeamHandlers.TeamMain;
+import com.cloud.mcsu_rf.TeamSwitchStatements;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.scoreboard.*;
@@ -62,7 +63,7 @@ public class MCSU_Scoreboard {
         for(McsuTeam mcsuTeam : TeamMain.Teams) {
             Team team = Scoreboard.registerNewTeam(mcsuTeam.getTeamID());
             team.setDisplayName(mcsuTeam.getStyledName());
-            team.setColor(ChatColor.getByChar(mcsuTeam.getChatColour()));
+            team.setColor(TeamSwitchStatements.toColour(mcsuTeam.getTeamID()));
             team.setPrefix(mcsuTeam.getChatColour()+"["+mcsuTeam.getTeamID().toUpperCase()+" ]");
             for(String uuids : mcsuTeam.getMemberUUIDs()) {
                 team.addEntry(Bukkit.getPlayer(uuids).getName());
