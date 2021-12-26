@@ -63,7 +63,8 @@ public class MCSU_Scoreboard {
         for(McsuTeam mcsuTeam : TeamMain.Teams) {
             Team team = Scoreboard.registerNewTeam(mcsuTeam.getTeamID());
             team.setDisplayName(mcsuTeam.getStyledName());
-            team.setColor(TeamSwitchStatements.toColour(mcsuTeam.getTeamID()));
+            //team.setColor(TeamSwitchStatements.toColour(mcsuTeam.getTeamID()));
+            team.setColor(ChatColor.translateAlternateColorCodes('§', mcsuTeam.getChatColour()));
             team.setPrefix(mcsuTeam.getChatColour()+"["+mcsuTeam.getTeamID().toUpperCase()+" ]");
             for(String uuids : mcsuTeam.getMemberUUIDs()) {
                 team.addEntry(Bukkit.getPlayer(uuids).getName());
