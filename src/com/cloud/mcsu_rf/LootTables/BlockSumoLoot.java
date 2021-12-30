@@ -18,26 +18,16 @@ public class BlockSumoLoot {
 
         powerupLootTable = new LootTable(
                 new LootOption(
-                        4,
+                        3,
                         new ItemStack(Material.FISHING_ROD)
                 ),
                 new LootOption(
-                        2,
+                        4,
                         new ItemStack(Material.TNT)
                 ),
                 new LootOption(
-                        2,
+                        4,
                         new ItemStack(Material.COBWEB, 4)
-                ),
-                new LootOption(
-                        1,
-                        new ItemStack(Material.LEATHER_CHESTPLATE)
-                ),
-                new LootOption(
-                        3,
-                        new McsuItemStack(Material.STICK)
-                                .forceAddEnchantment(Enchantment.KNOCKBACK, 1)
-                                .setName("Stick - Knockback I")
                 ),
                 new LootOption(
                         1,
@@ -47,6 +37,12 @@ public class BlockSumoLoot {
                 ),
                 new LootOption(
                         2,
+                        new McsuItemStack(Material.STICK)
+                                .forceAddEnchantment(Enchantment.KNOCKBACK, 1)
+                                .setName("Stick - Knockback I")
+                ),
+                new LootOption(
+                        3,
                         new ItemStack(Material.ENDER_PEARL)
                 )
         );

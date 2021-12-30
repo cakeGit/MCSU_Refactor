@@ -60,16 +60,19 @@ public class MCSU_Scoreboard {
         Scoreboard Scoreboard = Scoreboard_Main.Scoreboard_Manager.getNewScoreboard();
         Objective Objective = Scoreboard.registerNewObjective(this.Name, "dummy", this.Name);
 
+        /*
         for(McsuTeam mcsuTeam : TeamMain.Teams) {
             Team team = Scoreboard.registerNewTeam(mcsuTeam.getTeamID());
             team.setDisplayName(mcsuTeam.getStyledName());
             //team.setColor(TeamSwitchStatements.toColour(mcsuTeam.getTeamID()));
-            team.setColor(ChatColor.translateAlternateColorCodes('§', mcsuTeam.getChatColour()));
+            //team.setColor(ChatColor.translateAlternateColorCodes('§', mcsuTeam.getChatColour()));
             team.setPrefix(mcsuTeam.getChatColour()+"["+mcsuTeam.getTeamID().toUpperCase()+" ]");
             for(String uuids : mcsuTeam.getMemberUUIDs()) {
                 team.addEntry(Bukkit.getPlayer(uuids).getName());
             }
         }
+
+         */
 
         Objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 

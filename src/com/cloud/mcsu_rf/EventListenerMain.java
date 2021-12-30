@@ -170,6 +170,20 @@ public class EventListenerMain implements Listener {
         onRegisteredEvent(e);
     }
 
+    @EventHandler public void onEntityDamage(EntityDamageByEntityEvent e) {
+        if (!getRuleActive("EntityDamage")) e.setDamage(0);
+
+        onRegisteredEvent(e);
+    }
+
+    @EventHandler public void playerInteractEvent(PlayerInteractEvent e) {
+        if (!getRuleActive("PlayerInteract")) {
+            if(e.getClickedBlock().getType() == Material.SPRUCE_TRAPDOOR) {
+                e.setCancelled(true);
+            }
+        }
+    }
+
     @EventHandler public void onServerListPing(ServerListPingEvent e) {
         e.setMotd(
                 ChatColor.RED +""+ ChatColor.BOLD + "MCSU in development! \n" + ChatColor.RESET +""+ ChatColor.AQUA +""+ ChatColor.ITALIC +
@@ -251,7 +265,7 @@ public class EventListenerMain implements Listener {
     @EventHandler public void onInventoryClickEvent(InventoryClickEvent e) { onRegisteredEvent(e); }
     @EventHandler public void onBlockPlaceEvent(BlockPlaceEvent e) { onRegisteredEvent(e); }
     @EventHandler public void onEntityExplodeEvent(EntityExplodeEvent e) { onRegisteredEvent(e); }
-
+    @EventHandler public void onPlayerDeathEvent(PlayerDeathEvent e) { onRegisteredEvent(e); }
 
     //Activity rules
 
@@ -270,6 +284,7 @@ public class EventListenerMain implements Listener {
         new ActivityRule("TileDrops", false);
         new ActivityRule("TileBreaking", true);
         new ActivityRule("PVP", false);
+        new ActivityRule("EntityDamage",false);
         new ActivityRule("PlayerMovement", true);
         new ActivityRule("FallDamage", false);
         new ActivityRule("ExplosionDamage", true);
@@ -277,7 +292,7 @@ public class EventListenerMain implements Listener {
         new ActivityRule("AutoIgniteTNT", true);
         new ActivityRule("Hunger", false);
         new ActivityRule("PearlDamage", false);
-
+        new ActivityRule("PlayerInteract",true);
     }
 
     public static ActivityRule getActivityRule(String name) {
