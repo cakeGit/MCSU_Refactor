@@ -9,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -54,7 +55,6 @@ public class BlockSumoInventory extends InventoryBase {
                 playerInventory.getItem(slot).setAmount(64);
             }
         }
-
     }
 
     public void onInventoryEvent(String inventoryEventName) {

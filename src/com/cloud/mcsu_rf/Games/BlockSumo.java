@@ -59,7 +59,6 @@ public class BlockSumo {
                                         event -> game.getGamestate("afterCountdown").setEnabled(true),
                                         "GameCountdownEndEvent"
                                 ))
-
                                 .onEnable(() -> {
 
                                     killZoneY = (int) game.getMapMetadata().get("GameData.KillZoneY");
@@ -93,14 +92,12 @@ public class BlockSumo {
                                     game.getGamestate("lobby").setEnabled(true);
 
                                 })
-
                                 .addGameFunction(inventoryManager)
                                 .addGameFunction(new CustomEventListener(event -> {
                                     EntityExplodeEvent explodeEvent = (EntityExplodeEvent) event;
                                     explodeEvent.setCancelled(true);
                                     game.getWorld().createExplosion(explodeEvent.getLocation(),10,false,false);
                                 }, "EntityExplodeEvent"))
-
                                 .addGameFunction(new CustomEventListener(event -> {
 
                                     Player player;
@@ -161,7 +158,9 @@ public class BlockSumo {
                                     EventListenerMain.setActivityRule("PVP", true);
                                     EventListenerMain.setActivityRule("ExplosionDamage", false);
                                     EventListenerMain.setActivityRule("PearlDamage", false);
-
+                                    EventListenerMain.setActivityRule("EntityDamage",false);
+                                    EventListenerMain.setActivityRule("PlayerInteract",false);
+                                    EventListenerMain.setActivityRule("Hunger",false);
                                     game.getGamestate("lobby").setEnabled(false);
 
                                     powerupTimer = new BukkitRunnable() {
@@ -221,6 +220,9 @@ public class BlockSumo {
 
                                                             deathEventPlayer.playSound(deathEventPlayer.getLocation(), Game.DefaultStartTimerTickSound, 1, 1);
                                                             deathEventPlayer.setGameMode(GameMode.SURVIVAL);
+
+                                                            BlockSumoInventory inventory = new BlockSumoInventory();
+                                                            inventory.load(deathEvent.getEntity());
 
                                                             sumoPlayer.setSpawnProt(true);
                                                             deathEventPlayer.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 60, 1));

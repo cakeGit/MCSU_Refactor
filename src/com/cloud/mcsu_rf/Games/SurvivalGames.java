@@ -11,19 +11,25 @@ import com.cloud.mcsu_rf.Objects.GameFunctions.PointAwarder;
 import com.cloud.mcsu_rf.Objects.McsuPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class SurvivalGames {
 
     Game game;
     BukkitRunnable gracePeriodCountdown;
+    int gracePeriodTime = 30;
+    MCSU_Main plugin = MCSU_Main.getPlugin(MCSU_Main.class);
 
     public void init() {
 
-        game = new Game("Survival Games")
+        game = new Game("SurvivalGames")
                 .addGameState(
                         new GameState("base", true)
                                 .addGameFunction(new PointAwarder("Survival", 2))
@@ -31,15 +37,13 @@ public class SurvivalGames {
                                     game.eliminatePlayer(
                                             ( (PlayerDeathEvent) Event ).getEntity()
                                     );
-
                                     game.checkAliveTeams( true );
                                     checkIfEnded();
-
                                 }, "PlayerDeathEvent"))
                                 .addGameFunction(new CustomEventListener(Event -> {
                                     EventListenerMain.setActivityRule("TileDrops", true);
                                     EventListenerMain.setActivityRule("TileBreaking", true);
-                                    EventListenerMain.setActivityRule("PVP", true);
+                                    EventListenerMain.setActivityRule("PVP", false);
                                     EventListenerMain.setActivityRule("ExplosionDamage", true);
                                     EventListenerMain.setActivityRule("Crafting", true);
                                     EventListenerMain.setActivityRule("FallDamage", true);
@@ -48,20 +52,39 @@ public class SurvivalGames {
                 )
                 .addGameState(
                         new GameState("afterCountdown")
-                                .onEnable(()-> {
-
-                                    game.getGamestate("graceperiod").setEnabled(true);
-
+                                .onEnable(() -> {
+                                    Bukkit.broadcastMessage(ChatColor.AQUA + "PVP will be enabled in "+gracePeriodTime+" seconds!");
+                                    game.getGamestate("gracePeriod").setEnabled(true);
+                                })
+                                .addGameFunction(new CustomEventListener(Event -> {
+                                    PlayerInteractEvent playerInteractEvent = (PlayerInteractEvent) Event;
+                                    Block b = playerInteractEvent.getClickedBlock();
+                                    if(b.getType().equals(Material.CHEST)) {
+                                        b.setMetadata("chestOpened", new FixedMetadataValue(plugin,true));
+                                    }
+                                }, "PlayerInteractEvent"))
+                ).addGameState(
+                        new GameState("gracePeriod")
+                                .onEnable(() -> {
                                     gracePeriodCountdown = new BukkitRunnable() {
                                         @Override
                                         public void run() {
-
                                             Bukkit.broadcastMessage(ChatColor.BLUE + "Every player has received a powerup!");
+                                            gracePeriodTime--;
+                                            if(gracePeriodTime <= 0) {
+                                                game.getGamestate("main").setEnabled(true);
+                                                this.cancel();
+                                            }
                                             //inventoryManager.emitInventoryEvent("Powerup");
-
                                         }
                                     };
-                                    gracePeriodCountdown.runTaskTimer(MCSU_Main.Mcsu_Plugin, 0L, 20L * 30L); //Happens every 30s
+                                    gracePeriodCountdown.runTaskTimer(MCSU_Main.Mcsu_Plugin, 0L, 20L);
+                                })
+                ).addGameState(
+                        new GameState("main")
+                                .onEnable(() -> {
+                                    EventListenerMain.setActivityRule("PVP",true);
+                                    Bukkit.broadcastMessage(ChatColor.AQUA + "Grace Period is Over. PVP is Enabled!");
                                 })
                 );
 
