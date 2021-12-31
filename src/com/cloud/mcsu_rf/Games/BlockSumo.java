@@ -140,6 +140,7 @@ public class BlockSumo {
                                             ));
 
                                         }
+
                                     } catch (NullPointerException ignored) { }
 
                                 }, "InventoryClickEvent", "PlayerInteractEvent"))

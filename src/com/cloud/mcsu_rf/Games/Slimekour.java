@@ -41,15 +41,13 @@ public class Slimekour {
 
     Game game;
 
-    int killZoneY = 0;
-    int buildHeightLimit = 0;
-    int buildDistanceLimit = 0;
+    public static float timeLeft;
+    public static boolean countdownActive;
     BukkitRunnable stopwatchDisplayTimer;
-    InventoryManager inventoryManager = new InventoryManager(new BlockSumoInventory());
+
+    //InventoryManager inventoryManager = new InventoryManager(new BlockSumoInventory());
 
     public void init() {
-
-        BlockSumoLoot.init();
 
         game = new Game("Slimekour")
                 .addGameState(
@@ -59,27 +57,14 @@ public class Slimekour {
                                         "GameCountdownEndEvent"
                                 ))
                                 .onEnable(() -> {
-
+                                    timeLeft = 120;
+                                    countdownActive = false;
                                 })
-                                .addGameFunction(inventoryManager)
+                                //.addGameFunction(inventoryManager)
                 )
                 .addGameState(
                         new GameState("afterCountdown")
                                 .onEnable(()-> {
-                                    stopwatchDisplayTimer = new BukkitRunnable() {
-                                        @Override
-                                        public void run() {
-
-                                            for (BlockSumoPlayer blockSumoPlayer : BlockSumoPlayer.BlockSumoPlayers) {
-                                                blockSumoPlayer.toBukkit().spigot().sendMessage(
-                                                        ChatMessageType.ACTION_BAR,
-                                                        TextComponent.fromLegacyText(blockSumoPlayer.getLivesString())
-                                                );
-                                            }
-
-                                        }
-                                    };
-                                    stopwatchDisplayTimer.runTaskTimer(MCSU_Main.Mcsu_Plugin, 0L, 20L);
                                 })
                 );
 
