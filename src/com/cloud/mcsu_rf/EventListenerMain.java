@@ -265,7 +265,6 @@ public class EventListenerMain implements Listener {
     @EventHandler public void onInventoryClickEvent(InventoryClickEvent e) { onRegisteredEvent(e); }
     @EventHandler public void onBlockPlaceEvent(BlockPlaceEvent e) { onRegisteredEvent(e); }
     @EventHandler public void onEntityExplodeEvent(EntityExplodeEvent e) { onRegisteredEvent(e); }
-    @EventHandler public void onPlayerDeathEvent(PlayerDeathEvent e) { onRegisteredEvent(e); }
 
     //Activity rules
 

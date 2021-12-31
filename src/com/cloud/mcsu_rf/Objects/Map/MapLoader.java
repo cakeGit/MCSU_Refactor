@@ -40,11 +40,14 @@ public class MapLoader {
         }
 
         mapData = Pick.Random(gameMaps);
-        Bukkit.broadcastMessage("Picked map '" + mapData.getName() + "'");
 
         game.setMapMetadata(mapData);
 
-        FaweFunctions.loadSchematic(mapData.getSchemFileName(), BlockVector3.at(2000, 60, 0), world);
+        Integer[] spp = mapData.getSchemPastePosition();
+
+        FaweFunctions.loadSchematic(mapData.getSchemFileName(), BlockVector3.at(
+                spp[0], spp[1], spp[2]
+        ), world);
 
     }
 

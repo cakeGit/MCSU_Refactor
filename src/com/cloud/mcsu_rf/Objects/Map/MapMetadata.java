@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.cloud.mcsu_rf.Config_Main;
+import com.cloud.mcsu_rf.Game_Handlers.ShorthandClasses.ParseArr;
 import com.cloud.mcsu_rf.Objects.ConfigFile;
 import org.bukkit.Bukkit;
 
@@ -37,6 +38,7 @@ public class MapMetadata {
     String Name;
     String Game;
     String SchemFileName;
+    Integer[] SchemPastePosition;
     ConfigFile configFile;
     String gameSpawnType;
 
@@ -72,11 +74,12 @@ public class MapMetadata {
         this.Name = (String) get("MapData.Name");
         this.Game = (String) get("MapData.Game");
         this.SchemFileName = (String) get("MapData.SchemFile");
+        this.SchemPastePosition = ParseArr.toInteger(((String) get("MapData.SchemPastePosition")).split(" "));
         this.gameSpawnType = (String) get("MapData.GameSpawnType");
 
         RegisteredMapMetadata.add(this);
 
-        Bukkit.broadcastMessage("Indexed map metadata for a " + this.Game + " map '" + this.Name + "'");
+        //Bukkit.broadcastMessage("Indexed map metadata for a " + this.Game + " map '" + this.Name + "'");
 
     }
 
@@ -87,5 +90,6 @@ public class MapMetadata {
     public String getGame() { return Game; }
     public String getName() { return Name; }
     public String getSchemFileName() { return SchemFileName; }
+    public Integer[] getSchemPastePosition() { return SchemPastePosition; }
     public String getGameSpawnType() { return gameSpawnType; }
 }

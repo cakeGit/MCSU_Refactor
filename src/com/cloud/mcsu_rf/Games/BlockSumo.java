@@ -61,10 +61,17 @@ public class BlockSumo {
                                 ))
                                 .onEnable(() -> {
 
+                                    EventListenerMain.setActivityRule("TileDrops", false);
+                                    EventListenerMain.setActivityRule("TileBreaking", true);
+                                    EventListenerMain.setActivityRule("ExplosionDamage", false);
+                                    EventListenerMain.setActivityRule("PearlDamage", false);
+                                    EventListenerMain.setActivityRule("EntityDamage",false);
+                                    EventListenerMain.setActivityRule("PlayerInteract",false);
+                                    EventListenerMain.setActivityRule("Hunger",false);
+
                                     killZoneY = (int) game.getMapMetadata().get("GameData.KillZoneY");
                                     buildHeightLimit = (int) game.getMapMetadata().get("GameData.BuildHeightLimit");
                                     buildDistanceLimit = (int) game.getMapMetadata().get("GameData.BuildDistanceLimit");
-
 
                                     game.getGamestate("afterCountdown")
                                             .addGameFunction(new HeightKillZone(
@@ -153,14 +160,7 @@ public class BlockSumo {
                 .addGameState(
                         new GameState("afterCountdown")
                                 .onEnable(()-> {
-                                    EventListenerMain.setActivityRule("TileDrops", false);
-                                    EventListenerMain.setActivityRule("TileBreaking", true);
                                     EventListenerMain.setActivityRule("PVP", true);
-                                    EventListenerMain.setActivityRule("ExplosionDamage", false);
-                                    EventListenerMain.setActivityRule("PearlDamage", false);
-                                    EventListenerMain.setActivityRule("EntityDamage",false);
-                                    EventListenerMain.setActivityRule("PlayerInteract",false);
-                                    EventListenerMain.setActivityRule("Hunger",false);
                                     game.getGamestate("lobby").setEnabled(false);
 
                                     powerupTimer = new BukkitRunnable() {
@@ -203,7 +203,7 @@ public class BlockSumo {
                                             displayLivesTimer.run(); // Runs an off-beat display to update immediately
                                             sumoPlayer.removeLife();
 
-                                            if (sumoPlayer.getLives() == 0) {
+                                            if (sumoPlayer.getLives() <= 0) {
                                                 game.eliminatePlayer(sumoPlayer.toBukkit());
                                                 game.checkAliveTeams(true);
                                                 checkIfEnded();
@@ -230,7 +230,7 @@ public class BlockSumo {
                                                             new BukkitRunnable() {
                                                                 @Override
                                                                 public void run() {
-                                                                    Bukkit.broadcastMessage("Spwan prot off");
+                                                                    //Bukkit.broadcastMessage("Spwan prot off");
                                                                     sumoPlayer.setSpawnProt(false);
                                                                 }
                                                             }.runTaskLater(MCSU_Main.Mcsu_Plugin, 60L);
