@@ -23,6 +23,7 @@ import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -34,6 +35,7 @@ import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static com.cloud.mcsu_rf.Score_Handlers.Scoreboard_Main.reloadScoreboard;
@@ -250,6 +252,27 @@ public class EventListenerMain implements Listener {
         if(!getRuleActive("Hunger")) e.setFoodLevel(20);
 
         onRegisteredEvent(e);
+    }
+
+    @EventHandler public void onRightClickSmiter(PlayerInteractEvent e) {
+        if(e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+            if(e.getItem().getType().equals(Material.BLAZE_ROD)) {
+                Player p = e.getPlayer();
+                boolean found = false;
+                for (int i = 0; i < 200; i++) {
+                    List<Entity> entities = p.getNearbyEntities(i,64,i);
+                    for (Entity en : entities) {
+                        if (en.getType().equals(EntityType.PLAYER)) {
+                            p.getWorld().spawnEntity(en.getLocation(),EntityType.LIGHTNING);
+                            p.sendMessage(ChatColor.GOLD+"Smiting "+en.getName()+"!");
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (found) break;
+                }
+            }
+        }
     }
 
 
