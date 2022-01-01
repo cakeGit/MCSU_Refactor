@@ -37,9 +37,16 @@ public class Game {
                 "Mr Ebenezer approves",
                 "Mr Tice approves",
                 "i think that deserves a housepoint",
-                "my wife has filed for a divorce"
+                "my wife has filed for a divorce",
+                "very mcsu",
+                "sus like impostor"
                 );
 
+    }
+
+    public static String generateNoWinnerEndSplash() {
+        return  "";
+        //return Pick.Random("");
     }
 
     //defaults
@@ -59,6 +66,7 @@ public class Game {
     MapMetadata mapMetadata;
     MapLoader mapLoader;
     boolean startIntervalEnabled = true;
+    boolean freezeOnGameCountdown = true;
     GameMode playerGameMode = GameMode.SURVIVAL;
 
     ArrayList<GameState> gameStates = new ArrayList<>();
@@ -90,6 +98,8 @@ public class Game {
             mapLoader = new MapLoader().setSpawnManager(new SpawnManager()); // defaults to generic map + spawn loaders
         }
 
+        EventListenerMain.setActivityRule("PlayerMovement", false);
+
         mapLoader.MapInit(this, world);
         mapLoader.getSpawnManager().lobbySpawns(mapLoader);
 
@@ -102,7 +112,7 @@ public class Game {
             player.setGameMode(GameMode.ADVENTURE);
         }
 
-       for (GameState gameState : gameStates) { // trust me this has a purpose
+       for (GameState gameState : gameStates) { // trust me this has a purpose - gamestates are written down as enabled (for defaults) but are not initalized
             if ( gameState.getEnabled() ) {
                 gameState.setEnabled(true);
            }
@@ -118,7 +128,7 @@ public class Game {
                         if (timer.getTimeLeft() == 5) {
 
                             mapLoader.getSpawnManager().gameSpawns(mapLoader);
-                            EventListenerMain.setActivityRule("PlayerMovement", false);
+                            if (freezeOnGameCountdown) EventListenerMain.setActivityRule("PlayerMovement", false);
 
                             GameSpawnsActivatedEvent spawnsActivatedEvent = new GameSpawnsActivatedEvent(this);
                             Bukkit.getPluginManager().callEvent(spawnsActivatedEvent);
@@ -163,7 +173,7 @@ public class Game {
 
     public void gameCountdownEnd() {
 
-        EventListenerMain.setActivityRule("PlayerMovement", true);
+        if (freezeOnGameCountdown) EventListenerMain.setActivityRule("PlayerMovement", true);
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.setGameMode(playerGameMode);
@@ -251,7 +261,17 @@ public class Game {
             player.getInventory().clear();
         }
 
+        for (Player player : Bukkit.getOnlinePlayers()) {
+
+            String style = ChatColor.BOLD + "" + ChatColor.WHITE;
+            player.sendTitle(getName() + style + " has finished!", generateNoWinnerEndSplash());
+        }
+
         EventListenerMain.resetActivityRules();
+    }
+
+    public void mapLoadingFinished() {
+        EventListenerMain.setActivityRule("PlayerMovement", true);
     }
 
     public Game addGameState(GameState gameState) { gameStates.add(gameState); return this; }
@@ -264,6 +284,7 @@ public class Game {
     public Game setGamemodeManager(GamemodeManager gamemodeManager) { this.gamemodeManager = gamemodeManager; return this; }
     public Game setPlayerGamemode(GameMode gameMode) { playerGameMode = gameMode; return this; }
 
+    public Game setFreezeOnGameCountdown(boolean freezeOnGameCountdown) { this.freezeOnGameCountdown = freezeOnGameCountdown; return this; }
 
     public static ArrayList<McsuPlayer> getAlivePlayers() { return alivePlayers; }
     public void removeFromAlivePlayers(McsuPlayer player) { alivePlayers.remove(player); }

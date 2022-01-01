@@ -1,9 +1,6 @@
 package com.cloud.mcsu_rf.Game_Handlers;
 
-import com.cloud.mcsu_rf.Games.BlockSumo;
-import com.cloud.mcsu_rf.Games.Skybattle;
-import com.cloud.mcsu_rf.Games.Spleef;
-import com.cloud.mcsu_rf.Games.SurvivalGames;
+import com.cloud.mcsu_rf.Games.*;
 import com.cloud.mcsu_rf.MCSU_Main;
 import com.cloud.mcsu_rf.Objects.Game.Game;
 import org.bukkit.Bukkit;
@@ -34,6 +31,7 @@ public class Game_Main {
         new Skybattle().init();
         new BlockSumo().init();
         new SurvivalGames().init();
+        new Slimekour().init();
 
     }
 

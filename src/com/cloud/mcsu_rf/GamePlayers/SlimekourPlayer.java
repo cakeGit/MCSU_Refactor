@@ -15,7 +15,7 @@ public class SlimekourPlayer {
     public static ArrayList<SlimekourPlayer> slimekourPlayers = new ArrayList<>();
     public static ArrayList<BukkitRunnable> stopwatchTimers = new ArrayList<>();
 
-    float time = 0;
+    double time = 0;
     Player player;
     BukkitRunnable stopwatchTimer;
 
@@ -27,11 +27,14 @@ public class SlimekourPlayer {
         stopwatchTimer = new BukkitRunnable() {
             @Override
             public void run() {
-                time += 0.01;
+                time += 0.05;
+
+                time = Math.round(time*100.0)/100.0;
+
                 toBukkit().spigot().sendMessage(
                         ChatMessageType.ACTION_BAR,
                         TextComponent.fromLegacyText(
-                                getTimeString()
+                                getActionbarString()
                         )
                 );
             }
@@ -45,8 +48,9 @@ public class SlimekourPlayer {
     }
 
     public static void startAllTimers() {
+        resetAllTimers();
         for (BukkitRunnable timer : stopwatchTimers) {
-            timer.runTaskTimer(MCSU_Main.Mcsu_Plugin, 0L, 2L);
+            timer.runTaskTimer(MCSU_Main.Mcsu_Plugin, 0L, 1L);
         }
     }
     public static void resetAllTimers() {
@@ -59,12 +63,20 @@ public class SlimekourPlayer {
         stopwatchTimer.cancel();
     }
 
-    public String getTimeString() {
-        return ChatColor.BLUE + "Time: " + ChatColor.RESET + ChatColor.BOLD + time +
+    public String getFormattedTime() {
+        return (time > 60 ? (int) Math.round(time/60-((time%60)/60)) + ":" : "") +
+                (String.format("%.2f", time % 60).length() == 4 ? "0" : "") +
+                String.format("%.2f", time % 60);
+    }
+
+    public String getActionbarString() {
+        return ChatColor.BLUE + "Current Time: " + ChatColor.RESET + ChatColor.BOLD +
+                getFormattedTime()
+                +
                 (Slimekour.countdownActive ? "Time left: none lol haha" : "");
     }
 
-    public float getTime() { return time; }
+    public double getTime() { return time; }
     public Player toBukkit() { return player; }
 
 }

@@ -58,18 +58,21 @@ public class MapMetadata {
                 }
         );
 
-        ( (List) get("Points.Game") ).forEach(
-                Element -> {
-                    HashMap<String, Object> ElementHashmap = (HashMap<String, Object>) Element;
+        if (get("Points.Game")  != null) {
+            ( (List) get("Points.Game") ).forEach(
+                    Element -> {
+                        HashMap<String, Object> ElementHashmap = (HashMap<String, Object>) Element;
 
-                    GamePoints.add(
-                            new MapPoint(
-                                    ElementHashmap.get("Coordinates").toString(),
-                                    ElementHashmap.get("Rotation").toString())
-                                    .setId(ElementHashmap.get("Id").toString())
-                    );
-                }
-        );
+                        GamePoints.add(
+                                new MapPoint(
+                                        ElementHashmap.get("Coordinates").toString(),
+                                        ElementHashmap.get("Rotation").toString())
+                                        .setId(ElementHashmap.get("Id").toString())
+                        );
+                    }
+            );
+        }
+
 
         this.Name = (String) get("MapData.Name");
         this.Game = (String) get("MapData.Game");

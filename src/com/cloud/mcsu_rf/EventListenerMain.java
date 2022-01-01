@@ -338,7 +338,6 @@ public class EventListenerMain implements Listener {
     }
 
     public static void setActivityRule(String name, Boolean value) {
-
         Objects.requireNonNull(getActivityRule(name)).setActive(value);
 
     }

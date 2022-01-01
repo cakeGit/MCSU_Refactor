@@ -68,6 +68,7 @@ public class SpawnManager {
                 if (!foundPoint) { Bukkit.broadcastMessage(ChatColor.RED + "[MCSU]: Couldn't find a point for team with id "+playerTeamId); }
 
                 break;
+            case "None": break;
             default:
                 ArrayList<MapPoint> unusedPoints = (ArrayList<MapPoint>) mapData.getGamePoints().clone();
 

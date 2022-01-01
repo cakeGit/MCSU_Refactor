@@ -3,6 +3,7 @@ package com.cloud.mcsu_rf.Games;
 import com.cloud.mcsu_rf.EventListenerMain;
 import com.cloud.mcsu_rf.Inventories.SkybattleInventory;
 import com.cloud.mcsu_rf.Inventories.SurvivalGamesInventory;
+import com.cloud.mcsu_rf.LootTables.SurvivalGamesLoot;
 import com.cloud.mcsu_rf.MCSU_Main;
 import com.cloud.mcsu_rf.Objects.Game.Game;
 import com.cloud.mcsu_rf.Objects.Game.GameState;
@@ -32,6 +33,8 @@ public class SurvivalGames {
     MCSU_Main plugin = MCSU_Main.getPlugin(MCSU_Main.class);
 
     public void init() {
+
+        SurvivalGamesLoot.init();
 
         game = new Game("SurvivalGames")
                 .addGameState(
@@ -79,19 +82,14 @@ public class SurvivalGames {
                                     gracePeriodCountdown = new BukkitRunnable() {
                                         @Override
                                         public void run() {
-                                            Bukkit.broadcastMessage(ChatColor.BLUE + "Every player has received a powerup!");
-                                            gracePeriodTime--;
-                                            if(gracePeriodTime <= 0) {
-                                                game.getGamestate("main").setEnabled(true);
-                                                this.cancel();
-                                            }
-                                            //inventoryManager.emitInventoryEvent("Powerup");
+                                            game.getGamestate("postGracePeriod").setEnabled(true);
+                                            this.cancel();
                                         }
                                     };
-                                    gracePeriodCountdown.runTaskTimer(MCSU_Main.Mcsu_Plugin, 0L, 20L);
+                                    gracePeriodCountdown.runTaskLater(MCSU_Main.Mcsu_Plugin, 20L*gracePeriodTime);
                                 })
                 ).addGameState(
-                        new GameState("main")
+                        new GameState("postGracePeriod")
                                 .onEnable(() -> {
                                     EventListenerMain.setActivityRule("PVP",true);
                                     Bukkit.broadcastMessage(ChatColor.AQUA + "Grace Period is Over. PVP is Enabled!");

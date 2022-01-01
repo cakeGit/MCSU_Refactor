@@ -1,5 +1,6 @@
 package com.cloud.mcsu_rf.Objects.Map;
 
+import com.cloud.mcsu_rf.EventListenerMain;
 import com.cloud.mcsu_rf.Game_Handlers.FaweFunctions;
 import com.cloud.mcsu_rf.Objects.Game.Game;
 import com.cloud.mcsu_rf.Game_Handlers.ShorthandClasses.Pick;
@@ -48,6 +49,8 @@ public class MapLoader {
         FaweFunctions.loadSchematic(mapData.getSchemFileName(), BlockVector3.at(
                 spp[0], spp[1], spp[2]
         ), world);
+
+        game.mapLoadingFinished();
 
     }
 

@@ -101,7 +101,9 @@ public class McsuPlayer {
     public Player toBukkit() { return this.bukkitPlayer; }
     public int getPoints() { return this.points; }
     public String getColouredName() { return this.Colour + this.bukkitPlayer.getName() + ChatColor.RESET; }
+    public String getColouredName(boolean bold) { return this.Colour + (bold ? ChatColor.BOLD : "") + this.bukkitPlayer.getName(); }
     public String getName() { return this.bukkitPlayer.getName(); }
+    public String getColour() { return Colour; }
 
     public void setTeam(McsuTeam newTeam) {
 
