@@ -67,13 +67,13 @@ public class SurvivalGames {
                                     PlayerInteractEvent playerInteractEvent = (PlayerInteractEvent) Event;
                                     Block b = playerInteractEvent.getClickedBlock();
                                     if(b.getType().equals(Material.CHEST)) {
-                                        if(b.hasMetadata("chestOpened")) {
+                                        b.setMetadata("chestOpened", new FixedMetadataValue(plugin,true));
+                                        if(!b.hasMetadata("chestOpened")) {
                                             SurvivalGamesInventory inv = new SurvivalGamesInventory();
                                             ItemStack[] contents = inv.getInventory().getContents();
-                                            Chest c = (Chest) b;
+                                            Chest c = (Chest) b.getState();
                                             c.getBlockInventory().setContents(contents);
                                         }
-                                        b.setMetadata("chestOpened", new FixedMetadataValue(plugin,true));
                                     }
                                 }, "PlayerInteractEvent"))
                 ).addGameState(
