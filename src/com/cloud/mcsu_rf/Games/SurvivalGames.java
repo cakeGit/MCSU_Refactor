@@ -2,6 +2,7 @@ package com.cloud.mcsu_rf.Games;
 
 import com.cloud.mcsu_rf.EventListenerMain;
 import com.cloud.mcsu_rf.Inventories.SkybattleInventory;
+import com.cloud.mcsu_rf.Inventories.SurvivalGamesInventory;
 import com.cloud.mcsu_rf.MCSU_Main;
 import com.cloud.mcsu_rf.Objects.Game.Game;
 import com.cloud.mcsu_rf.Objects.Game.GameState;
@@ -13,10 +14,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.Chest;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -60,6 +64,12 @@ public class SurvivalGames {
                                     PlayerInteractEvent playerInteractEvent = (PlayerInteractEvent) Event;
                                     Block b = playerInteractEvent.getClickedBlock();
                                     if(b.getType().equals(Material.CHEST)) {
+                                        if(b.hasMetadata("chestOpened")) {
+                                            SurvivalGamesInventory inv = new SurvivalGamesInventory();
+                                            ItemStack[] contents = inv.getInventory().getContents();
+                                            Chest c = (Chest) b;
+                                            c.getBlockInventory().setContents(contents);
+                                        }
                                         b.setMetadata("chestOpened", new FixedMetadataValue(plugin,true));
                                     }
                                 }, "PlayerInteractEvent"))
