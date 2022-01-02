@@ -2,6 +2,7 @@ package com.cloud.mcsu_rf.Games;
 
 import com.cloud.mcsu_rf.EventListenerMain;
 import com.cloud.mcsu_rf.Inventories.SkybattleInventory;
+import com.cloud.mcsu_rf.Objects.Enums.PointGoal;
 import com.cloud.mcsu_rf.Objects.Game.*;
 import com.cloud.mcsu_rf.Objects.GameFunctions.CustomEventListener;
 import com.cloud.mcsu_rf.Objects.GameFunctions.ActionZones.HeightActionZone;
@@ -65,7 +66,7 @@ public class Skybattle {
                                     }
 
                                 }, "GameSpawnsActivatedEvent"))
-                                .addGameFunction(new PointAwarder("Survival", 2))
+                                .addGameFunction(new PointAwarder(PointGoal.Survival, 5))
                                 .addGameFunction(new CustomEventListener(Event -> {
 
                                     game.eliminatePlayer(

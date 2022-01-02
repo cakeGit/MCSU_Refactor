@@ -1,14 +1,24 @@
 package com.cloud.mcsu_rf.Objects.GameFunctions;
 
+import com.cloud.mcsu_rf.Objects.Enums.PointGoal;
 import com.cloud.mcsu_rf.Objects.McsuPlayer;
 import org.bukkit.event.Event;
 
+import java.awt.*;
+
 public class PointAwarder extends GameFunction {
 
-    public PointAwarder(String Goal, int pointValue) {
+    protected int pointValue;
+
+    public PointAwarder(PointGoal Goal, int pointValue) {
+
+        this.pointValue = pointValue;
 
         switch (Goal) {
-            case "Survival": boundEventNames.add("PlayerDeathEvent"); break;
+            case Survival -> {
+                boundEventNames.add("PlayerDeathEvent");
+                break;
+            }
         }
 
     }
@@ -17,7 +27,7 @@ public class PointAwarder extends GameFunction {
 
         if ("PlayerDeathEvent".equals(event.getEventName())) {
             for (McsuPlayer mcsuPlayer : McsuPlayer.McsuPlayers) {
-                mcsuPlayer.awardPoints(2);
+                mcsuPlayer.awardPoints(pointValue);
             }
         }
 
