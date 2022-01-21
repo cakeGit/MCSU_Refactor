@@ -255,24 +255,27 @@ public class EventListenerMain implements Listener {
     }
 
     @EventHandler public void onRightClickSmiter(PlayerInteractEvent e) {
-        if(e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-            if(e.getItem().getType().equals(Material.BLAZE_ROD)) {
-                Player p = e.getPlayer();
-                boolean found = false;
-                for (int i = 0; i < 200; i++) {
-                    List<Entity> entities = p.getNearbyEntities(i,64,i);
-                    for (Entity en : entities) {
-                        if (en.getType().equals(EntityType.PLAYER)) {
-                            p.getWorld().spawnEntity(en.getLocation(),EntityType.LIGHTNING);
-                            p.sendMessage(ChatColor.GOLD+"Smiting "+en.getName()+"!");
-                            found = true;
-                            break;
+        try {
+            if( ( e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK) )) {
+                if(e.getItem().getType().equals(Material.BLAZE_ROD)) {
+                    Player p = e.getPlayer();
+                    boolean found = false;
+                    for (int i = 0; i < 200; i++) {
+                        List<Entity> entities = p.getNearbyEntities(i,64,i);
+                        for (Entity en : entities) {
+                            if (en.getType().equals(EntityType.PLAYER)) {
+                                p.getWorld().spawnEntity(en.getLocation(),EntityType.LIGHTNING);
+                                p.sendMessage(ChatColor.GOLD+"Smiting "+en.getName()+"!");
+                                found = true;
+                                break;
+                            }
                         }
+                        if (found) break;
                     }
-                    if (found) break;
                 }
             }
-        }
+        } catch (NullPointerException ignored) {}
+
     }
 
 

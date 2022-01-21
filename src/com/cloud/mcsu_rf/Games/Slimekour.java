@@ -44,7 +44,6 @@ public class Slimekour {
 
     public static float timeLeft;
     public static boolean countdownActive;
-    BukkitRunnable stopwatchDisplayTimer;
 
     Integer[] GlassWallFrom;
     Integer[] GlassWallTo;
@@ -96,8 +95,10 @@ public class Slimekour {
                                                                 ChatColor.GOLD +""+ ChatColor.BOLD + "Finished!"
                                                         )
                                                 );
-                                                checkIfEnded();
                                                 new EventListenerMain().onPlayerDeath(new PlayerDeathEvent(player, new ArrayList<ItemStack>().stream().toList(), 0, ""));
+
+                                                checkIfEnded();
+
                                             }
                                         },
                                         "PlayerMoveEvent"
@@ -135,16 +136,13 @@ public class Slimekour {
 
         Bukkit.getLogger().info("Checking if game " + game.getName() + " has ended");
 
-        if (game.getAliveTeams().size() == 1) {
+        if (Game.getAlivePlayers().size() == 0) {
 
             Bukkit.getLogger().info("Game " + game.getName() + " has ended!");
 
-            stopwatchDisplayTimer.cancel();
-
             SlimekourPlayer.slimekourPlayers = new ArrayList<>();
 
-            game.getAliveTeams().get(0).awardTeamPoints(100);
-            game.endGame(game.getAliveTeams().get(0));
+            game.endGame();
 
         }
 
