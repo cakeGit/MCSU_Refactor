@@ -76,8 +76,13 @@ public class MapMetadata {
 
         this.Name = (String) get("MapData.Name");
         this.Game = (String) get("MapData.Game");
-        this.SchemFileName = (String) get("MapData.SchemFile");
-        this.SchemPastePosition = ParseArr.toInteger(((String) get("MapData.SchemPastePosition")).split(" "));
+        if(get("MapData.SchemFile") != null) {
+            this.SchemFileName = (String) get("MapData.SchemFile");
+            this.SchemPastePosition = ParseArr.toInteger(((String) get("MapData.SchemPastePosition")).split(" "));
+        } else {
+            this.SchemFileName = null;
+            this.SchemPastePosition = null;
+        }
         this.gameSpawnType = (String) get("MapData.GameSpawnType");
 
         RegisteredMapMetadata.add(this);

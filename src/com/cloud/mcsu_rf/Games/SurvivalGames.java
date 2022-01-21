@@ -13,11 +13,13 @@ import com.cloud.mcsu_rf.Objects.GameFunctions.PointAwarder;
 import com.cloud.mcsu_rf.Objects.McsuPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -65,14 +67,16 @@ public class SurvivalGames {
                                 })
                                 .addGameFunction(new CustomEventListener(Event -> {
                                     PlayerInteractEvent playerInteractEvent = (PlayerInteractEvent) Event;
-                                    Block b = playerInteractEvent.getClickedBlock();
-                                    if(b.getType().equals(Material.CHEST)) {
-                                        b.setMetadata("chestOpened", new FixedMetadataValue(plugin,true));
-                                        if(!b.hasMetadata("chestOpened")) {
-                                            SurvivalGamesInventory inv = new SurvivalGamesInventory();
-                                            ItemStack[] contents = inv.getInventory().getContents();
-                                            Chest c = (Chest) b.getState();
-                                            c.getBlockInventory().setContents(contents);
+                                    if(playerInteractEvent.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+                                        Block b = playerInteractEvent.getClickedBlock();
+                                        if(b.getType().equals(Material.CHEST)) {
+                                            b.setMetadata("chestOpened", new FixedMetadataValue(plugin,true));
+                                            if(!b.hasMetadata("chestOpened")) {
+                                                SurvivalGamesInventory inv = new SurvivalGamesInventory();
+                                                ItemStack[] contents = inv.getInventory().getContents();
+                                                Chest c = (Chest) b.getState();
+                                                c.getBlockInventory().setContents(contents);
+                                            }
                                         }
                                     }
                                 }, "PlayerInteractEvent"))
@@ -96,6 +100,67 @@ public class SurvivalGames {
                                 })
                 );
 
+    }
+
+    public void getChests() {
+        /*
+        // Mid Chests
+        Location midlower1 = new Location(world,1162,4,249);
+        Location midlower2 = new Location(world,1162,4,247);
+        Location midlower3 = new Location(world,1163,4,246);
+        Location midlower4 = new Location(world,1165,4,246);
+        Location midlower5 = new Location(world,1166,4,247);
+        Location midlower6 = new Location(world,1166,4,249);
+        Location midlower7 = new Location(world,1165,4,250);
+        Location midlower8 = new Location(world,1163,4,250);
+        Location midmid1 = new Location(world,1163,5,248);
+        Location midmid2 = new Location(world,1164,5,247);
+        Location midmid3 = new Location(world,1165,5,248);
+        Location midmid4 = new Location(world,1164,5,249);
+        Location midtop1 = new Location(world,1164,6,248);
+
+        //Forest Chests
+        Location forest1 = new Location(world,1106,4,289);
+        Location forest2 = new Location(world,1100,7,274);
+        Location forest3 = new Location(world,1119,4,237);
+        Location forest4 = new Location(world,1104,4,221);
+
+        // Lake and Beach Chests
+        Location lake = new Location(world,1212,2,292);
+        Location beach1 = new Location(world,1209,4,324);
+        Location beach2 = new Location(world,1185,3,314);
+        Location nearlake = new Location(world,1186,5,275);
+
+        // Playground Chest
+        Location playground = new Location(world,1237,4,232);
+
+        // Farm Chest
+        Location farm = new Location(world,1231,4,180);
+
+        // Mountain Chests
+        Location icemountain1 = new Location(world,1241,5,265);
+        Location icemountain2 = new Location(world,1132,4,177);
+        Location mesamountain1 = new Location(world,1099,5,316);
+        Location mesamountain2 = new Location(world,1157,4,326);
+
+        // Tent Chests
+        Location tent1 = new Location(world,1197,4,203);
+        Location tent2 = new Location(world,1178,4,210);
+        Location campfire = new Location(world,1167,4,214);
+
+        // PogGamers Shack Chest
+        Location shack = new Location(world,1150,7,204);
+
+        // Clouds Manor Chests
+        Location manor1 = new Location(world,1156,4,297);
+        Location manor2 = new Location(world,1144,4,290);
+        Location manor3 = new Location(world,1135,11,287);
+        Location manor4 = new Location(world,1154,13,295);
+
+        // House Chest
+        Location house = new Location(world,1237,4,242);
+
+         */
     }
 
     public void checkIfEnded() {

@@ -32,6 +32,7 @@ public class Game_Main {
         new BlockSumo().init();
         new SurvivalGames().init();
         new Slimekour().init();
+        new MCTriathlon().init();
 
     }
 

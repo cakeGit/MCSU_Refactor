@@ -21,4 +21,14 @@ public class ParseArr {
 
         return arrList.toArray(new Double[0]);
     }
+
+    public static Float[] toFloat(String[] arr) {
+
+        ArrayList<Float> arrList = new ArrayList<>();
+        for (String str : arr) {
+            arrList.add(Float.parseFloat(str));
+        }
+
+        return arrList.toArray(new Float[0]);
+    }
 }

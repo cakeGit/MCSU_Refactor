@@ -2,6 +2,7 @@ package com.cloud.mcsu_rf.Games;
 
 import com.cloud.mcsu_rf.EventListenerMain;
 import com.cloud.mcsu_rf.GamePlayers.BlockSumoPlayer;
+import com.cloud.mcsu_rf.Game_Handlers.ShorthandClasses.ParseArr;
 import com.cloud.mcsu_rf.Inventories.BlockSumoInventory;
 import com.cloud.mcsu_rf.LootTables.BlockSumoLoot;
 import com.cloud.mcsu_rf.MCSU_Main;
@@ -47,6 +48,7 @@ public class BlockSumo {
     BukkitRunnable displayLivesTimer;
     GameFunction lobbyHeightActionZone;
     InventoryManager inventoryManager = new InventoryManager(new BlockSumoInventory());
+    Integer[] buildDistanceOrigin;
 
     public void init() {
 
@@ -66,12 +68,13 @@ public class BlockSumo {
                                     EventListenerMain.setActivityRule("ExplosionDamage", false);
                                     EventListenerMain.setActivityRule("PearlDamage", false);
                                     EventListenerMain.setActivityRule("EntityDamage",false);
-                                    EventListenerMain.setActivityRule("PlayerInteract",false);
+                                    EventListenerMain.setActivityRule("PlayerInteract",true);
                                     EventListenerMain.setActivityRule("Hunger",false);
 
                                     killZoneY = (int) game.getMapMetadata().get("GameData.KillZoneY");
                                     buildHeightLimit = (int) game.getMapMetadata().get("GameData.BuildHeightLimit");
                                     buildDistanceLimit = (int) game.getMapMetadata().get("GameData.BuildDistanceLimit");
+                                    buildDistanceOrigin = ParseArr.toInteger(((String) game.getMapMetadata().get("GameData.BuildDistanceOrigin")).split(" "));
 
                                     game.getGamestate("afterCountdown")
                                             .addGameFunction(new HeightKillZone(
@@ -79,7 +82,7 @@ public class BlockSumo {
                                                     true
                                             ), true)
                                             .addGameFunction(new BuildMaxHeight(buildHeightLimit), true)
-                                            .addGameFunction(new BuildMaxDistance(2000, 0, buildDistanceLimit), true);
+                                            .addGameFunction(new BuildMaxDistance(buildDistanceOrigin[0], buildDistanceOrigin[1], buildDistanceLimit), true);
 
                                     game.getGamestate("lobby")
                                             .addGameFunction(

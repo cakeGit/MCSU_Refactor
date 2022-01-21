@@ -18,7 +18,7 @@ public class BlockSumoLoot {
 
         powerupLootTable = new LootTable(
                 new LootOption(
-                        3,
+                        1,
                         new ItemStack(Material.FISHING_ROD)
                 ),
                 new LootOption(
@@ -36,7 +36,7 @@ public class BlockSumoLoot {
                                 .setName("Stick - Knockback II")
                 ),
                 new LootOption(
-                        2,
+                        3,
                         new McsuItemStack(Material.STICK)
                                 .forceAddEnchantment(Enchantment.KNOCKBACK, 1)
                                 .setName("Stick - Knockback I")

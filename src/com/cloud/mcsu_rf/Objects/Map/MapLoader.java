@@ -44,11 +44,13 @@ public class MapLoader {
 
         game.setMapMetadata(mapData);
 
-        Integer[] spp = mapData.getSchemPastePosition();
+        if(mapData.SchemFileName != null) {
+            Integer[] spp = mapData.getSchemPastePosition();
 
-        FaweFunctions.loadSchematic(mapData.getSchemFileName(), BlockVector3.at(
-                spp[0], spp[1], spp[2]
-        ), world);
+            FaweFunctions.loadSchematic(mapData.getSchemFileName(), BlockVector3.at(
+                    spp[0], spp[1], spp[2]
+            ), world);
+        }
 
         game.mapLoadingFinished();
 

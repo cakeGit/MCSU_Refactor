@@ -55,7 +55,7 @@ public class Skybattle {
                                 .addGameFunction(new CustomEventListener(Event -> {
 
                                     BlockPlaceEvent placeEvent = (BlockPlaceEvent) Event;
-                                    skybattleInventory.reloadInventory(placeEvent.getHand(), placeEvent.getPlayer());
+                                    skybattleInventory.reloadInventory(placeEvent.getPlayer());
 
                                 }, "BlockPlaceEvent"))
                                 .addGameFunction(new CustomEventListener(Event -> {
@@ -89,6 +89,7 @@ public class Skybattle {
                             EventListenerMain.setActivityRule("ExplosionDamage", true);
                             EventListenerMain.setActivityRule("Crafting", true);
                             EventListenerMain.setActivityRule("FallDamage", true);
+                            EventListenerMain.setActivityRule("EntityDamage", true);
                         })
                 );
 

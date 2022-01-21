@@ -17,6 +17,7 @@ public class Cmd_Main implements CommandExecutor {
 
     static String[] cmdNames;
     static String[] tpCommands;
+    static String[] pCommands;
 
 
     static void registerCommands() {
@@ -47,6 +48,10 @@ public class Cmd_Main implements CommandExecutor {
 
         tpCommands = new String[] {
                 "hub",
+        };
+
+        pCommands = new String[] {
+                "event"
         };
 
         registerCommands();
