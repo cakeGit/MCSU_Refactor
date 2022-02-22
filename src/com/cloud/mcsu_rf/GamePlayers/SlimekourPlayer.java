@@ -48,14 +48,8 @@ public class SlimekourPlayer {
     }
 
     public static void startAllTimers() {
-        resetAllTimers();
         for (BukkitRunnable timer : stopwatchTimers) {
             timer.runTaskTimer(MCSU_Main.Mcsu_Plugin, 0L, 1L);
-        }
-    }
-    public static void resetAllTimers() {
-        for (SlimekourPlayer slimekourPlayer : slimekourPlayers) {
-            slimekourPlayer.time = 0;
         }
     }
 

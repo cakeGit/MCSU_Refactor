@@ -20,14 +20,12 @@ public class MapMetadata {
         List<?> Maps = mapRegister.config.getList("Maps");
 
         if (Maps != null) {
-            Maps.forEach(mapMetadataFilename -> {
-                new MapMetadata( new ConfigFile(
-                        (String) mapMetadataFilename,
-                        "",
-                        mapMetadataFilename + ".yml",
-                        "/mapMetadata/"
-                ));
-            });
+            Maps.forEach(mapMetadataFilename -> new MapMetadata( new ConfigFile(
+                    (String) mapMetadataFilename,
+                    "",
+                    mapMetadataFilename + ".yml",
+                    "/mapMetadata/"
+            )));
         }
 
     }
@@ -37,6 +35,7 @@ public class MapMetadata {
 
     String Name;
     String Game;
+    String Creator;
     String SchemFileName;
     Integer[] SchemPastePosition;
     ConfigFile configFile;
@@ -76,6 +75,7 @@ public class MapMetadata {
 
         this.Name = (String) get("MapData.Name");
         this.Game = (String) get("MapData.Game");
+        this.Creator = (String) get("MapData.Creator");
         if(get("MapData.SchemFile") != null) {
             this.SchemFileName = (String) get("MapData.SchemFile");
             this.SchemPastePosition = ParseArr.toInteger(((String) get("MapData.SchemPastePosition")).split(" "));
@@ -97,6 +97,7 @@ public class MapMetadata {
     public Object get(String key) { return configFile.config.get(key); }
     public String getGame() { return Game; }
     public String getName() { return Name; }
+    public String getCreator() { return Creator; }
     public String getSchemFileName() { return SchemFileName; }
     public Integer[] getSchemPastePosition() { return SchemPastePosition; }
     public String getGameSpawnType() { return gameSpawnType; }

@@ -8,6 +8,7 @@ import com.cloud.mcsu_rf.Objects.EventListener;
 import com.cloud.mcsu_rf.Objects.MCSU_Scoreboard.MCSU_Scoreboard;
 import com.cloud.mcsu_rf.Objects.MCSU_Scoreboard.Scoreboard_Element;
 import com.cloud.mcsu_rf.Objects.McsuPlayer;
+import com.cloud.mcsu_rf.Objects.McsuScoreboard.McsuScoreboard;
 import com.cloud.mcsu_rf.Score_Handlers.Scoreboard_Main;
 import com.cloud.mcsu_rf.Game_Handlers.ShorthandClasses.Pick;
 import org.bukkit.Bukkit;
@@ -38,8 +39,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static com.cloud.mcsu_rf.Score_Handlers.Scoreboard_Main.reloadScoreboard;
-
 public class EventListenerMain implements Listener {
 
     //Event handler stuff
@@ -64,17 +63,16 @@ public class EventListenerMain implements Listener {
     }
 
     public static void postListenersHandler(Event event) {
-        switch(event.getEventName()) {
-            case "BlockPlaceEvent":
-                BlockPlaceEvent placeEvent = (BlockPlaceEvent) event;
-                if (!placeEvent.isCancelled()) {
-                    Block blockPlaced = placeEvent.getBlockPlaced();
-                    if (getRuleActive("AutoIgniteTNT") && blockPlaced.getBlockData().getMaterial() == Material.TNT) {
-                        blockPlaced.setType(Material.AIR);
-                        TNTPrimed tnt = (TNTPrimed) blockPlaced.getWorld().spawnEntity(blockPlaced.getLocation().add(new Location(blockPlaced.getWorld(), 0.5, 0, 0.5)), EntityType.PRIMED_TNT);
-                        tnt.setFuseTicks(40);
-                    }
+        if ("BlockPlaceEvent".equals(event.getEventName())) {
+            BlockPlaceEvent placeEvent = (BlockPlaceEvent) event;
+            if (!placeEvent.isCancelled()) {
+                Block blockPlaced = placeEvent.getBlockPlaced();
+                if (getRuleActive("AutoIgniteTNT") && blockPlaced.getBlockData().getMaterial() == Material.TNT) {
+                    blockPlaced.setType(Material.AIR);
+                    TNTPrimed tnt = (TNTPrimed) blockPlaced.getWorld().spawnEntity(blockPlaced.getLocation().add(new Location(blockPlaced.getWorld(), 0.5, 0, 0.5)), EntityType.PRIMED_TNT);
+                    tnt.setFuseTicks(40);
                 }
+            }
         }
     }
 
@@ -108,12 +106,8 @@ public class EventListenerMain implements Listener {
         }
 
         McsuPlayer.registerPlayer(p);
-        //Scoreboard_Main.animateScoreboard(p);
 
         e.setJoinMessage(joinMessage);
-        MCSU_Scoreboard sb = new MCSU_Scoreboard(new Scoreboard_Element[] { new Scoreboard_Element("Bottom_Line_Break"), new Scoreboard_Element("Team_Totals"), new Scoreboard_Element("Line_Break"), new Scoreboard_Element("Online_Players"), new Scoreboard_Element("Top_Line_Break") });
-        Scoreboard_Main.Current_Scoreboard = sb;
-        reloadScoreboard();
 
     }
 
@@ -123,22 +117,25 @@ public class EventListenerMain implements Listener {
     }
 
     @EventHandler public void onEntityDamage(EntityDamageEvent e) {
-        if (e.getCause().equals(EntityDamageEvent.DamageCause.FALL)) {
-            if (!getRuleActive("FallDamage")) e.setCancelled(true);
+        if ( e.getCause().equals(EntityDamageEvent.DamageCause.FALL) ) {
+            e.setCancelled(!getRuleActive("FallDamage"));
         } else if (
-                e.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_EXPLOSION)
+                ( e.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_EXPLOSION)
                         ||
-                        e.getCause().equals(EntityDamageEvent.DamageCause.BLOCK_EXPLOSION)
+                        e.getCause().equals(EntityDamageEvent.DamageCause.BLOCK_EXPLOSION) )
+                && !getRuleActive("ExplosionDamage")
         ) {
-            if (!getRuleActive("ExplosionDamage")) {
                 e.setDamage(0);
-            }
         } else if (
                 e.getCause().equals(EntityDamageEvent.DamageCause.VOID)
                         &&
                         ((Player) e.getEntity()).getGameMode() == GameMode.SPECTATOR
         ) {
             e.setCancelled(true);
+        } else if (
+                e.getCause().equals(EntityDamageEvent.DamageCause.SUFFOCATION)
+        ) {
+            e.setCancelled(!getRuleActive("Suffocation"));
         }
 
         onRegisteredEvent(e);
@@ -180,9 +177,12 @@ public class EventListenerMain implements Listener {
 
     @EventHandler public void playerInteractEvent(PlayerInteractEvent e) {
         if (!getRuleActive("PlayerInteract")) {
-            if(e.getClickedBlock().getType() == Material.SPRUCE_TRAPDOOR) {
-                e.setCancelled(true);
-            }
+            try {
+                if(Objects.requireNonNull(e.getClickedBlock()).getType() == Material.SPRUCE_TRAPDOOR) {
+                    e.setCancelled(true);
+                }
+            } catch (NullPointerException ignored) {}
+
         }
     }
 
@@ -209,9 +209,6 @@ public class EventListenerMain implements Listener {
 
         quitMessage = ChatColor.BLUE + pName + ChatColor.BLUE + " has left MCSU :(";
         e.setQuitMessage(quitMessage);
-        MCSU_Scoreboard sb = new MCSU_Scoreboard(new Scoreboard_Element[] { new Scoreboard_Element("Bottom_Line_Break"), new Scoreboard_Element("Team_Totals"), new Scoreboard_Element("Line_Break"), new Scoreboard_Element("Online_Players_Leave"), new Scoreboard_Element("Top_Line_Break") });
-        Scoreboard_Main.Current_Scoreboard = sb;
-        reloadScoreboard();
         McsuPlayer.McsuPlayers.remove(McsuPlayer.fromBukkit(e.getPlayer()));
         for(Player player : Bukkit.getOnlinePlayers()) {
             Tab.showTab(player,Bukkit.getOnlinePlayers().size()-1);
@@ -220,7 +217,7 @@ public class EventListenerMain implements Listener {
 
     @EventHandler public void onPlayerDeath(PlayerDeathEvent e) {
 
-        if(e.getEntity().getPlayer().getLocation().getY() < 0) {
+        if(Objects.requireNonNull(e.getEntity().getPlayer()).getLocation().getY() < 0) {
             Location loc = e.getEntity().getPlayer().getLocation().clone();
             loc.setY(60);
             latestDeathPos = loc;
@@ -257,7 +254,7 @@ public class EventListenerMain implements Listener {
     @EventHandler public void onRightClickSmiter(PlayerInteractEvent e) {
         try {
             if( ( e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK) )) {
-                if(e.getItem().getType().equals(Material.BLAZE_ROD)) {
+                if(Objects.requireNonNull(e.getItem()).getType().equals(Material.BLAZE_ROD)) {
                     Player p = e.getPlayer();
                     boolean found = false;
                     for (int i = 0; i < 200; i++) {
@@ -320,6 +317,8 @@ public class EventListenerMain implements Listener {
         new ActivityRule("Hunger", false);
         new ActivityRule("PearlDamage", false);
         new ActivityRule("PlayerInteract",true);
+        new ActivityRule("Suffocation",true);
+
     }
 
     public static ActivityRule getActivityRule(String name) {

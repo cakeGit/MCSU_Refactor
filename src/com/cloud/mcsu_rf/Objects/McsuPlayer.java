@@ -1,6 +1,8 @@
 package com.cloud.mcsu_rf.Objects;
 
 import com.cloud.mcsu_rf.Objects.MCSU_Scoreboard.MCSU_Scoreboard;
+import com.cloud.mcsu_rf.Objects.McsuScoreboard.McsuScoreboard;
+import com.cloud.mcsu_rf.Objects.McsuScoreboard.ScoreboardElements.TeamTotalPoints;
 import com.cloud.mcsu_rf.TeamHandlers.TeamMain;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -10,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static com.cloud.mcsu_rf.Score_Handlers.Scoreboard_Main.reloadScoreboard;
 
 public class McsuPlayer {
 
@@ -80,7 +81,7 @@ public class McsuPlayer {
             Bukkit.getLogger().info("Player " + p.getName() + " was attempted to be registered but already exists");
         }
 
-        reloadScoreboard();
+        McsuScoreboard.defaultScoreboard.bindPlayer(McsuPlayer.fromBukkit(p));
 
     }
 
@@ -114,16 +115,12 @@ public class McsuPlayer {
 
     }
 
-    public void setScoreboard(MCSU_Scoreboard scoreboard) {
-        this.bukkitPlayer.setScoreboard(scoreboard.toBukkitScoreboard());
-    }
-
     public int awardPoints(int points) {
 
         this.points += points;
         Bukkit.broadcastMessage("(Debug) " + getColouredName()  + " has recived " + points + " points!");
         TeamMain.refreshTeamsCalculatedPoints();
-        reloadScoreboard();
+        TeamTotalPoints.update();
 
         return this.points;
 

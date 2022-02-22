@@ -5,6 +5,7 @@ import com.cloud.mcsu_rf.Game_Handlers.Game_Main;
 import com.cloud.mcsu_rf.Objects.Enums.CharacterSize;
 import com.cloud.mcsu_rf.Objects.Map.MapMetadata;
 import com.cloud.mcsu_rf.Objects.McsuPlayer;
+import com.cloud.mcsu_rf.Objects.McsuScoreboard.McsuScoreboard;
 import com.cloud.mcsu_rf.Score_Handlers.Scoreboard_Main;
 import com.cloud.mcsu_rf.TeamHandlers.TeamMain;
 import org.bukkit.Bukkit;
@@ -45,7 +46,6 @@ public class MCSU_Main extends JavaPlugin implements Listener {
         Game_Main.init();
         Cmd_Main.Init();
         TeamMain.init();
-        Scoreboard_Main.init();
         MapMetadata.loadData();
 
         for (Player p : Bukkit.getOnlinePlayers()) { McsuPlayer.registerPlayer(p);}
