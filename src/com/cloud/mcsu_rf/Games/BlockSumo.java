@@ -19,11 +19,11 @@ import com.cloud.mcsu_rf.Objects.McsuPlayer;
 import com.cloud.mcsu_rf.TeamSwitchStatements;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.Material;
+import org.bukkit.*;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.TNTPrimed;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -106,7 +106,11 @@ public class BlockSumo {
                                 .addGameFunction(new CustomEventListener(event -> {
                                     EntityExplodeEvent explodeEvent = (EntityExplodeEvent) event;
                                     explodeEvent.setCancelled(true);
-                                    game.getWorld().createExplosion(explodeEvent.getLocation(),10,false,false);
+                                    if(explodeEvent.getEntity() instanceof TNTPrimed) {
+                                        game.getWorld().createExplosion(explodeEvent.getLocation(),10,false,false);
+                                    } else {
+                                        game.getWorld().createExplosion(explodeEvent.getLocation(),20,false,false);
+                                    }
                                 }, "EntityExplodeEvent"))
                                 .addGameFunction(new CustomEventListener(event -> {
 
@@ -156,6 +160,15 @@ public class BlockSumo {
                                         damageByEntityEvent.setCancelled(true);
                                     }
                                 }, "EntityDamageByEntityEvent"))
+                                .addGameFunction(new CustomEventListener(event -> {
+                                    PlayerInteractEvent playerInteractEvent = (PlayerInteractEvent) event;
+                                    Player player = playerInteractEvent.getPlayer();
+                                    if(playerInteractEvent.getItem().getType().equals(Material.FIRE_CHARGE)) {
+                                        Location fireballLoc = player.getEyeLocation();
+                                        player.getWorld().spawnEntity(fireballLoc, EntityType.FIREBALL);
+                                        playerInteractEvent.getItem().setAmount(playerInteractEvent.getItem().getAmount()-1);
+                                    }
+                                }, "PlayerInteractEvent"))
 
                 )
                 .addGameState(

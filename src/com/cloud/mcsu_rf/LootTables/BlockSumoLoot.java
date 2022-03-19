@@ -3,6 +3,7 @@ package com.cloud.mcsu_rf.LootTables;
 import com.cloud.mcsu_rf.Objects.LootTable.LootOption;
 import com.cloud.mcsu_rf.Objects.LootTable.LootTable;
 import com.cloud.mcsu_rf.Objects.McsuItemStack;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
@@ -44,6 +45,11 @@ public class BlockSumoLoot {
                 new LootOption(
                         3,
                         new ItemStack(Material.ENDER_PEARL)
+                ),
+                new LootOption(
+                        2,
+                        new McsuItemStack(Material.FIRE_CHARGE)
+                                .setName(ChatColor.GOLD+"Fireball")
                 )
         );
 

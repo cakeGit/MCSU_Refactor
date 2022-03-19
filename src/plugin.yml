@@ -43,3 +43,7 @@ commands:
   blocksumoloot:
     description: testing command
     usage: /blocksumoloot
+
+  event:
+    description: All of the MCSU event commands
+    usage: /event <Action>

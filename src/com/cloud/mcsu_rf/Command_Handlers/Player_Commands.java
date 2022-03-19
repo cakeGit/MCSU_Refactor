@@ -1,21 +1,23 @@
 package com.cloud.mcsu_rf.Command_Handlers;
 
-import com.cloud.mcsu_rf.Objects.McsuEvent;
+import com.cloud.mcsu_rf.Game_Handlers.Game_Main;
+import com.cloud.mcsu_rf.Game_Handlers.ShorthandClasses.Break;
+import com.cloud.mcsu_rf.MCSUEvent.MCSUEvent;
+import com.cloud.mcsu_rf.Objects.Game.Game;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-public class Player_Commands implements CommandExecutor {
+public class Player_Commands {
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String s, String[] args) {
-        switch (cmd.getName()) {
-            case "event":
-                if(args.length >= 1) {
-                    McsuEvent event = new McsuEvent();
-                }
+    public static boolean startEvent(CommandSender sender, String[] args) {
+        if(args.length >= 1) {
+            if ("start".equals(args[0])) {
+                MCSUEvent event = new MCSUEvent();
                 return true;
+            }
         }
-        return false;
+        return true;
     }
 }

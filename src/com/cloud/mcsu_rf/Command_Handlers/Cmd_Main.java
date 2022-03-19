@@ -30,6 +30,10 @@ public class Cmd_Main implements CommandExecutor {
             Objects.requireNonNull(MCSU_Main.Mcsu_Plugin.getCommand(cmd)).setExecutor(new Cmd_Main());
         }
 
+        for (String cmd : pCommands) {
+            Objects.requireNonNull(MCSU_Main.Mcsu_Plugin.getCommand(cmd)).setExecutor(new Cmd_Main());
+        }
+
     }
 
     public static void Init() {
@@ -87,6 +91,8 @@ public class Cmd_Main implements CommandExecutor {
             case "tppoint": return TpPoint_Cmds.tpPoint(Sender, Args);
             case "mcsuteam": return Score_Cmds.Team(Sender, Args);
             case "spawnsled": return Game_Cmds.spawnSled(Sender, Args);
+
+            case "event": return Player_Commands.startEvent(Sender, Args);
 
             case "enablepvp": EventListenerMain.setActivityRule("PVP", true); return true;
 

@@ -54,6 +54,9 @@ public class SurvivalGames {
                                     EventListenerMain.setActivityRule("ExplosionDamage", true);
                                     EventListenerMain.setActivityRule("Crafting", true);
                                     EventListenerMain.setActivityRule("FallDamage", true);
+                                    EventListenerMain.setActivityRule("EntityDamage",true);
+                                    EventListenerMain.setActivityRule("PearlDamage",true);
+                                    EventListenerMain.setActivityRule("Hunger",true);
                                     game.getGamestate("afterCountdown").setEnabled(true);
                                 }, "GameCountdownEndEvent"))
                 )
