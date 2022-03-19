@@ -31,4 +31,15 @@ public class ParseArr {
 
         return arrList.toArray(new Float[0]);
     }
+
+    public static Integer[] toInteger(Double[] arr) {
+
+        ArrayList<Integer> arrList = new ArrayList<>();
+        for (Double dou : arr) {
+            arrList.add((int) Math.round(dou));
+        }
+
+        return arrList.toArray(new Integer[0]);
+
+    }
 }

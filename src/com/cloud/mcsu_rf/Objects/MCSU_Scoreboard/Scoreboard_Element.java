@@ -8,6 +8,7 @@ import org.bukkit.ChatColor;
 import java.util.ArrayList;
 import java.util.Objects;
 
+@Deprecated
 public class Scoreboard_Element {
 
     String Type;

@@ -12,8 +12,8 @@ import org.bukkit.scoreboard.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
-
-public class MCSU_Scoreboard {
+@Deprecated
+public class MCSU_Scoreboard {/*
 
     String Name;
     String Default_Name = ChatColor.RED+"§lMCSU";
@@ -72,7 +72,7 @@ public class MCSU_Scoreboard {
             }
         }
 
-         */
+
 
         Objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 
@@ -89,6 +89,6 @@ public class MCSU_Scoreboard {
         }
 
         return Scoreboard;
-    }
+    }*/
     
 }

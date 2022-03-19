@@ -25,7 +25,7 @@ public class Spleef {
     Game game;
 
     int killZoneY;
-    int explosionPower = 3;
+    float explosionPower = 7F;
     SpleefInventory spleefInventory;
     String toolGamemodeChoice;
 
@@ -131,7 +131,7 @@ public class Spleef {
                                         Location hitLocation = hitEvent.getHitBlock().getLocation();
 
                                         hitEvent.getEntity().getWorld().createExplosion(hitLocation, 2.2F, false);
-                                        hitEvent.getEntity().getWorld().createExplosion(hitLocation, 10F, false, false);
+                                        hitEvent.getEntity().getWorld().createExplosion(hitLocation, explosionPower, false, false);
                                     }
 
                                 }, "ProjectileHitEvent"))

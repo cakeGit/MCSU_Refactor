@@ -44,15 +44,16 @@ public class SpawnManager {
 
     }
 
-    public static void tpPlayerToGameSpawn(MapLoader mapLoader, Player player) {
+    public static MapPoint tpPlayerToGameSpawn(MapLoader mapLoader, Player player) {
 
         MapMetadata mapData = mapLoader.getMapData();
         World world = mapLoader.getWorld();
+        MapPoint pickedPoint = null;
 
         switch (mapData.getGameSpawnType()) {
             case "Team":
 
-                String playerTeamId = McsuPlayer.fromBukkit(player).getTeamID();
+                String playerTeamId = Objects.requireNonNull(McsuPlayer.fromBukkit(player)).getTeamID();
 
                 boolean foundPoint = false;
 
@@ -60,6 +61,7 @@ public class SpawnManager {
                     if (Objects.equals(gameSpawn.getId(), playerTeamId)) {
 
                         teleportToMapPoint(player, gameSpawn, world);
+                        pickedPoint = gameSpawn;
 
                         foundPoint = true;
                     }
@@ -79,6 +81,7 @@ public class SpawnManager {
                 MapPoint gameSpawn = unusedPoints.get(0);
 
                 teleportToMapPoint(player, gameSpawn, world);
+                pickedPoint = gameSpawn;
 
                 Bukkit.getLogger().info(unusedPoints.size() + " spawns still unused ");
 
@@ -86,6 +89,9 @@ public class SpawnManager {
 
                 break;
         }
+
+        return pickedPoint;
+
     }
 
     public void gameSpawns(MapLoader mapLoader) { //Will randomly place ppl in the spawns

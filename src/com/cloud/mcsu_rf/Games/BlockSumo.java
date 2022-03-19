@@ -14,6 +14,7 @@ import com.cloud.mcsu_rf.Objects.GameFunctions.BuildLimits.BuildMaxHeight;
 import com.cloud.mcsu_rf.Objects.GameFunctions.CustomEventListener;
 import com.cloud.mcsu_rf.Objects.GameFunctions.GameFunction;
 import com.cloud.mcsu_rf.Objects.GameFunctions.InventoryManager;
+import com.cloud.mcsu_rf.Objects.Map.MapPoint;
 import com.cloud.mcsu_rf.Objects.Map.SpawnManager;
 import com.cloud.mcsu_rf.Objects.McsuPlayer;
 import com.cloud.mcsu_rf.TeamSwitchStatements;
@@ -29,6 +30,7 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
@@ -36,17 +38,18 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
+import java.util.concurrent.BrokenBarrierException;
 
 public class BlockSumo {
 
     Game game;
 
-    int killZoneY = 0;
-    int buildHeightLimit = 0;
-    int buildDistanceLimit = 0;
+    int killZoneY;
+    Integer[] BuildDistanceOrigin;
+    int buildHeightLimit;
+    int buildDistanceLimit;
     BukkitRunnable powerupTimer;
     BukkitRunnable displayLivesTimer;
-    GameFunction lobbyHeightActionZone;
     InventoryManager inventoryManager = new InventoryManager(new BlockSumoInventory());
     Integer[] buildDistanceOrigin;
 
@@ -70,8 +73,10 @@ public class BlockSumo {
                                     EventListenerMain.setActivityRule("EntityDamage",false);
                                     EventListenerMain.setActivityRule("PlayerInteract",true);
                                     EventListenerMain.setActivityRule("Hunger",false);
+                                    EventListenerMain.setActivityRule("Suffocation",false);
 
                                     killZoneY = (int) game.getMapMetadata().get("GameData.KillZoneY");
+                                    BuildDistanceOrigin = ParseArr.toInteger(((String) game.getMapMetadata().get("GameData.BuildDistanceOrigin")).split(" "));
                                     buildHeightLimit = (int) game.getMapMetadata().get("GameData.BuildHeightLimit");
                                     buildDistanceLimit = (int) game.getMapMetadata().get("GameData.BuildDistanceLimit");
                                     buildDistanceOrigin = ParseArr.toInteger(((String) game.getMapMetadata().get("GameData.BuildDistanceOrigin")).split(" "));
@@ -151,7 +156,6 @@ public class BlockSumo {
                                     } catch (NullPointerException ignored) { }
 
                                 }, "InventoryClickEvent", "PlayerInteractEvent"))
-
                                 .addGameFunction(new CustomEventListener(event -> {
                                     EntityDamageByEntityEvent damageByEntityEvent = (EntityDamageByEntityEvent) event;
                                     if (BlockSumoPlayer.fromBukkit((Player) damageByEntityEvent.getEntity()).hasSpawnProt()
@@ -206,7 +210,7 @@ public class BlockSumo {
                                     };
                                     displayLivesTimer.runTaskTimer(MCSU_Main.Mcsu_Plugin, 0L, 20L);
 
-                                    lobbyHeightActionZone.setEnabled(false);
+                                    game.getGamestate("lobby").setEnabled(false);
 
 
                                 })
@@ -232,7 +236,19 @@ public class BlockSumo {
                                                     public void run() {
 
                                                         if (timeLeft == 0) {
-                                                            SpawnManager.tpPlayerToGameSpawn(game.getMapLoader(), deathEventPlayer);
+
+                                                            MapPoint pickedPoint = SpawnManager.tpPlayerToGameSpawn(game.getMapLoader(), deathEventPlayer);
+                                                            Double[] pointCoords = pickedPoint.getCoordinates();
+                                                            Location blockLoc = new Location(
+                                                                    game.getWorld(),
+                                                                    pointCoords[0],
+                                                                    pointCoords[1],
+                                                                    pointCoords[2]
+                                                            );
+
+                                                            game.getWorld().getBlockAt(blockLoc).setType(Material.AIR);
+                                                            game.getWorld().getBlockAt(blockLoc.add(0, 1, 0)).setType(Material.AIR);
+
                                                             deathEventPlayer.sendTitle(ChatColor.RED +""+ ChatColor.BOLD + "Go!", "", 0, 20, 10);
 
                                                             deathEventPlayer.playSound(deathEventPlayer.getLocation(), Game.DefaultStartTimerTickSound, 1, 1);

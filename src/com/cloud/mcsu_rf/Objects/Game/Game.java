@@ -9,6 +9,7 @@ import com.cloud.mcsu_rf.Objects.Map.MapMetadata;
 import com.cloud.mcsu_rf.Objects.McsuPlayer;
 import com.cloud.mcsu_rf.Objects.Map.MapLoader;
 import com.cloud.mcsu_rf.Objects.Map.SpawnManager;
+import com.cloud.mcsu_rf.Objects.McsuScoreboard.ScoreboardElements.MapMetadataDisplay;
 import com.cloud.mcsu_rf.Objects.McsuTeam;
 import com.cloud.mcsu_rf.Objects.Timer;
 import com.cloud.mcsu_rf.Game_Handlers.ShorthandClasses.Pick;
@@ -57,6 +58,8 @@ public class Game {
     public static final Sound DefaultGamemodePickSound = Sound.BLOCK_NOTE_BLOCK_PLING;
     public static final Sound DefaultStartTimerTickSound = Sound.BLOCK_NOTE_BLOCK_SNARE;
     public static final Sound DefaultStartTimerEndSound = Sound.ENTITY_FIREWORK_ROCKET_LAUNCH;
+    public static boolean gameActive = false;
+    public static MapMetadata mapMetadata;
 
     //static
     static ArrayList<McsuPlayer> alivePlayers = new ArrayList<>();
@@ -66,7 +69,6 @@ public class Game {
     World world;
     GamemodeManager gamemodeManager;
     ArrayList<GamemodeOptionChoice> gamemodeChoices;
-    MapMetadata mapMetadata;
     MapLoader mapLoader;
     boolean startIntervalEnabled = true;
     boolean freezeOnGameCountdown = true;
@@ -123,6 +125,9 @@ public class Game {
 
         GameInitEvent initEvent = new GameInitEvent(this);
         Bukkit.getPluginManager().callEvent(initEvent);
+
+        gameActive = true;
+        MapMetadataDisplay.update();
 
         if (startIntervalEnabled) {
             Timer startTimer = new Timer(-1, DefaultStartLength)
@@ -298,7 +303,7 @@ public class Game {
     public Game setMapLoader(MapLoader mapLoader) { this.mapLoader = mapLoader; return this; }
 
     public Game setMapMetadata(MapMetadata mapMetadata) { this.mapMetadata = mapMetadata; return this; }
-    public MapMetadata getMapMetadata() { return mapMetadata; }
+    public static MapMetadata getMapMetadata() { return mapMetadata; }
 
 
     public Game setGamemodeManager(GamemodeManager gamemodeManager) { this.gamemodeManager = gamemodeManager; return this; }

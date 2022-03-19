@@ -4,7 +4,6 @@ import com.cloud.mcsu_rf.Config_Main;
 import com.cloud.mcsu_rf.Objects.ConfigFile;
 import com.cloud.mcsu_rf.Objects.McsuPlayer;
 import com.cloud.mcsu_rf.Objects.McsuTeam;
-import com.cloud.mcsu_rf.Score_Handlers.Scoreboard_Main;
 import org.bukkit.Bukkit;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
@@ -51,7 +50,7 @@ public class TeamMain {
 
             for (String playerUUID : mcsuTeam.getMemberUUIDs()) {
                 if (Bukkit.getPlayer(playerUUID) != null) {
-                    team.addPlayer(Bukkit.getPlayer(playerUUID));
+                    team.addPlayer(Objects.requireNonNull(Bukkit.getPlayer(playerUUID)));
                 } else {
                     Bukkit.broadcastMessage("Player with UUID "+playerUUID+" wasn't registered,");
                 }
@@ -82,21 +81,20 @@ public class TeamMain {
 
     public static void init() {
         initTeams();
-        Scoreboard_Main.onTeamsLoaded();
     }
 
     public static McsuTeam getTeamById(String ID) {
         return Teams.stream().filter(Team -> Objects.equals(Team.getTeamID(), ID)).findFirst().orElse(null);
     }
+    public static int getTeamRanking(McsuTeam team) {
+        return Teams.indexOf(team)+1;
+    }
+
 
     public static ArrayList<McsuTeam> getSortedTeams() {
         ArrayList<McsuTeam> sortedTeams = Teams;
         sortedTeams.sort((t1, t2) -> {
-            if (t1.getCalculatedPoints() > t2.getCalculatedPoints())
-                return 1;
-            if (t1.getCalculatedPoints() < t2.getCalculatedPoints())
-                return -1;
-            return 0;
+            return Integer.compare(t2.getCalculatedPoints(), t1.getCalculatedPoints());
         });
 
         return sortedTeams;
