@@ -6,6 +6,8 @@ import com.cloud.mcsu_rf.Objects.McsuPlayer;
 import com.cloud.mcsu_rf.Objects.McsuScoreboard.ScoreboardElements.FixedContent;
 import com.cloud.mcsu_rf.Objects.McsuScoreboard.ScoreboardElements.MapMetadataDisplay;
 import com.cloud.mcsu_rf.Objects.McsuScoreboard.ScoreboardElements.TeamTotalPoints;
+import com.cloud.mcsu_rf.Objects.McsuTeam;
+import com.cloud.mcsu_rf.TeamHandlers.TeamMain;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -64,13 +66,17 @@ public class McsuScoreboard {
 
         ArrayList<String> generatedContents = new ArrayList<>();
 
-        Team onlineCounter = scoreboard.registerNewTeam("onlineCounter");
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            onlineCounter.addPlayer(player);
+        // register teams
 
+        for(McsuTeam mcsuTeam : TeamMain.getSortedTeams()) {
+            Team team = scoreboard.registerNewTeam(mcsuTeam.getTeamID());
+            team.setPrefix(mcsuTeam.getChatColour()+"["+mcsuTeam.getStyledName()+"] ");
         }
 
-        onlineCounter.setPrefix("bigcock");
+        for(Player players : Bukkit.getOnlinePlayers()) {
+            Team t = scoreboard.getTeam(McsuPlayer.fromBukkit(players).getTeamID());
+            t.addEntry(players.getName());
+        }
 
         for (ScoreboardElementBase element : scoreboardElements) {
             generatedContents.addAll(Arrays.asList(element.generateContent(mcsuPlayer)));
