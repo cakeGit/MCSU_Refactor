@@ -5,7 +5,7 @@ import com.cloud.mcsu_rf.Objects.ConfigFile;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class Config_Main {
+public class ConfigMain {
 
     public static ArrayList<ConfigFile> Configs = new ArrayList<>();
 

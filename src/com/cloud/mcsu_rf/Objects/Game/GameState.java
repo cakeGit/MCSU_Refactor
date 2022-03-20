@@ -1,6 +1,6 @@
 package com.cloud.mcsu_rf.Objects.Game;
 
-import com.cloud.mcsu_rf.Objects.GameFunctions.GameFunction;
+import com.cloud.mcsu_rf.Objects.GameFunctions.GameFunctionBase;
 
 import java.util.ArrayList;
 
@@ -12,20 +12,20 @@ public class GameState {
     Runnable onEnable;
     Runnable onDisable;
 
-    ArrayList<GameFunction> gameFunctions = new ArrayList<>();
+    ArrayList<GameFunctionBase> gameFunctions = new ArrayList<>();
 
     public GameState(String name, boolean enabledDefault) { this.name = name; this.enabled = enabledDefault; this.enabledDefault = enabledDefault; }
     public GameState(String name) { this.name = name; this.enabled = false; this.enabledDefault = false; }
 
-    public GameState addGameFunction(GameFunction gameFunction, boolean isTemporary) {
+    public GameState addGameFunction(GameFunctionBase gameFunction, boolean isTemporary) {
         gameFunctions.add(gameFunction);
         if (isTemporary) { gameFunction.setEnabled(enabled); gameFunction.setIsTemporary(true); }
         return this;
     }
 
-    public GameState addGameFunction(GameFunction gameFunction) { gameFunctions.add(gameFunction); return this; }
+    public GameState addGameFunction(GameFunctionBase gameFunction) { gameFunctions.add(gameFunction); return this; }
 
-    public ArrayList<GameFunction> getGameFunctions() { return this.gameFunctions; }
+    public ArrayList<GameFunctionBase> getGameFunctions() { return this.gameFunctions; }
 
     public boolean getEnabled() { return enabled; }
 
@@ -35,7 +35,7 @@ public class GameState {
 
         this.enabled = enabled;
 
-        for (GameFunction gameFunction : gameFunctions) {
+        for (GameFunctionBase gameFunction : gameFunctions) {
 
             gameFunction.setEnabled(enabled);
 
@@ -50,7 +50,7 @@ public class GameState {
 
         setEnabled(false);
 
-        gameFunctions.removeIf(GameFunction::getIsTemporary);
+        gameFunctions.removeIf(GameFunctionBase::getIsTemporary);
 
         this.enabled = enabledDefault;
 

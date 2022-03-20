@@ -5,7 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
-public class InventoryManager extends GameFunction {
+public class InventoryManager extends GameFunctionBase {
 
     protected InventoryBase inventory;
 
@@ -34,4 +34,5 @@ public class InventoryManager extends GameFunction {
     }
 
     public void emitInventoryEvent(String inventoryEventName) { inventory.onInventoryEvent(inventoryEventName); }
+
 }

@@ -4,9 +4,7 @@ import com.cloud.mcsu_rf.Objects.Enums.PointGoal;
 import com.cloud.mcsu_rf.Objects.McsuPlayer;
 import org.bukkit.event.Event;
 
-import java.awt.*;
-
-public class PointAwarder extends GameFunction {
+public class PointAwarder extends GameFunctionBase {
 
     protected int pointValue;
 

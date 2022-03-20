@@ -5,7 +5,7 @@ import org.bukkit.event.Event;
 
 import java.util.Arrays;
 
-public class CustomEventListener extends GameFunction {
+public class CustomEventListener extends GameFunctionBase {
 
     EventLambda onEvent;
 

@@ -1,21 +1,13 @@
 package com.cloud.mcsu_rf;
 
+import com.cloud.mcsu_rf.Game_Handlers.ShorthandClasses.Pick;
 import com.cloud.mcsu_rf.Objects.ActivityRule;
 import com.cloud.mcsu_rf.Objects.CustomEvents.GameCountdownEndEvent;
 import com.cloud.mcsu_rf.Objects.CustomEvents.GameInitEvent;
 import com.cloud.mcsu_rf.Objects.CustomEvents.GameSpawnsActivatedEvent;
 import com.cloud.mcsu_rf.Objects.EventListener;
-import com.cloud.mcsu_rf.Objects.MCSU_Scoreboard.MCSU_Scoreboard;
-import com.cloud.mcsu_rf.Objects.MCSU_Scoreboard.Scoreboard_Element;
 import com.cloud.mcsu_rf.Objects.McsuPlayer;
-import com.cloud.mcsu_rf.Objects.McsuScoreboard.McsuScoreboard;
-import com.cloud.mcsu_rf.Score_Handlers.Scoreboard_Main;
-import com.cloud.mcsu_rf.Game_Handlers.ShorthandClasses.Pick;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;

@@ -1,13 +1,10 @@
 package com.cloud.mcsu_rf.TeamHandlers;
 
-import com.cloud.mcsu_rf.Config_Main;
+import com.cloud.mcsu_rf.ConfigMain;
 import com.cloud.mcsu_rf.Objects.ConfigFile;
 import com.cloud.mcsu_rf.Objects.McsuPlayer;
 import com.cloud.mcsu_rf.Objects.McsuTeam;
 import org.bukkit.Bukkit;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.ScoreboardManager;
-import org.bukkit.scoreboard.Team;
 
 import java.util.*;
 
@@ -15,7 +12,7 @@ public class TeamMain {
 
     public static ArrayList<McsuTeam> Teams = new ArrayList<>();
 
-    public static ConfigFile teamRegister = Config_Main.getByID("t");
+    public static ConfigFile teamRegister = ConfigMain.getByID("t");
     public static List<HashMap> teamList = (List<HashMap>) teamRegister.config.getList("Teams");
 
     static void initTeams() {
@@ -32,46 +29,6 @@ public class TeamMain {
             );
         }
 
-        new TeamMain().scoborardteaminit();
-
-    }
-
-    void scoborardteaminit() {
-
-
-        for(McsuTeam mcsuTeam : TeamMain.Teams) {
-            ScoreboardManager manager = Bukkit.getScoreboardManager();
-
-            Scoreboard board = manager.getNewScoreboard();
-
-            Team team = board.registerNewTeam(mcsuTeam.getTeamID());
-
-            Bukkit.broadcastMessage("pp");
-
-            for (String playerUUID : mcsuTeam.getMemberUUIDs()) {
-                if (Bukkit.getPlayer(playerUUID) != null) {
-                    team.addPlayer(Objects.requireNonNull(Bukkit.getPlayer(playerUUID)));
-                } else {
-                    Bukkit.broadcastMessage("Player with UUID "+playerUUID+" wasn't registered,");
-                }
-            }
-            //Adding players
-
-            //Adding prefixes (shows up in player list before the player's name, supports ChatColors)
-            team.setPrefix("prefix");
-
-            //Adding suffixes (shows up in player list after the player's name, supports ChatColors)
-            team.setSuffix("suffix");
-
-            //Setting the display name
-            team.setDisplayName("display name");
-
-            //Making invisible players on the same team have a transparent body
-            team.setCanSeeFriendlyInvisibles(true);
-
-            //Making it so players can't hurt others on the same team
-            team.setAllowFriendlyFire(false);
-        }
     }
 
     public static void saveTeamList() {

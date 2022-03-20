@@ -1,20 +1,18 @@
 package com.cloud.mcsu_rf.Command_Handlers;
 
-import com.cloud.mcsu_rf.Config_Main;
+import com.cloud.mcsu_rf.ConfigMain;
 import com.cloud.mcsu_rf.Objects.ConfigFile;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class TpPoint_Cmds {
 
-    static ConfigFile tpPointConfig = Config_Main.getByID("tp");
+    static ConfigFile tpPointConfig = ConfigMain.getByID("tp");
 
     public static void createPoint(String name, double x, double y, double z, double rotx, double roty) {
 

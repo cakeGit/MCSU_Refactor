@@ -1,6 +1,5 @@
 package com.cloud.mcsu_rf.Objects;
 
-import com.cloud.mcsu_rf.Objects.MCSU_Scoreboard.MCSU_Scoreboard;
 import com.cloud.mcsu_rf.Objects.McsuScoreboard.McsuScoreboard;
 import com.cloud.mcsu_rf.Objects.McsuScoreboard.ScoreboardElements.TeamTotalPoints;
 import com.cloud.mcsu_rf.TeamHandlers.TeamMain;
