@@ -58,6 +58,7 @@ public class Game {
     public static final Sound DefaultGamemodePickSound = Sound.BLOCK_NOTE_BLOCK_PLING;
     public static final Sound DefaultStartTimerTickSound = Sound.BLOCK_NOTE_BLOCK_SNARE;
     public static final Sound DefaultStartTimerEndSound = Sound.ENTITY_FIREWORK_ROCKET_LAUNCH;
+    public static final Sound DefaultTeamDeathSound = Sound.ENTITY_WOLF_HOWL;
     public static boolean gameActive = false;
     public static MapMetadata mapMetadata;
 
@@ -241,6 +242,9 @@ public class Game {
 
                 if (announceElimination) {
                     Bukkit.broadcastMessage( team.getStyledName() + " has been eliminated!" );
+                    for(Player players : Bukkit.getOnlinePlayers()) {
+                        players.playSound(players.getLocation(),DefaultTeamDeathSound,100,1);
+                    }
                 } else {
                     Bukkit.getLogger().info( team.getStyledName() + " has been eliminated silently as announceElimination is false" );
                 }
