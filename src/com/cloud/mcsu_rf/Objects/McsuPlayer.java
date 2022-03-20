@@ -80,7 +80,7 @@ public class McsuPlayer {
             Bukkit.getLogger().info("Player " + p.getName() + " was attempted to be registered but already exists");
         }
 
-        McsuScoreboard.defaultScoreboard.bindPlayer(McsuPlayer.fromBukkit(p));
+        McsuScoreboard.defaultScoreboard.bindPlayer(McsuPlayer.fromBukkit(p), false);
 
     }
 
@@ -108,9 +108,9 @@ public class McsuPlayer {
     public void setTeam(McsuTeam newTeam) {
 
         this.teamID = newTeam.TeamID;
-        this.Colour = newTeam.getChatColour();
+        this.Colour = newTeam.getChatColour();/*
         bukkitPlayer.setDisplayName(getColouredName());
-        bukkitPlayer.setPlayerListName(getColouredName());
+        bukkitPlayer.setPlayerListName(getColouredName());*/
 
     }
 

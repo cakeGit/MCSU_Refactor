@@ -22,17 +22,22 @@ import java.util.Objects;
 
 public class McsuScoreboard {
 
-    public static McsuScoreboard defaultScoreboard = new McsuScoreboard(
-            new MapMetadataDisplay(false),
-            new FixedContent("",
-                    ChatColor.RED+""+ChatColor.BOLD +"Team Scores"+ ChatColor.RESET +":"),
-            new TeamTotalPoints(),
-            new FixedContent("",
-                    ChatColor.GRAY+""+ChatColor.ITALIC+"  Mcsu v"+
-                            MCSU_Main.Mcsu_Plugin.getDescription().getVersion()
-            )
-    );
+    public static McsuScoreboard defaultScoreboard;
 
+    public static void init() {
+
+        defaultScoreboard = new McsuScoreboard(
+                new MapMetadataDisplay(false),
+                new FixedContent("",
+                        ChatColor.RED+""+ChatColor.BOLD +"Team Scores"+ ChatColor.RESET +":"),
+                new TeamTotalPoints(),
+                new FixedContent("",
+                        ChatColor.GRAY+""+ChatColor.ITALIC+"  Mcsu v"+
+                                MCSU_Main.Mcsu_Plugin.getDescription().getVersion()
+                )
+        );
+
+    }
 
     ArrayList<ScoreboardElementBase> scoreboardElements;
     ArrayList<McsuPlayer> boundPlayers = new ArrayList<>();
@@ -53,8 +58,11 @@ public class McsuScoreboard {
     }
 
     public ArrayList<McsuPlayer> bindPlayer(McsuPlayer player) {
+        return bindPlayer(player, true);
+    }
+    public ArrayList<McsuPlayer> bindPlayer(McsuPlayer player, boolean update) {
         boundPlayers.add(player);
-        update();
+        if(update){update();}
         return boundPlayers;
     }
 
@@ -73,9 +81,13 @@ public class McsuScoreboard {
             team.setPrefix(mcsuTeam.getChatColour()+"["+mcsuTeam.getStyledName()+"] ");
         }
 
-        for(Player players : Bukkit.getOnlinePlayers()) {
-            Team t = scoreboard.getTeam(McsuPlayer.fromBukkit(players).getTeamID());
-            t.addEntry(players.getName());
+        for(Player player : Bukkit.getOnlinePlayers()) {
+            for (McsuPlayer mcdsuPlayer : McsuPlayer.McsuPlayers) {
+                Bukkit.getLogger().info("MCSU PLATYER : " + mcdsuPlayer.getName());
+            }/*
+            Bukkit.getLogger().info(McsuPlayer.fromBukkit(player).getName());*/
+            /*Team team = scoreboard.getTeam(McsuPlayer.fromBukkit(player).getTeamID());
+            team.addEntry(player.getName());*/
         }
 
         for (ScoreboardElementBase element : scoreboardElements) {
@@ -89,8 +101,6 @@ public class McsuScoreboard {
             if  (Objects.equals(content, "")) {
                 content = " ".repeat(score);
             }
-
-            Bukkit.getLogger().info(content);
 
             if (content.length() <= 40) { // failsafe in case line is longer than 40 chars
                 objective.getScore(content).setScore(score);

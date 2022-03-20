@@ -219,6 +219,8 @@ public class EventListenerMain implements Listener {
 
         e.getEntity().getPlayer().setGameMode(GameMode.SPECTATOR);
 
+        e.setDeathMessage(DeathMessages.getMessage(e));
+
         onRegisteredEvent(e);
 
     }
