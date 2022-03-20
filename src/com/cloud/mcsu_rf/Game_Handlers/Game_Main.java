@@ -33,6 +33,7 @@ public class Game_Main {
         new SurvivalGames().init();
         new Slimekour().init();
         new MCTriathlon().init();
+        new SnowballFight().init();
 
     }
 

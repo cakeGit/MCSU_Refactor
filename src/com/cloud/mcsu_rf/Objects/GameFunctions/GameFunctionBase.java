@@ -6,14 +6,14 @@ import org.bukkit.event.Event;
 
 import java.util.ArrayList;
 
-public class GameFunction {
+public class GameFunctionBase {
 
     protected ArrayList<String> boundEventNames = new ArrayList<>();
     protected ArrayList<EventListener> eventListeners = new ArrayList<>();
 
     protected boolean isTemporary = false;
 
-    public GameFunction() { }
+    public GameFunctionBase() { }
 
     public void setEnabled(boolean enabled) {
 

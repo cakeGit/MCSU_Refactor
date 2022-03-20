@@ -1,11 +1,11 @@
 package com.cloud.mcsu_rf.Objects.GameFunctions.BuildLimits;
 
-import com.cloud.mcsu_rf.Objects.GameFunctions.GameFunction;
+import com.cloud.mcsu_rf.Objects.GameFunctions.GameFunctionBase;
 import org.bukkit.ChatColor;
 import org.bukkit.event.Event;
 import org.bukkit.event.block.BlockPlaceEvent;
 
-public class BuildMaxHeight extends GameFunction {
+public class BuildMaxHeight extends GameFunctionBase {
 
     private final int maxHeight;
 

@@ -54,7 +54,7 @@ public class McsuScoreboard {
         return boundPlayers;
     }
 
-    public Scoreboard generateScoreboard(McsuPlayer player) {
+    public Scoreboard generateScoreboard() {
 
         Scoreboard scoreboard = Objects.requireNonNull(Bukkit.getScoreboardManager()).getNewScoreboard();
         Objective objective = scoreboard.registerNewObjective(title, "dummy", title);
@@ -63,7 +63,7 @@ public class McsuScoreboard {
         ArrayList<String> generatedContents = new ArrayList<>();
 
         for (ScoreboardElementBase element : scoreboardElements) {
-            generatedContents.addAll(Arrays.asList(element.generateContent(player)));
+            generatedContents.addAll(Arrays.asList(element.generateContent()));
         }
 
         for (int i = generatedContents.size(); i > 0; i--) {
@@ -96,9 +96,10 @@ public class McsuScoreboard {
 
 
     public McsuScoreboard update() {
+        Scoreboard scoreboard = generateScoreboard();
 
         for (McsuPlayer player : boundPlayers) {
-            player.toBukkit().setScoreboard(generateScoreboard(player));
+            player.toBukkit().setScoreboard(scoreboard);
         }
         return this;
 

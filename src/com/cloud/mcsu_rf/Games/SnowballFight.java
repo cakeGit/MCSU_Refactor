@@ -14,6 +14,7 @@ import com.cloud.mcsu_rf.Objects.GameFunctions.BuildLimits.BuildMaxDistance;
 import com.cloud.mcsu_rf.Objects.GameFunctions.BuildLimits.BuildMaxHeight;
 import com.cloud.mcsu_rf.Objects.GameFunctions.CustomEventListener;
 import com.cloud.mcsu_rf.Objects.GameFunctions.InventoryManager;
+import com.cloud.mcsu_rf.Objects.GameFunctions.LethalSnowballs;
 import com.cloud.mcsu_rf.Objects.Map.MapPoint;
 import com.cloud.mcsu_rf.Objects.Map.SpawnManager;
 import com.cloud.mcsu_rf.Objects.McsuPlayer;
@@ -49,16 +50,7 @@ public class SnowballFight {
         game = new Game("SnowballFight")
                 .addGameState(
                         new GameState("base", true)
-                                .addGameFunction(new CustomEventListener(
-                                        event -> {
-                                            ProjectileHitEvent e = (ProjectileHitEvent) event;
-                                            Projectile p = e.getEntity();
-                                            if (!(p instanceof Snowball)) return;
-                                            Snowball s = (Snowball) p;
-                                            Bukkit.broadcastMessage("tv77ybvyb");
-                                        }
-                                        , "ProjectileHitEvent"
-                                ))
+                                .addGameFunction(new LethalSnowballs())
                 );
 
     }

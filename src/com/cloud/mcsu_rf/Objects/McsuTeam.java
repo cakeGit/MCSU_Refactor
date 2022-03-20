@@ -1,6 +1,5 @@
 package com.cloud.mcsu_rf.Objects;
 
-import com.cloud.mcsu_rf.Score_Handlers.Scoreboard_Main;
 import com.cloud.mcsu_rf.TeamHandlers.TeamMain;
 import org.bukkit.ChatColor;
 
@@ -53,10 +52,6 @@ public class McsuTeam {
     public String toScoreboardString() { return toScoreboardString(true); }
     public String toScoreboardString(boolean indent) {
         return (indent ? "  " : "") + ChatColor.GRAY + TeamMain.getTeamRanking(this)+ ". " + ChatColour + Name + ChatColor.WHITE + ": " + calculatedPoints;
-    }
-    public String toScoreboardString(McsuPlayer player) {
-        return ChatColor.BOLD + (memberUUIDs.contains(player.toBukkit().getUniqueId().toString()) ? "> " : "  ")
-                + toScoreboardString(false);
     }
 
     public void setCalculatedPoints(int Points) { calculatedPoints = Points; saveYaml(); }

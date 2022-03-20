@@ -20,7 +20,7 @@ public class MapMetadataDisplay extends ScoreboardElementBase {
         this.displayOnUnavailable = displayOnUnavailable;
     }
 
-    public String[] generateContent(McsuPlayer player) {
+    public String[] generateContent() {
 
         if (!displayOnUnavailable && Game.gameActive) {
             return new String[]{"",

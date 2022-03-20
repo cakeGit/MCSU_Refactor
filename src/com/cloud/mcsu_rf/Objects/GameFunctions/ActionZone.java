@@ -9,7 +9,7 @@ import org.bukkit.util.BlockVector;
 
 import java.util.ArrayList;
 
-public class ActionZone extends GameFunction {
+public class ActionZone extends GameFunctionBase {
 
     public static boolean pointInside(double a, double b, double point) {
         return Math.abs(a-point) + Math.abs(b-point) == Math.abs(a-b);

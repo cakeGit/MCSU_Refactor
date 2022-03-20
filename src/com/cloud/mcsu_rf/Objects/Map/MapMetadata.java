@@ -5,17 +5,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.cloud.mcsu_rf.Config_Main;
+import com.cloud.mcsu_rf.ConfigMain;
 import com.cloud.mcsu_rf.Game_Handlers.ShorthandClasses.ParseArr;
 import com.cloud.mcsu_rf.Objects.ConfigFile;
-import org.bukkit.Bukkit;
 
 public class MapMetadata {
     public static ArrayList<MapMetadata> RegisteredMapMetadata = new ArrayList<>();
 
     public static void loadData() {
 
-        ConfigFile mapRegister = Config_Main.getByID("m");
+        ConfigFile mapRegister = ConfigMain.getByID("m");
 
         List<?> Maps = mapRegister.config.getList("Maps");
 

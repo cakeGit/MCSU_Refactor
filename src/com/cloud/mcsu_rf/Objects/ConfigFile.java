@@ -24,8 +24,7 @@ public class ConfigFile  {
 
     public ConfigFile(String name, String id, String fileName) {
 
-        String subdirectory = "";
-        configFileConstructor(name, id, fileName, subdirectory);
+        configFileConstructor(name, id, fileName, "");
 
     }
     public ConfigFile(String name, String id, String fileName, String subdirectory) {
@@ -39,12 +38,13 @@ public class ConfigFile  {
         this.name = name;
         this.id = id;
         this.fileName = fileName;
+        String path = MCSU_Main.FileDir + "/" + subdirectory + "/";
 
-        this.configFile = new File(MCSU_Main.FileDir + subdirectory, this.fileName);
+        this.configFile = new File(path, this.fileName);
 
         if ( !this.configFile.exists() ) {
 
-            new File(MCSU_Main.FileDir + subdirectory).mkdir();
+            new File(path).mkdir();
 
             MCSU_Main.instance.saveResource("EmptyYml.yml", false);
 
@@ -53,7 +53,7 @@ public class ConfigFile  {
             try{
 
                 // rename a file in the same directory
-                Files.move(source, Path.of(MCSU_Main.FileDir + subdirectory + this.fileName));
+                Files.move(source, Path.of(path + this.fileName));
 
             } catch (IOException e) {
                 e.printStackTrace();

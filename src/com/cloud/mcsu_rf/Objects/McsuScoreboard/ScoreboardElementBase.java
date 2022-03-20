@@ -20,7 +20,7 @@ public class ScoreboardElementBase {
         }
     }
 
-    public String[] generateContent(McsuPlayer player) {
+    public String[] generateContent() {
          return new String[]{ChatColor.RED + this.getClass().getSimpleName() + " is used without a created/functional generateContent"};
     }
 }
