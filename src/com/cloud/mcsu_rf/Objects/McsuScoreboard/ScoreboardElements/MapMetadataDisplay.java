@@ -20,13 +20,13 @@ public class MapMetadataDisplay extends ScoreboardElementBase {
         this.displayOnUnavailable = displayOnUnavailable;
     }
 
-    public String[] generateContent() {
+    public String[] generateContent(McsuPlayer player) {
 
         if (!displayOnUnavailable && Game.gameActive) {
             return new String[]{"",
-                    ChatColor.RED +"Game: "+ ChatColor.RESET +Game.mapMetadata.getGame(),
-                    ChatColor.RED +"Map: "+ ChatColor.RESET +Game.mapMetadata.getName(),
-                    ChatColor.RED +"Creator: "+ ChatColor.RESET +Game.mapMetadata.getCreator()
+                    ChatColor.RED +"Game: "+ ChatColor.RESET + Game.mapMetadata.getGame(),
+                    ChatColor.RED +"Map: "+ ChatColor.RESET + Game.mapMetadata.getName(),
+                    ChatColor.RED +"Creator: "+ ChatColor.RESET + Game.mapMetadata.getCreator()
             };
         }
 

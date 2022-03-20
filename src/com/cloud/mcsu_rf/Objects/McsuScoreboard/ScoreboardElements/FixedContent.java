@@ -13,7 +13,7 @@ public class FixedContent extends ScoreboardElementBase {
         this.content = content;
     }
 
-    public String[] generateContent() {
+    public String[] generateContent(McsuPlayer player) {
         return content;
     }
 

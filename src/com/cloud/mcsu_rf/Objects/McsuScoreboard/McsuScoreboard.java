@@ -8,9 +8,11 @@ import com.cloud.mcsu_rf.Objects.McsuScoreboard.ScoreboardElements.MapMetadataDi
 import com.cloud.mcsu_rf.Objects.McsuScoreboard.ScoreboardElements.TeamTotalPoints;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -54,7 +56,7 @@ public class McsuScoreboard {
         return boundPlayers;
     }
 
-    public Scoreboard generateScoreboard() {
+    public Scoreboard generateScoreboard(McsuPlayer mcsuPlayer) {
 
         Scoreboard scoreboard = Objects.requireNonNull(Bukkit.getScoreboardManager()).getNewScoreboard();
         Objective objective = scoreboard.registerNewObjective(title, "dummy", title);
@@ -62,8 +64,16 @@ public class McsuScoreboard {
 
         ArrayList<String> generatedContents = new ArrayList<>();
 
+        Team onlineCounter = scoreboard.registerNewTeam("onlineCounter");
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            onlineCounter.addPlayer(player);
+
+        }
+
+        onlineCounter.setPrefix("bigcock");
+
         for (ScoreboardElementBase element : scoreboardElements) {
-            generatedContents.addAll(Arrays.asList(element.generateContent()));
+            generatedContents.addAll(Arrays.asList(element.generateContent(mcsuPlayer)));
         }
 
         for (int i = generatedContents.size(); i > 0; i--) {
@@ -76,7 +86,7 @@ public class McsuScoreboard {
 
             Bukkit.getLogger().info(content);
 
-            if (content.length() <= 40) {
+            if (content.length() <= 40) { // failsafe in case line is longer than 40 chars
                 objective.getScore(content).setScore(score);
             } else {
                 String uncutText = content;
@@ -87,6 +97,7 @@ public class McsuScoreboard {
                 }
                 objective.getScore(uncutText).setScore(score);
             }
+
         }
 
 
@@ -96,10 +107,9 @@ public class McsuScoreboard {
 
 
     public McsuScoreboard update() {
-        Scoreboard scoreboard = generateScoreboard();
 
         for (McsuPlayer player : boundPlayers) {
-            player.toBukkit().setScoreboard(scoreboard);
+            player.toBukkit().setScoreboard(generateScoreboard(player));
         }
         return this;
 

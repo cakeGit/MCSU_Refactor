@@ -53,6 +53,8 @@ public class McsuTeam {
     public String toScoreboardString(boolean indent) {
         return (indent ? "  " : "") + ChatColor.GRAY + TeamMain.getTeamRanking(this)+ ". " + ChatColour + Name + ChatColor.WHITE + ": " + calculatedPoints;
     }
+    public String toScoreboardString(McsuPlayer player) { return (Objects.equals(player.getTeamID(), TeamID) ? "> " : "  ") +
+            toScoreboardString(false); }
 
     public void setCalculatedPoints(int Points) { calculatedPoints = Points; saveYaml(); }
     public void addMember(String memberUUID) { memberUUIDs.add(memberUUID); saveYaml(); }
