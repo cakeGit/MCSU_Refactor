@@ -2,6 +2,7 @@ package com.cloud.mcsu_rf.Games;
 
 import com.cloud.mcsu_rf.EventListenerMain;
 import com.cloud.mcsu_rf.GamePlayers.MCTriathlonPlayer;
+import com.cloud.mcsu_rf.GamePlayers.SlimekourPlayer;
 import com.cloud.mcsu_rf.Game_Handlers.ShorthandClasses.ParseArr;
 import com.cloud.mcsu_rf.Inventories.MCTriathlonInventory;
 import com.cloud.mcsu_rf.Objects.Game.Game;
@@ -145,6 +146,7 @@ public class MCTriathlon {
 
                                     for (Player player : Bukkit.getOnlinePlayers()) {
                                         new MCTriathlonPlayer(player,0);
+                                        player.setCollidable(false);
                                     }
 
 
@@ -308,8 +310,10 @@ public class MCTriathlon {
                                     EntityDamageEvent playerdmgEvent = (EntityDamageEvent) Event;
                                     if(playerdmgEvent.getEntity() instanceof Player) {
                                         Player player = (Player) playerdmgEvent.getEntity();
-                                        if(playerdmgEvent.getCause().equals(EntityDamageEvent.DamageCause.FLY_INTO_WALL)
-                                                || playerdmgEvent.getCause().equals(EntityDamageEvent.DamageCause.FLY_INTO_WALL)) {
+                                        if(playerdmgEvent.getCause().equals(EntityDamageEvent.DamageCause.LAVA)
+                                                || playerdmgEvent.getCause().equals(EntityDamageEvent.DamageCause.FLY_INTO_WALL)
+                                                || playerdmgEvent.getCause().equals(EntityDamageEvent.DamageCause.FIRE_TICK)
+                                                || playerdmgEvent.getCause().equals(EntityDamageEvent.DamageCause.FIRE)) {
                                             player.sendMessage(ChatColor.RED+"You crashed!");
                                             player.playSound(player.getLocation(),Sound.ENTITY_PLAYER_HURT,100,1);
                                             switch(MCTriathlonPlayer.fromBukkit(player).getCheckpoint()) {
@@ -409,16 +413,13 @@ public class MCTriathlon {
 
         Bukkit.getLogger().info("Checking if game " + game.getName() + " has ended");
 
-        if (game.getAliveTeams().size() == 1) {
+        if (Game.getAlivePlayers().size() == 0) {
 
             Bukkit.getLogger().info("Game " + game.getName() + " has ended!");
 
-            stopwatchDisplayTimer.cancel();
-
             MCTriathlonPlayer.mctriathlonPlayers = new ArrayList<>();
 
-            game.getAliveTeams().get(0).awardTeamPoints(100);
-            game.endGame(game.getAliveTeams().get(0));
+            game.endGame();
 
         }
 

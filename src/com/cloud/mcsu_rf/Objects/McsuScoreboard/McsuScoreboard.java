@@ -78,7 +78,8 @@ public class McsuScoreboard {
 
         for(McsuTeam mcsuTeam : TeamMain.getSortedTeams()) {
             Team team = scoreboard.registerNewTeam(mcsuTeam.getTeamID());
-            team.setPrefix(mcsuTeam.getChatColour()+"["+mcsuTeam.getStyledName()+"] ");
+            team.setPrefix(ChatColor.getByChar(mcsuTeam.getChatColour().substring(1))+"["+mcsuTeam.getStyledName()+"] ");
+            team.setColor(Objects.requireNonNull(ChatColor.getByChar(mcsuTeam.getChatColour().substring(1))));
         }
 
         for(Player player : Bukkit.getOnlinePlayers()) {
@@ -86,8 +87,8 @@ public class McsuScoreboard {
                 Bukkit.getLogger().info("MCSU PLATYER : " + mcdsuPlayer.getName());
             }/*
             Bukkit.getLogger().info(McsuPlayer.fromBukkit(player).getName());*/
-            /*Team team = scoreboard.getTeam(McsuPlayer.fromBukkit(player).getTeamID());
-            team.addEntry(player.getName());*/
+            Team team = scoreboard.getTeam(McsuPlayer.fromBukkit(player).getTeamID());
+            team.addEntry(player.getName());
         }
 
         for (ScoreboardElementBase element : scoreboardElements) {
@@ -115,7 +116,6 @@ public class McsuScoreboard {
             }
 
         }
-
 
         return scoreboard;
 

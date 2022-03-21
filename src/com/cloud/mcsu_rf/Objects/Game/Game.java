@@ -270,6 +270,9 @@ public class Game {
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.getInventory().clear();
+            for(Player players : Bukkit.getOnlinePlayers()) {
+                players.setGlowing(true);
+            }
         }
 
         for (Player player : Bukkit.getOnlinePlayers()) {
@@ -294,6 +297,7 @@ public class Game {
 
             String style = ChatColor.BOLD + "" + ChatColor.WHITE;
             player.sendTitle(getName() + style + " has finished!", generateNoWinnerEndSplash());
+            player.setCollidable(true);
         }
 
         EventListenerMain.resetActivityRules();

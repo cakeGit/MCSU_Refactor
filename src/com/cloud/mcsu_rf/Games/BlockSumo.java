@@ -97,7 +97,7 @@ public class BlockSumo {
 
 
                                     for (Player player : Bukkit.getOnlinePlayers()) {
-                                        new BlockSumoPlayer(player, 3);
+                                        new BlockSumoPlayer(player, 5);
                                     }
 
 
@@ -108,7 +108,7 @@ public class BlockSumo {
                                 .addGameFunction(new CustomEventListener(event -> {
                                     EntityExplodeEvent explodeEvent = (EntityExplodeEvent) event;
                                     explodeEvent.setCancelled(true);
-                                    if(explodeEvent.getEntity() instanceof TNTPrimed) {
+                              q      if(explodeEvent.getEntity() instanceof TNTPrimed) {
                                         game.getWorld().createExplosion(explodeEvent.getLocation(),10,false,false);
                                     } else {
                                         game.getWorld().createExplosion(explodeEvent.getLocation(),20,false,false);
@@ -180,6 +180,9 @@ public class BlockSumo {
                                 .onEnable(()-> {
                                     EventListenerMain.setActivityRule("PVP", true);
                                     game.getGamestate("lobby").setEnabled(false);
+                                    for(Player players : Bukkit.getOnlinePlayers()) {
+                                        players.setGlowing(true);
+                                    }
 
                                     powerupTimer = new BukkitRunnable() {
                                         @Override
@@ -206,10 +209,6 @@ public class BlockSumo {
                                         }
                                     };
                                     displayLivesTimer.runTaskTimer(MCSU_Main.Mcsu_Plugin, 0L, 20L);
-
-                                    game.getGamestate("lobby").setEnabled(false);
-
-
                                 })
                                 .addGameFunction(new CustomEventListener(
                                         event -> {
@@ -227,7 +226,7 @@ public class BlockSumo {
                                                 checkIfEnded();
                                             } else {
                                                 new BukkitRunnable() {
-                                                    int timeLeft = 5;
+                                                    int timeLeft = 3;
 
                                                     @Override
                                                     public void run() {
@@ -255,7 +254,6 @@ public class BlockSumo {
                                                             inventory.load(deathEvent.getEntity());
 
                                                             sumoPlayer.setSpawnProt(true);
-                                                            deathEventPlayer.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 60, 1));
 
                                                             new BukkitRunnable() {
                                                                 @Override

@@ -108,9 +108,9 @@ public class McsuPlayer {
     public void setTeam(McsuTeam newTeam) {
 
         this.teamID = newTeam.TeamID;
-        this.Colour = newTeam.getChatColour();/*
+        this.Colour = newTeam.getChatColour();
         bukkitPlayer.setDisplayName(getColouredName());
-        bukkitPlayer.setPlayerListName(getColouredName());*/
+        //bukkitPlayer.setPlayerListName(getColouredName());
 
     }
 

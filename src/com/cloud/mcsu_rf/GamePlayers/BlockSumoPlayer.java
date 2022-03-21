@@ -9,8 +9,8 @@ public class BlockSumoPlayer {
 
     public static ArrayList<BlockSumoPlayer> BlockSumoPlayers = new ArrayList<>();
 
-    int maxLives = 3;
-    int lives = 3;
+    int maxLives = 5;
+    int lives = 5;
     Player player;
     boolean spawnProt = false;
 
