@@ -2,7 +2,7 @@ package com.cloud.mcsu_rf.Command_Handlers;
 
 import com.cloud.mcsu_rf.Game_Handlers.Game_Main;
 import com.cloud.mcsu_rf.MCSU_Main;
-import com.cloud.mcsu_rf.Objects.Game.Game;
+import com.cloud.mcsu_rf.Definitions.Game.Game;
 import com.cloud.mcsu_rf.Game_Handlers.ShorthandClasses.Break;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -20,7 +20,7 @@ public class Game_Cmds {
         Break.line(sender);
         sender.sendMessage("All registered games:");
         for (Game game : Game_Main.RegisteredGames) {
-            sender.sendMessage("  " + game.getName());
+            sender.sendMessage("  " + game.getName() + " (ID: "+game.getId()+")");
         }
         Break.line(sender);
 
@@ -91,7 +91,7 @@ public class Game_Cmds {
 
         } else {
 
-            sender.sendMessage("Loading game " + args[0]);
+            sender.sendMessage(ChatColor.BLUE+"Loading "+ args[0]);
 
             game.initGameLoader( ((Player) sender).getWorld() );
 
@@ -101,4 +101,8 @@ public class Game_Cmds {
 
     }
 
+    public static boolean forceEndGame(CommandSender sender, String[] args) {
+        Game.currentGame.endGame();
+        return true;
+    }
 }

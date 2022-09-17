@@ -43,4 +43,8 @@ public class BlockSumoPlayer {
                 "☠ ".repeat(maxLives-lives) +
                 (lives == 0 ? " -- DEAD -- " : "");
     }
+
+    public String getLivesTabString() {
+        return (lives == 0 ? ChatColor.GRAY + "[☠]": ChatColor.RED + "["+lives+"❤]");
+    }
 }

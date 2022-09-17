@@ -6,16 +6,20 @@ import com.cloud.mcsu_rf.Game_Handlers.ShorthandClasses.ParseArr;
 import com.cloud.mcsu_rf.Inventories.BlockSumoInventory;
 import com.cloud.mcsu_rf.LootTables.BlockSumoLoot;
 import com.cloud.mcsu_rf.MCSU_Main;
-import com.cloud.mcsu_rf.Objects.Game.*;
-import com.cloud.mcsu_rf.Objects.GameFunctions.ActionZones.HeightActionZone;
-import com.cloud.mcsu_rf.Objects.GameFunctions.ActionZones.HeightKillZone;
-import com.cloud.mcsu_rf.Objects.GameFunctions.BuildLimits.BuildMaxDistance;
-import com.cloud.mcsu_rf.Objects.GameFunctions.BuildLimits.BuildMaxHeight;
-import com.cloud.mcsu_rf.Objects.GameFunctions.CustomEventListener;
-import com.cloud.mcsu_rf.Objects.GameFunctions.InventoryManager;
-import com.cloud.mcsu_rf.Objects.Map.MapPoint;
-import com.cloud.mcsu_rf.Objects.Map.SpawnManager;
-import com.cloud.mcsu_rf.Objects.McsuPlayer;
+import com.cloud.mcsu_rf.Definitions.Game.Game;
+import com.cloud.mcsu_rf.Definitions.Game.GameState;
+import com.cloud.mcsu_rf.Definitions.GameFunctions.ActionZones.HeightActionZone;
+import com.cloud.mcsu_rf.Definitions.GameFunctions.ActionZones.HeightKillZone;
+import com.cloud.mcsu_rf.Definitions.GameFunctions.BuildLimits.BuildMaxDistance;
+import com.cloud.mcsu_rf.Definitions.GameFunctions.BuildLimits.BuildMaxHeight;
+import com.cloud.mcsu_rf.Definitions.GameFunctions.CustomEventListener;
+import com.cloud.mcsu_rf.Definitions.GameFunctions.GamePrefixText;
+import com.cloud.mcsu_rf.Definitions.GameFunctions.InventoryManager;
+import com.cloud.mcsu_rf.Definitions.GameFunctions.PointAwarders.KillsAwarder;
+import com.cloud.mcsu_rf.Definitions.Map.MapPoint;
+import com.cloud.mcsu_rf.Definitions.Map.SpawnManager;
+import com.cloud.mcsu_rf.Definitions.McsuPlayer;
+import com.cloud.mcsu_rf.Definitions.McsuScoreboard.McsuScoreboard;
 import com.cloud.mcsu_rf.TeamSwitchStatements;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -23,7 +27,6 @@ import org.bukkit.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -31,8 +34,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -54,13 +55,18 @@ public class BlockSumo {
 
         BlockSumoLoot.init();
 
-        game = new Game("BlockSumo")
+        game = new Game("blockSumo", "Block Sumo")
                 .addGameState(
                         new GameState("base", true)
+                                .addGameFunction(new CustomEventListener(event -> {game.checkAliveTeams(false);checkIfEnded();}, "PlayerLeaveEvent"))
+                                .addGameFunction(new GamePrefixText(
+                                        mcsuPlayer -> BlockSumoPlayer.fromBukkit(mcsuPlayer.toBukkit()).getLivesTabString()
+                                ))
                                 .addGameFunction(new CustomEventListener(
                                         event -> game.getGamestate("afterCountdown").setEnabled(true),
                                         "GameCountdownEndEvent"
                                 ))
+                                .addGameFunction(new KillsAwarder(20))
                                 .onEnable(() -> {
 
                                     EventListenerMain.setActivityRule("TileDrops", false);
@@ -108,7 +114,7 @@ public class BlockSumo {
                                 .addGameFunction(new CustomEventListener(event -> {
                                     EntityExplodeEvent explodeEvent = (EntityExplodeEvent) event;
                                     explodeEvent.setCancelled(true);
-                              q      if(explodeEvent.getEntity() instanceof TNTPrimed) {
+                                    if(explodeEvent.getEntity() instanceof TNTPrimed) {
                                         game.getWorld().createExplosion(explodeEvent.getLocation(),10,false,false);
                                     } else {
                                         game.getWorld().createExplosion(explodeEvent.getLocation(),20,false,false);
@@ -162,13 +168,15 @@ public class BlockSumo {
                                     }
                                 }, "EntityDamageByEntityEvent"))
                                 .addGameFunction(new CustomEventListener(event -> {
-                                    PlayerInteractEvent playerInteractEvent = (PlayerInteractEvent) event;
-                                    Player player = playerInteractEvent.getPlayer();
-                                    if(playerInteractEvent.getItem().getType().equals(Material.FIRE_CHARGE)) {
-                                        Location fireballLoc = player.getEyeLocation();
-                                        player.getWorld().spawnEntity(fireballLoc, EntityType.FIREBALL);
-                                        playerInteractEvent.getItem().setAmount(playerInteractEvent.getItem().getAmount()-1);
-                                    }
+                                    try {
+                                        PlayerInteractEvent playerInteractEvent = (PlayerInteractEvent) event;
+                                        Player player = playerInteractEvent.getPlayer();
+                                        if(playerInteractEvent.getItem().getType().equals(Material.FIRE_CHARGE)) {
+                                            Location fireballLoc = player.getEyeLocation();
+                                            player.getWorld().spawnEntity(fireballLoc, EntityType.FIREBALL);
+                                            playerInteractEvent.getItem().setAmount(playerInteractEvent.getItem().getAmount()-1);
+                                        }
+                                    } catch (NullPointerException ignored){}
                                 }, "PlayerInteractEvent"))
 
                 )
@@ -219,6 +227,7 @@ public class BlockSumo {
 
                                             displayLivesTimer.run(); // Runs an off-beat display to update immediately
                                             sumoPlayer.removeLife();
+                                            McsuScoreboard.defaultScoreboard.update();
 
                                             if (sumoPlayer.getLives() <= 0) {
                                                 game.eliminatePlayer(sumoPlayer.toBukkit());
@@ -247,7 +256,7 @@ public class BlockSumo {
 
                                                             deathEventPlayer.sendTitle(ChatColor.RED +""+ ChatColor.BOLD + "Go!", "", 0, 20, 10);
 
-                                                            deathEventPlayer.playSound(deathEventPlayer.getLocation(), Game.DefaultStartTimerTickSound, 1, 1);
+                                                            deathEventPlayer.playSound(deathEventPlayer.getLocation(), Game.DefaultRespawnSound, 1, 1);
                                                             deathEventPlayer.setGameMode(GameMode.SURVIVAL);
 
                                                             BlockSumoInventory inventory = new BlockSumoInventory();
@@ -277,8 +286,7 @@ public class BlockSumo {
                                                 }.runTaskTimer(MCSU_Main.Mcsu_Plugin, 0L, 20L);
                                             }
                                         },
-                                        "PlayerDeathEvent"
-                                ))
+                                        "PlayerDeathEvent"))
                 );
 
 
@@ -297,7 +305,6 @@ public class BlockSumo {
 
             BlockSumoPlayer.BlockSumoPlayers = new ArrayList<>();
 
-            game.getAliveTeams().get(0).awardTeamPoints(100);
             game.endGame(game.getAliveTeams().get(0));
 
         }

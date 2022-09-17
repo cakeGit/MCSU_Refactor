@@ -1,15 +1,12 @@
 package com.cloud.mcsu_rf.LootTables;
 
-import com.cloud.mcsu_rf.Objects.LootTable.LootOption;
-import com.cloud.mcsu_rf.Objects.LootTable.LootTable;
-import com.cloud.mcsu_rf.Objects.McsuItemStack;
+import com.cloud.mcsu_rf.Definitions.LootTable.LootOption;
+import com.cloud.mcsu_rf.Definitions.LootTable.LootTable;
+import com.cloud.mcsu_rf.Definitions.McsuItemStack;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-
-import java.util.*;
 
 public class BlockSumoLoot {
 

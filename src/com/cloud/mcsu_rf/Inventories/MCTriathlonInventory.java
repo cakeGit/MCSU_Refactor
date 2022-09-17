@@ -1,18 +1,10 @@
 package com.cloud.mcsu_rf.Inventories;
 
-import com.cloud.mcsu_rf.Objects.Game.Game;
-import com.cloud.mcsu_rf.Objects.McsuItemStack;
-import com.cloud.mcsu_rf.Objects.McsuPlayer;
-import com.cloud.mcsu_rf.TeamSwitchStatements;
+import com.cloud.mcsu_rf.Definitions.McsuItemStack;
+import com.cloud.mcsu_rf.Definitions.McsuPlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-
-import java.util.Objects;
 
 public class MCTriathlonInventory extends InventoryBase {
 

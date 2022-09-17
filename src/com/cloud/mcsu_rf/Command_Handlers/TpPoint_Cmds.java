@@ -1,23 +1,33 @@
 package com.cloud.mcsu_rf.Command_Handlers;
 
-import com.cloud.mcsu_rf.ConfigMain;
-import com.cloud.mcsu_rf.Objects.ConfigFile;
+import com.cak.what.ConfigApi.ConfigFile;
+import com.cloud.mcsu_rf.Game_Handlers.ShorthandClasses.Break;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
 public class TpPoint_Cmds {
 
-    static ConfigFile tpPointConfig = ConfigMain.getByID("tp");
+    static ConfigFile tpPointConfig = new ConfigFile("tpPoints.yml");
 
-    public static void createPoint(String name, double x, double y, double z, double rotx, double roty) {
+    public static void createPoint(String id, double x, double y, double z, double rotx, double roty) {
 
-        tpPointConfig.config.set( "TpPoints."+name+".Coordinates", (x+" "+y+" "+z) );
-        tpPointConfig.config.set( "TpPoints."+name+".Rotation", (rotx+" "+roty) );
+        //add a tp point to the list of TpPoints
+
+        List<Object> tpPoints = (List<Object>) tpPointConfig.getConfig().getList("TpPoints");
+
+        HashMap<String, Object> newPoint = new HashMap<>();
+        newPoint.put("Id", id);
+        newPoint.put("Coordinates", x + " " + y + " " + z);
+        newPoint.put("Rotation", rotx + " " + roty);
+
+        tpPoints.add(newPoint);
 
         tpPointConfig.saveDat();
 
@@ -25,16 +35,30 @@ public class TpPoint_Cmds {
 
     public static void listPoints(CommandSender Sender) {
 
-        Objects.requireNonNull(tpPointConfig.config.getConfigurationSection("TpPoints")).getValues(false).forEach((key, value) -> {
-            Sender.sendMessage(key);
-            Sender.sendMessage("    at: " + Objects.requireNonNull(tpPointConfig.config.getString("TpPoints." + key + ".Coordinates")));
-        });
+        Break.line(Sender);
+        Sender.sendMessage("Total Points: "+ tpPointConfig.getConfig().getList("TpPoints").size());
+        Sender.sendMessage("");
+        Sender.sendMessage("List of TpPoints:");
+        tpPointConfig.getConfig().getList("TpPoints").forEach(
+                (point) -> {
+                    HashMap hashmapPoint = (HashMap) point;
+
+                    Sender.sendMessage("    Id: "+ hashmapPoint.get("Id") + ChatColor.DARK_GRAY +
+                            " Coordinates: "+ hashmapPoint.get("Coordinates") +
+                            " Rotation: "+ hashmapPoint.get("Rotation"));
+                }
+        );
+        Break.line(Sender);
+
+        try {
+            Sender.sendMessage(tpPointConfig.getConfig().getString("TpPoints[0].Coordinates"));
+        } catch (Exception ignored) {}
 
     }
 
     public static boolean teleportPlayerToPoint(Player player, String name) {
 
-        String[] coordsStr = Objects.requireNonNull(tpPointConfig.config.get("TpPoints." + name + ".Coordinates")).toString().split(" ");
+        String[] coordsStr = Objects.requireNonNull(tpPointConfig.getConfig().get("TpPoints." + name + ".Coordinates")).toString().split(" ");
         ArrayList<Double> coordsArrList = new ArrayList<>();
 
         for (String str : coordsStr) {
@@ -52,6 +76,9 @@ public class TpPoint_Cmds {
     public static boolean tpPoint(CommandSender sender, String[] args) {
         Player p = (Player) sender;
         Location pLoc = p.getLocation();
+
+        //rounding location to nearest 0.5
+
 
         double[] pXyz = new double[] { pLoc.getX(), pLoc.getY(), pLoc.getZ() };
 
@@ -79,7 +106,7 @@ public class TpPoint_Cmds {
                 createPoint(args[1], pXyzRrn[0], pXyzRrn[1], pXyzRrn[2], pPyRrn[0], pPyRrn[1]);
                 sender.sendMessage(
                         ChatColor.GREEN +
-                        "Created point '" +
+                        "Created point with id '" +
                         args[1] + "' at " +
                         pXyzRrn[0] +" "+
                         pXyzRrn[1] +" "+
@@ -98,9 +125,5 @@ public class TpPoint_Cmds {
         return true;
 
     }
-
-    /*public static boolean tpToPlayerPoint(CommandSender Sender, Command Cmd, String Label, String[] Args)  {
-
-    }*/
 
 }

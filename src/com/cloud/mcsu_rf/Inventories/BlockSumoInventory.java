@@ -1,15 +1,14 @@
 package com.cloud.mcsu_rf.Inventories;
 
 import com.cloud.mcsu_rf.LootTables.BlockSumoLoot;
-import com.cloud.mcsu_rf.Objects.Game.Game;
-import com.cloud.mcsu_rf.Objects.McsuPlayer;
-import com.cloud.mcsu_rf.Objects.McsuItemStack;
+import com.cloud.mcsu_rf.Definitions.Game.Game;
+import com.cloud.mcsu_rf.Definitions.McsuPlayer;
+import com.cloud.mcsu_rf.Definitions.McsuItemStack;
 import com.cloud.mcsu_rf.TeamSwitchStatements;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;

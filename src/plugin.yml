@@ -1,12 +1,13 @@
 name: MCSU_Refactored
 description: mcsu?
-version: 1.2.cak.3
+version: 1.2.cak.6
 authors:
   - Cloud
   - Cak
 main: com.cloud.mcsu_rf.MCSU_Main
 api-version: 1.14
 commands:
+
   listgames:
     description: Lists all loaded games (also tells you about any ones that are dying maybye)
     usage: /listGames
@@ -15,7 +16,17 @@ commands:
     usage: /playGame <Gamename>
   givescore:
     description: gives score to team
-    usage: /givescore <Team> <Scorecount>
+    usage: /givescore <Team> <Scorecount> <(optional) reason>
+  clearscores:
+    description: gives score to team
+    usage: /givescore <Team> <Scorecount> <(optional) reason>
+  forceendgame:
+    description: resets current game
+    usage: /forceendgame
+
+  deveditmapmeta:
+    description: -DEVTOOL- opens or creates map metadata for specified map or a list of all map meta
+    usage: /deveditmapmeta <map>
 
   countdown:
     description: enable/dissable the countdown to MCSU
@@ -37,7 +48,7 @@ commands:
     description: Teleports you to the Hub,
     usage: /hub
   enablepvp:
-    description: command to enable pvp,
+    description: command to enable force pvp,
     usage: /enablepvp
 
   blocksumoloot:

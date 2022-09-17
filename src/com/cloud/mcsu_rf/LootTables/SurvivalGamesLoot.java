@@ -1,13 +1,12 @@
 package com.cloud.mcsu_rf.LootTables;
 
-import com.cloud.mcsu_rf.Objects.LootTable.LootOption;
-import com.cloud.mcsu_rf.Objects.LootTable.LootTable;
-import com.cloud.mcsu_rf.Objects.McsuItemStack;
+import com.cak.what.ItemAPI.WhItemStack;
+import com.cloud.mcsu_rf.Definitions.LootTable.LootOption;
+import com.cloud.mcsu_rf.Definitions.LootTable.LootTable;
+import com.cloud.mcsu_rf.Definitions.McsuItemStack;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.Potion;
-import org.bukkit.potion.PotionType;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.Random;
 
@@ -17,14 +16,10 @@ public class SurvivalGamesLoot {
 
     public static void init() {
 
-        Potion fireRes = new Potion(PotionType.FIRE_RESISTANCE);
-        fireRes.setSplash(true);
-        fireRes.setHasExtendedDuration(true);
-        fireRes.setLevel(1);
-        Potion regen = new Potion(PotionType.REGEN);
-        regen.setSplash(true);
-        regen.setHasExtendedDuration(false);
-        regen.setLevel(1);
+        WhItemStack fireRes = new WhItemStack(Material.POTION).setPotionEffect(PotionEffectType.FIRE_RESISTANCE, 1, 0);
+
+        WhItemStack regen = new WhItemStack(Material.POTION).setPotionEffect(PotionEffectType.REGENERATION, 1, 0);
+
         int[] arrowamount = {16,32};
         int[] cobwebamount = {4,8};
         int[] xpamount = {8,32,64};
@@ -77,11 +72,11 @@ public class SurvivalGamesLoot {
                 ),
                 new LootOption(
                         1,
-                        regen.toItemStack(1)
+                        regen
                 ),
                 new LootOption(
                         1,
-                        fireRes.toItemStack(1)
+                        fireRes
                 ),
                 new LootOption(
                         1,

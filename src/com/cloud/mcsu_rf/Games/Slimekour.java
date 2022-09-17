@@ -3,10 +3,10 @@ package com.cloud.mcsu_rf.Games;
 import com.cloud.mcsu_rf.EventListenerMain;
 import com.cloud.mcsu_rf.GamePlayers.SlimekourPlayer;
 import com.cloud.mcsu_rf.Game_Handlers.ShorthandClasses.ParseArr;
-import com.cloud.mcsu_rf.Objects.Game.Game;
-import com.cloud.mcsu_rf.Objects.Game.GameState;
-import com.cloud.mcsu_rf.Objects.GameFunctions.CustomEventListener;
-import com.cloud.mcsu_rf.Objects.McsuPlayer;
+import com.cloud.mcsu_rf.Definitions.Game.Game;
+import com.cloud.mcsu_rf.Definitions.Game.GameState;
+import com.cloud.mcsu_rf.Definitions.GameFunctions.CustomEventListener;
+import com.cloud.mcsu_rf.Definitions.McsuPlayer;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
@@ -31,7 +31,7 @@ public class Slimekour {
 
     public void init() {
 
-        game = new Game("Slimekour")
+        game = new Game("slimekour", "Slimekour")
                 .setPlayerGamemode(GameMode.ADVENTURE)
                 .setFreezeOnGameCountdown(false)
                 .addGameState(

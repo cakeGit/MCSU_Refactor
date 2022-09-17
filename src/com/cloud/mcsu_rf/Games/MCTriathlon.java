@@ -2,23 +2,19 @@ package com.cloud.mcsu_rf.Games;
 
 import com.cloud.mcsu_rf.EventListenerMain;
 import com.cloud.mcsu_rf.GamePlayers.MCTriathlonPlayer;
-import com.cloud.mcsu_rf.GamePlayers.SlimekourPlayer;
 import com.cloud.mcsu_rf.Game_Handlers.ShorthandClasses.ParseArr;
 import com.cloud.mcsu_rf.Inventories.MCTriathlonInventory;
-import com.cloud.mcsu_rf.Objects.Game.Game;
-import com.cloud.mcsu_rf.Objects.Game.GameState;
-import com.cloud.mcsu_rf.Objects.GameFunctions.ActionZone;
-import com.cloud.mcsu_rf.Objects.GameFunctions.ActionZones.HeightActionZone;
-import com.cloud.mcsu_rf.Objects.GameFunctions.CustomEventListener;
-import com.cloud.mcsu_rf.Objects.GameFunctions.InventoryManager;
-import com.cloud.mcsu_rf.Objects.Map.SpawnManager;
-import com.cloud.mcsu_rf.Objects.McsuPlayer;
+import com.cloud.mcsu_rf.Definitions.Game.Game;
+import com.cloud.mcsu_rf.Definitions.Game.GameState;
+import com.cloud.mcsu_rf.Definitions.GameFunctions.ActionZone;
+import com.cloud.mcsu_rf.Definitions.GameFunctions.ActionZones.HeightActionZone;
+import com.cloud.mcsu_rf.Definitions.GameFunctions.CustomEventListener;
+import com.cloud.mcsu_rf.Definitions.McsuPlayer;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.entity.Boat;
 import org.bukkit.entity.Player;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -28,7 +24,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BlockVector;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MCTriathlon {
 
@@ -62,7 +57,7 @@ public class MCTriathlon {
 
     public void init() {
 
-        game = new Game("MCTriathlon")
+        game = new Game("mcTriathlon", "MC Triathlon")
                 .setPlayerGamemode(GameMode.ADVENTURE)
                 .setFreezeOnGameCountdown(false)
                 .addGameState(

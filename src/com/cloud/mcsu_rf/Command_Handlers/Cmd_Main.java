@@ -2,9 +2,7 @@ package com.cloud.mcsu_rf.Command_Handlers;
 
 import com.cloud.mcsu_rf.EventListenerMain;
 import com.cloud.mcsu_rf.Inventories.BlockSumoInventory;
-import com.cloud.mcsu_rf.LootTables.BlockSumoLoot;
 import com.cloud.mcsu_rf.MCSU_Main;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -41,7 +39,9 @@ public class Cmd_Main implements CommandExecutor {
         cmdNames = new String[] {
                 "listgames",
                 "playgame",
+                "forceendgame",
                 "givescore",
+                "clearscores",
                 "tppoint",
                 "gamepoint",
                 "goto",
@@ -85,8 +85,10 @@ public class Cmd_Main implements CommandExecutor {
 
             case "listgames": return Game_Cmds.listGames(Sender);
             case "playgame": return Game_Cmds.playGame(Sender, Args);
+            case "forceendgame": return Game_Cmds.forceEndGame(Sender, Args);
 
             case "givescore": return Score_Cmds.giveScore(Sender, Args);
+            case "clearscores": return Score_Cmds.clearScores(Sender, Args);
 
             case "tppoint": return TpPoint_Cmds.tpPoint(Sender, Args);
             case "mcsuteam": return Score_Cmds.Team(Sender, Args);

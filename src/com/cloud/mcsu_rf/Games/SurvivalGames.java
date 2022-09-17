@@ -4,26 +4,22 @@ import com.cloud.mcsu_rf.EventListenerMain;
 import com.cloud.mcsu_rf.Inventories.SurvivalGamesInventory;
 import com.cloud.mcsu_rf.LootTables.SurvivalGamesLoot;
 import com.cloud.mcsu_rf.MCSU_Main;
-import com.cloud.mcsu_rf.Objects.Enums.PointGoal;
-import com.cloud.mcsu_rf.Objects.Game.Game;
-import com.cloud.mcsu_rf.Objects.Game.GameState;
-import com.cloud.mcsu_rf.Objects.GameFunctions.CustomEventListener;
-import com.cloud.mcsu_rf.Objects.GameFunctions.PointAwarder;
+import com.cloud.mcsu_rf.Definitions.Game.Game;
+import com.cloud.mcsu_rf.Definitions.Game.GameState;
+import com.cloud.mcsu_rf.Definitions.GameFunctions.CustomEventListener;
+import com.cloud.mcsu_rf.Definitions.GameFunctions.PointAwarders.SurvivalAwarder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.UUID;
 
 public class SurvivalGames {
 
@@ -32,14 +28,20 @@ public class SurvivalGames {
     int gracePeriodTime = 30;
     MCSU_Main plugin = MCSU_Main.getPlugin(MCSU_Main.class);
 
+    UUID gameId;
+
     public void init() {
 
         SurvivalGamesLoot.init();
 
-        game = new Game("SurvivalGames")
+        game = new Game("survivalGames", "Survival Games")
                 .addGameState(
                         new GameState("base", true)
-                                .addGameFunction(new PointAwarder(PointGoal.Survival, 5))
+                                .onEnable(() -> {
+                                    //Set this rounds "id" (used to ensure chests aren't infinitely regenerated)
+                                    gameId = UUID.randomUUID();
+                                })
+                                .addGameFunction(new SurvivalAwarder(5))
                                 .addGameFunction(new CustomEventListener(Event -> {
                                     game.eliminatePlayer(
                                             ( (PlayerDeathEvent) Event ).getEntity()
@@ -70,14 +72,14 @@ public class SurvivalGames {
                                     PlayerInteractEvent playerInteractEvent = (PlayerInteractEvent) Event;
                                     Block b = playerInteractEvent.getClickedBlock();
                                     if(b.getType().equals(Material.CHEST)) {
-                                        Bukkit.broadcastMessage(String.valueOf(b.hasMetadata("opened")));
-                                        if(!b.hasMetadata("opened")) {
+                                        Bukkit.broadcastMessage(String.valueOf(b.hasMetadata(gameId.toString())));
+                                        if(!b.hasMetadata(gameId.toString())) {
                                             SurvivalGamesInventory inv = new SurvivalGamesInventory();
                                             ItemStack[] contents = inv.getInventory().getContents();
                                             Chest c = (Chest) b.getState();
                                             c.getBlockInventory().setContents(contents);
                                         }
-                                        b.setMetadata("opened", new FixedMetadataValue(plugin,true));
+                                        b.setMetadata(gameId.toString(), new FixedMetadataValue(plugin,true));
                                     }
                                 }, "PlayerInteractEvent"))
                 ).addGameState(
@@ -170,8 +172,6 @@ public class SurvivalGames {
         if (game.getAliveTeams().size() == 1) {
 
             Bukkit.getLogger().info("Game " + game.getName() + " has ended!");
-
-            game.getAliveTeams().get(0).awardTeamPoints(100);
 
             game.endGame(game.getAliveTeams().get(0));
 

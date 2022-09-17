@@ -1,12 +1,14 @@
 package com.cloud.mcsu_rf;
 
+import com.cak.what.ConfigApi.ConfigFile;
 import com.cloud.mcsu_rf.Game_Handlers.ShorthandClasses.Pick;
-import com.cloud.mcsu_rf.Objects.ActivityRule;
-import com.cloud.mcsu_rf.Objects.CustomEvents.GameCountdownEndEvent;
-import com.cloud.mcsu_rf.Objects.CustomEvents.GameInitEvent;
-import com.cloud.mcsu_rf.Objects.CustomEvents.GameSpawnsActivatedEvent;
-import com.cloud.mcsu_rf.Objects.EventListener;
-import com.cloud.mcsu_rf.Objects.McsuPlayer;
+import com.cloud.mcsu_rf.Definitions.ActivityRule;
+import com.cloud.mcsu_rf.Definitions.CustomEvents.GameCountdownEndEvent;
+import com.cloud.mcsu_rf.Definitions.CustomEvents.GameInitEvent;
+import com.cloud.mcsu_rf.Definitions.CustomEvents.GameSpawnsActivatedEvent;
+import com.cloud.mcsu_rf.Definitions.EventListener;
+import com.cloud.mcsu_rf.Definitions.McsuPlayer;
+import com.cloud.mcsu_rf.Definitions.McsuScoreboard.McsuScoreboard;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -30,6 +32,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class EventListenerMain implements Listener {
 
@@ -38,6 +41,8 @@ public class EventListenerMain implements Listener {
     public static ArrayList<EventListener> eventListeners = new ArrayList<>();
 
     Location latestDeathPos;
+
+    public static ConfigFile joinMessages = new ConfigFile("joinMessages.yml");
 
     public static void addEventListener(EventListener eventListener) { eventListeners.add(eventListener); }
     public static void removeEventListener(EventListener eventListener) { eventListeners.remove(eventListener); }
@@ -70,8 +75,6 @@ public class EventListenerMain implements Listener {
 
     @EventHandler public void onPlayerJoin(PlayerJoinEvent e) { onRegisteredEvent(e);
         Player p = e.getPlayer();
-        String pName = p.getDisplayName();
-        String joinMessage;
         /*
         BossBar bar = Bukkit.createBossBar(ChatColor.RED+"§lMCSU", BarColor.RED, BarStyle.SOLID);
         bar.setVisible(true);
@@ -79,28 +82,36 @@ public class EventListenerMain implements Listener {
          */
         Tab.showTab(p,Bukkit.getOnlinePlayers().size());
 
-        switch (pName) { // use UUID in the future
+        McsuPlayer.registerPlayer(p);
+        McsuScoreboard.defaultScoreboard.update();
 
-            case "CakeIsTasty":
-                joinMessage = ChatColor.BLUE + pName + ChatColor.WHITE + " has joined the pain :("; // OG join message :)
-                break;
-            case "WaitWhosCandice":
-                joinMessage = ChatColor.BLUE + pName + ChatColor.WHITE + " has joined mCSU!!11!11! \nhol up is candice tho? "; // OG join message :)
-                break;
-            case "goshroom":
-                p.getInventory().setHelmet(new ItemStack(Material.RED_MUSHROOM,1));
-            case "JackyWackers":
-                p.getInventory().setHelmet(new ItemStack(Material.RED_MUSHROOM,1));
-            default:
-                joinMessage= ChatColor.WHITE + pName + " has joined mCSU!!11!11!";
-                break;
+        Bukkit.getLogger().info("[+] " + p.getName());
 
+        String joinMessage;
+
+        AtomicBoolean uuidLinked = new AtomicBoolean(false);
+
+        joinMessage = (String) joinMessages.getWhereKey(x-> {
+            uuidLinked.set(((String) x).endsWith(p.getUniqueId().toString()));
+            return ((String) x).endsWith(p.getUniqueId().toString()) || ((String) x).startsWith(p.getName());
+        });
+
+        if (joinMessage!=null) {
+            if (!uuidLinked.get()) {
+
+                joinMessages.set(p.getName() + "-" + p.getUniqueId(), joinMessage);
+                joinMessages.remove(p.getName());
+                joinMessages.saveDat();
+            }
+        } else {
+            joinMessage = Pick.Random((ArrayList<String>) joinMessages.getList("$Defaults"));
         }
 
-        McsuPlayer.registerPlayer(p);
-
-        e.setJoinMessage(joinMessage);
-
+        e.setJoinMessage(
+                joinMessage
+                        .replace("${player}", p.getDisplayName())
+                        .replace("${tcol}", McsuPlayer.fromBukkit(p).getColour())
+        );
     }
 
     @EventHandler public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
@@ -174,7 +185,15 @@ public class EventListenerMain implements Listener {
                     e.setCancelled(true);
                 }
             } catch (NullPointerException ignored) {}
+        }
 
+        if (!getRuleActive("PlaceFireworks")) {
+            try {
+                if(Objects.requireNonNull(e.getItem()).getType() == Material.FIREWORK_ROCKET &&
+                        e.getAction() == Action.RIGHT_CLICK_BLOCK) {
+                    e.setCancelled(true);
+                }
+            } catch (NullPointerException ignored) {}
         }
     }
 
@@ -219,7 +238,8 @@ public class EventListenerMain implements Listener {
 
         e.getEntity().getPlayer().setGameMode(GameMode.SPECTATOR);
 
-        e.setDeathMessage(DeathMessages.getMessage(e));
+        String deathMessage = DeathMessages.getMessage(e);
+        if(deathMessage!=null) {e.setDeathMessage(deathMessage);}
 
         onRegisteredEvent(e);
 
@@ -235,6 +255,18 @@ public class EventListenerMain implements Listener {
 
     @EventHandler public void onPrepareItemCraftEvent(PrepareItemCraftEvent e) {
         if(!getRuleActive("Crafting")) e.getInventory().setResult( new ItemStack(Material.AIR));
+
+        onRegisteredEvent(e);
+    }
+
+    @EventHandler public void onInventoryClickEvent(InventoryClickEvent e) {
+        if(getRuleActive("LockInvItems")) e.setCancelled(true);
+
+        onRegisteredEvent(e);
+    }
+
+    @EventHandler public void onPlayerDropItemEvent(PlayerDropItemEvent e) {
+        if(getRuleActive("LockInvItems")) e.setCancelled(true);
 
         onRegisteredEvent(e);
     }
@@ -277,9 +309,9 @@ public class EventListenerMain implements Listener {
     @EventHandler public void onGameSpawnsActivatedEvent(GameSpawnsActivatedEvent e) { onRegisteredEvent(e); Bukkit.broadcastMessage("Game Spawns Activated"); }
 
     @EventHandler public void onProjectileHitEvent(ProjectileHitEvent e) { onRegisteredEvent(e); }
+    @EventHandler public void onProjectileLaunchEvent(ProjectileLaunchEvent e) { onRegisteredEvent(e); }
     @EventHandler public void onEntityShootBowEvent(EntityShootBowEvent e) { onRegisteredEvent(e); }
     @EventHandler public void onPlayerInteractEvent(PlayerInteractEvent e) { onRegisteredEvent(e); }
-    @EventHandler public void onInventoryClickEvent(InventoryClickEvent e) { onRegisteredEvent(e); }
     @EventHandler public void onBlockPlaceEvent(BlockPlaceEvent e) { onRegisteredEvent(e); }
     @EventHandler public void onEntityExplodeEvent(EntityExplodeEvent e) { onRegisteredEvent(e); }
     @EventHandler public void onEntityDamageEvent(EntityDamageEvent e) { onRegisteredEvent(e); }
@@ -312,6 +344,8 @@ public class EventListenerMain implements Listener {
         new ActivityRule("PearlDamage", false);
         new ActivityRule("PlayerInteract",true);
         new ActivityRule("Suffocation",true);
+        new ActivityRule("PlaceFireworks",true);
+        new ActivityRule("LockInvItems",false);
 
     }
 
@@ -331,7 +365,6 @@ public class EventListenerMain implements Listener {
     }
 
     public static Boolean getRuleActive(String name) {
-
         return Objects.requireNonNull(getActivityRule(name)).getActive();
     }
 

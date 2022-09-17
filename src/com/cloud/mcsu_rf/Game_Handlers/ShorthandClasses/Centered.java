@@ -1,6 +1,6 @@
 package com.cloud.mcsu_rf.Game_Handlers.ShorthandClasses;
 
-import com.cloud.mcsu_rf.Objects.Enums.CharacterSize;
+import com.cloud.mcsu_rf.Definitions.Enums.CharacterSize;
 
 import java.util.ArrayList;
 

@@ -1,25 +1,14 @@
 package com.cloud.mcsu_rf.Inventories;
 
-import com.cloud.mcsu_rf.MCSU_Main;
-import com.cloud.mcsu_rf.Objects.McsuPlayer;
-import com.cloud.mcsu_rf.Objects.McsuTeam;
-import com.cloud.mcsu_rf.TeamHandlers.TeamMain;
-import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.FireworkEffect;
+import com.cloud.mcsu_rf.Definitions.McsuPlayer;
+import com.cloud.mcsu_rf.TeamSwitchStatements;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.FireworkMeta;
-import org.bukkit.ChatColor;
 
-import java.util.Objects;
-
-import static org.bukkit.ChatColor.RED;
-
-public class SkybattleInventory {
+public class SkybattleInventory extends InventoryBase {
 
     public void loadInventory(Player player) {
 
@@ -30,67 +19,11 @@ public class SkybattleInventory {
         playerInventory.setItem(1,ironpick);
         playerInventory.setItem(2,new ItemStack(Material.COOKED_BEEF,8));
         player.getInventory().setChestplate(new ItemStack(Material.IRON_CHESTPLATE,1));
-        ItemStack blocks = new ItemStack(Material.WHITE_CONCRETE,64);
-        McsuTeam team = TeamMain.getTeamById(McsuPlayer.fromBukkit(player).getTeamID());
-        switch (team.getChatColour()) {
-            case "§c":
-                blocks.setType(Material.RED_CONCRETE);
-                blocks.setAmount(64);
-            case "§a":
-                blocks.setType(Material.GREEN_CONCRETE);
-                blocks.setAmount(64);
-            case "§e":
-                blocks.setType(Material.YELLOW_CONCRETE);
-                blocks.setAmount(64);
-            case "§b":
-                blocks.setType(Material.LIGHT_BLUE_CONCRETE);
-                blocks.setAmount(64);
-            case "§d":
-                blocks.setType(Material.PINK_CONCRETE);
-                blocks.setAmount(64);
-            case "§f":
-                blocks.setType(Material.WHITE_CONCRETE);
-                blocks.setAmount(64);
-            case "§7":
-                blocks.setType(Material.GRAY_CONCRETE);
-                blocks.setAmount(64);
-            case "§9":
-                blocks.setType(Material.BLUE_CONCRETE);
-                blocks.setAmount(64);
-        }
-        player.getInventory().setItemInOffHand(blocks);
+        player.getInventory().setItemInOffHand(TeamSwitchStatements.colouredConcreteItem(McsuPlayer.fromBukkit(player).getTeamID()));
     }
 
     public void reloadInventory(Player player) {
-        ItemStack blocks = new ItemStack(Material.WHITE_CONCRETE,64);
-        McsuTeam team = TeamMain.getTeamById(McsuPlayer.fromBukkit(player).getTeamID());
-        switch (team.getChatColour()) {
-            case "§c":
-                blocks.setType(Material.RED_CONCRETE);
-                blocks.setAmount(64);
-            case "§a":
-                blocks.setType(Material.GREEN_CONCRETE);
-                blocks.setAmount(64);
-            case "§e":
-                blocks.setType(Material.YELLOW_CONCRETE);
-                blocks.setAmount(64);
-            case "§b":
-                blocks.setType(Material.LIGHT_BLUE_CONCRETE);
-                blocks.setAmount(64);
-            case "§d":
-                blocks.setType(Material.PINK_CONCRETE);
-                blocks.setAmount(64);
-            case "§f":
-                blocks.setType(Material.WHITE_CONCRETE);
-                blocks.setAmount(64);
-            case "§7":
-                blocks.setType(Material.GRAY_CONCRETE);
-                blocks.setAmount(64);
-            case "§9":
-                blocks.setType(Material.BLUE_CONCRETE);
-                blocks.setAmount(64);
-        }
-        player.getInventory().setItemInOffHand(blocks);
+        player.getInventory().setItemInOffHand(TeamSwitchStatements.colouredConcreteItem(McsuPlayer.fromBukkit(player).getTeamID()));
     }
 
 }

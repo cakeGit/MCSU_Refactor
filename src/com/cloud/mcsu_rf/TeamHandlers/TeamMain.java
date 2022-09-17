@@ -1,19 +1,21 @@
 package com.cloud.mcsu_rf.TeamHandlers;
 
-import com.cloud.mcsu_rf.ConfigMain;
-import com.cloud.mcsu_rf.Objects.ConfigFile;
-import com.cloud.mcsu_rf.Objects.McsuPlayer;
-import com.cloud.mcsu_rf.Objects.McsuTeam;
+import com.cak.what.ConfigApi.ConfigFile;
+import com.cloud.mcsu_rf.Definitions.McsuPlayer;
+import com.cloud.mcsu_rf.Definitions.McsuTeam;
 import org.bukkit.Bukkit;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
 
 public class TeamMain {
 
     public static ArrayList<McsuTeam> Teams = new ArrayList<>();
 
-    public static ConfigFile teamRegister = ConfigMain.getByID("t");
-    public static List<HashMap> teamList = (List<HashMap>) teamRegister.config.getList("Teams");
+    public static ConfigFile teamRegister = new ConfigFile("teams.yml");
+    public static List<HashMap> teamList = (List<HashMap>) teamRegister.getConfig().getList("Teams");
 
     static void initTeams() {
         assert teamList != null;
@@ -22,6 +24,7 @@ public class TeamMain {
             Bukkit.getLogger().info("Loading team from config: " + teamHash.get("Name"));
             Teams.add(new McsuTeam(
                     (String) teamHash.get("Name"),
+                    (String) teamHash.get("Shorthand"),
                     (String) teamHash.get("TeamID"),
                     (String) teamHash.get("ChatColour"),
                     (ArrayList<String>) teamHash.get("memberUUIDs"),
@@ -32,7 +35,7 @@ public class TeamMain {
     }
 
     public static void saveTeamList() {
-        teamRegister.config.set("Teams", teamList);
+        teamRegister.getConfig().set("Teams", teamList);
         teamRegister.saveDat();
     }
 
@@ -69,10 +72,10 @@ public class TeamMain {
 
             } else {
 
-                for ( String playerUUID : team.getMemberUUIDs() ) {
+                for ( McsuPlayer player : team.getMembers() ) {
 
                     try {
-                        teamPoints += Objects.requireNonNull(McsuPlayer.getPlayerByUUID(playerUUID)).getPoints();
+                        teamPoints += player.getPoints();
                     } catch (NullPointerException ignored) { }
 
                 }

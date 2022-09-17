@@ -1,12 +1,7 @@
 package com.cloud.mcsu_rf.Inventories;
 
 import com.cloud.mcsu_rf.LootTables.SurvivalGamesLoot;
-import com.cloud.mcsu_rf.Objects.McsuPlayer;
-import com.cloud.mcsu_rf.TeamSwitchStatements;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;

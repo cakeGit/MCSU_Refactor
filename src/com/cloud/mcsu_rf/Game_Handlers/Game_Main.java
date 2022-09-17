@@ -2,10 +2,11 @@ package com.cloud.mcsu_rf.Game_Handlers;
 
 import com.cloud.mcsu_rf.Games.*;
 import com.cloud.mcsu_rf.MCSU_Main;
-import com.cloud.mcsu_rf.Objects.Game.Game;
+import com.cloud.mcsu_rf.Definitions.Game.Game;
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Objects;
 
 //Please note the actual Game object is in the objects package
@@ -37,11 +38,11 @@ public class Game_Main {
 
     }
 
-    public static Game getRegisteredGame(String Name) {
+    public static Game getRegisteredGame(String id) {
 
         for (Game game : RegisteredGames) {
 
-            if (Objects.equals(game.getName(), Name)) {
+            if (Objects.equals(game.getId().toLowerCase(Locale.ROOT), id.toLowerCase(Locale.ROOT))) {
 
                 return game;
 

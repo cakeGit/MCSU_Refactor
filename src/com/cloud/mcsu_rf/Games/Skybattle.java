@@ -4,13 +4,12 @@ import com.cloud.mcsu_rf.EventListenerMain;
 import com.cloud.mcsu_rf.Game_Handlers.ShorthandClasses.ParseArr;
 import com.cloud.mcsu_rf.Inventories.SkybattleInventory;
 import com.cloud.mcsu_rf.MCSU_Main;
-import com.cloud.mcsu_rf.Objects.Enums.PointGoal;
-import com.cloud.mcsu_rf.Objects.Game.*;
-import com.cloud.mcsu_rf.Objects.GameFunctions.CustomEventListener;
-import com.cloud.mcsu_rf.Objects.GameFunctions.ActionZones.HeightActionZone;
-import com.cloud.mcsu_rf.Objects.GameFunctions.PointAwarder;
-import com.cloud.mcsu_rf.Objects.GameFunctions.VerticleBorder;
-import com.cloud.mcsu_rf.Objects.McsuPlayer;
+import com.cloud.mcsu_rf.Definitions.Game.*;
+import com.cloud.mcsu_rf.Definitions.GameFunctions.CustomEventListener;
+import com.cloud.mcsu_rf.Definitions.GameFunctions.ActionZones.HeightActionZone;
+import com.cloud.mcsu_rf.Definitions.GameFunctions.PointAwarders.SurvivalAwarder;
+import com.cloud.mcsu_rf.Definitions.GameFunctions.VerticleBorder;
+import com.cloud.mcsu_rf.Definitions.McsuPlayer;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -32,7 +31,7 @@ public class Skybattle {
 
     public void init() {
 
-        game = new Game("Skybattle")
+        game = new Game("skybattle", "Skybattle")
                 .addGameState(
                         new GameState("base", true)
                                 .onEnable(() -> {
@@ -90,7 +89,7 @@ public class Skybattle {
                                     }
 
                                 }, "GameSpawnsActivatedEvent"))
-                                .addGameFunction(new PointAwarder(PointGoal.Survival, 5))
+                                .addGameFunction(new SurvivalAwarder(5))
                                 .addGameFunction(new CustomEventListener(Event -> {
 
                                     game.eliminatePlayer(
@@ -144,8 +143,6 @@ public class Skybattle {
         if (game.getAliveTeams().size() == 1) {
 
             Bukkit.getLogger().info("Game " + game.getName() + " has ended!");
-
-            game.getAliveTeams().get(0).awardTeamPoints(100);
 
             game.endGame(game.getAliveTeams().get(0));
 
