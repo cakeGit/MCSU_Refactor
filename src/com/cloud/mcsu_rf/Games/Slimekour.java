@@ -27,6 +27,8 @@ public class Slimekour {
     public static float timeLeft;
     public static boolean countdownActive;
 
+    int currentPos = 1;
+
     Integer[] GlassWallFrom;
     Integer[] GlassWallTo;
 
@@ -65,9 +67,18 @@ public class Slimekour {
                                                 Bukkit.broadcastMessage(
                                                         McsuPlayer.fromBukkit(player).getColouredName(true) +
                                                                 McsuPlayer.fromBukkit(player).getColour() +
-                                                                " has finished slimekour in " + ChatColor.WHITE + ChatColor.BOLD +
-                                                                SlimekourPlayer.fromBukkit(player).getFormattedTime()
+                                                                " has finished Slimekour in " + ChatColor.WHITE + ChatColor.BOLD +
+                                                                SlimekourPlayer.fromBukkit(player).getFormattedTime() + " (#"+currentPos+")"
                                                 );
+
+                                                McsuPlayer.fromBukkit(player).awardPoints((int) (
+                                                                ( ((float) (Bukkit.getOnlinePlayers().size() - (currentPos-1)) )
+                                                                        / Bukkit.getOnlinePlayers().size() ) * 100
+                                                        )
+                                                );
+
+                                                currentPos+=1;
+
 
                                                 game.eliminatePlayer(player);
                                                 SlimekourPlayer.fromBukkit(player).endTimer();

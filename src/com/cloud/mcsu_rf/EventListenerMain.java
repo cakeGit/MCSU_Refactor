@@ -385,7 +385,7 @@ public class EventListenerMain implements Listener {
 
     @EventHandler public void onGameInitEvent(GameInitEvent e) { onRegisteredEvent(e); }
     @EventHandler public void onGameCountdownEndEvent(GameCountdownEndEvent e) { onRegisteredEvent(e); }
-    @EventHandler public void onGameSpawnsActivatedEvent(GameSpawnsActivatedEvent e) { onRegisteredEvent(e); Bukkit.broadcastMessage("Game Spawns Activated"); }
+    @EventHandler public void onGameSpawnsActivatedEvent(GameSpawnsActivatedEvent e) { onRegisteredEvent(e); }
 
     @EventHandler public void onProjectileHitEvent(ProjectileHitEvent e) { onRegisteredEvent(e); }
     @EventHandler public void onProjectileLaunchEvent(ProjectileLaunchEvent e) { onRegisteredEvent(e); }

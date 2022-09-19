@@ -53,6 +53,12 @@ public class SlimekourPlayer {
         }
     }
 
+    public static void stopAllTimers() {
+        for (BukkitRunnable timer : stopwatchTimers) {
+            timer.cancel();
+        }
+    }
+
     public void endTimer() {
         stopwatchTimer.cancel();
     }

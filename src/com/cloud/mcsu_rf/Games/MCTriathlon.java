@@ -53,6 +53,8 @@ public class MCTriathlon {
     Double[] checkpoint3 = new Double[3];
     Float[] checkpoint3rot = new Float[2];
 
+    int currentPos = 0;
+
     MCTriathlonInventory mcTriathlonInventory = new MCTriathlonInventory();
 
     public void init() {
@@ -361,6 +363,15 @@ public class MCTriathlon {
                                                                 " has finished MCTriathlon in " + ChatColor.WHITE + ChatColor.BOLD +
                                                                 MCTriathlonPlayer.fromBukkit(player).getFormattedTime()
                                                 );
+
+                                                McsuPlayer.fromBukkit(player).awardPoints((int) (
+                                                                ( ((float) (Bukkit.getOnlinePlayers().size() - (currentPos-1)) )
+                                                                        / Bukkit.getOnlinePlayers().size() ) * 100
+                                                        )
+                                                );
+
+                                                currentPos+=1;
+
                                                 game.spawnFireworks(player.getLocation(),3,Color.YELLOW);
                                                 game.eliminatePlayer(player);
                                                 MCTriathlonPlayer.fromBukkit(player).endTimer();

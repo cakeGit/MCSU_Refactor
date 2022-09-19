@@ -73,7 +73,7 @@ public class Skybattle {
                                                     }),
                                             true);
 
-                                    game.addTimedEvent();
+                                    //game.addTimedEvent();
 
                                 })
                                 //.addGameFunction(new CustomEventListener())
