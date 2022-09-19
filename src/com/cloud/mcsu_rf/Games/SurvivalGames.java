@@ -61,6 +61,8 @@ public class SurvivalGames implements Listener {
                                     //Set this rounds "id" (used to ensure chests aren't infinitely regenerated)
                                     gameId = UUID.randomUUID();
                                     gameWorld.setTime(18000);
+                                    gameWorld.getWorldBorder().setCenter(2000, 2000);
+                                    gameWorld.getWorldBorder().setSize(450);
                                     waterDamage();
                                     // Sound effects
                                     for(Player p : Bukkit.getOnlinePlayers()) {
@@ -101,6 +103,7 @@ public class SurvivalGames implements Listener {
                                     Bukkit.broadcastMessage(ChatColor.AQUA + "PVP will be enabled in "+gracePeriodTime+" seconds!");
                                     game.getGamestate("gracePeriod").setEnabled(true);
                                     spawnCars();
+                                    gameWorld.getWorldBorder().setSize(10,450);
                                 })
                                 .addGameFunction(new CustomEventListener(Event -> {
                                     PlayerInteractEvent playerInteractEvent = (PlayerInteractEvent) Event;
@@ -133,6 +136,7 @@ public class SurvivalGames implements Listener {
                                 .onEnable(() -> {
                                     EventListenerMain.setActivityRule("PVP",true);
                                     Bukkit.broadcastMessage(ChatColor.AQUA + "Grace Period is Over. PVP is Enabled!");
+                                    gameWorld.getWorldBorder().setSize(10,450);
                                 })
                 );
 

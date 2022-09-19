@@ -10,12 +10,15 @@ import com.cloud.mcsu_rf.Definitions.McsuPlayer;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Slimekour {
 
@@ -104,6 +107,21 @@ public class Slimekour {
                                         }
                                     }
 
+                                    ItemStack item = new ItemStack(Material.STICK, 1);
+                                    ItemMeta meta = item.getItemMeta();
+                                    meta.setCustomModelData(1);
+                                    meta.setDisplayName("§5Annoying Stick");
+                                    meta.addEnchant(Enchantment.KNOCKBACK,1,true);
+                                    List<String> lore = new ArrayList<>();
+                                    lore.add("§7Use this stick to annoy enemies or to boost teammates");
+                                    meta.setLore(lore);
+                                    item.setItemMeta(meta);
+
+                                    for(Player players : Bukkit.getOnlinePlayers()) {
+                                        players.getInventory().addItem(item);
+                                        players.playSound(players.getLocation(),Sound.MUSIC_DISC_FAR,SoundCategory.AMBIENT,1,1);
+                                    }
+
                                     SlimekourPlayer.startAllTimers();
                                 })
                 );
@@ -122,6 +140,10 @@ public class Slimekour {
             SlimekourPlayer.slimekourPlayers = new ArrayList<>();
 
             game.endGame();
+
+            for(Player players : Bukkit.getOnlinePlayers()) {
+                players.stopSound(Sound.MUSIC_DISC_FAR,SoundCategory.AMBIENT);
+            }
 
         }
 

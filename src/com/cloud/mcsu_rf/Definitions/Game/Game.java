@@ -363,6 +363,8 @@ public class Game {
         }
         winner.awardTeamPoints(points, "winning "+getName());
         gameReset();
+        world.getWorldBorder().setSize(100000,1);
+        world.setTime(1000);
     }
 
     public void endGame() {
