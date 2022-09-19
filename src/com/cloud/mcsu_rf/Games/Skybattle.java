@@ -1,16 +1,19 @@
 package com.cloud.mcsu_rf.Games;
 
+import com.cloud.mcsu_rf.Definitions.Game.Game;
+import com.cloud.mcsu_rf.Definitions.Game.GameState;
+import com.cloud.mcsu_rf.Definitions.GameFunctions.ActionZones.HeightActionZone;
+import com.cloud.mcsu_rf.Definitions.GameFunctions.CustomEventListener;
+import com.cloud.mcsu_rf.Definitions.GameFunctions.PointAwarders.SurvivalAwarder;
+import com.cloud.mcsu_rf.Definitions.GameFunctions.VerticalBorder;
+import com.cloud.mcsu_rf.Definitions.McsuPlayer;
 import com.cloud.mcsu_rf.EventListenerMain;
 import com.cloud.mcsu_rf.Game_Handlers.ShorthandClasses.ParseArr;
 import com.cloud.mcsu_rf.Inventories.SkybattleInventory;
 import com.cloud.mcsu_rf.MCSU_Main;
-import com.cloud.mcsu_rf.Definitions.Game.*;
-import com.cloud.mcsu_rf.Definitions.GameFunctions.CustomEventListener;
-import com.cloud.mcsu_rf.Definitions.GameFunctions.ActionZones.HeightActionZone;
-import com.cloud.mcsu_rf.Definitions.GameFunctions.PointAwarders.SurvivalAwarder;
-import com.cloud.mcsu_rf.Definitions.GameFunctions.VerticleBorder;
-import com.cloud.mcsu_rf.Definitions.McsuPlayer;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -125,14 +128,13 @@ public class Skybattle {
                         })
                 ).addGameState( new GameState("borderStart")
                         .onEnable(() -> {
-                            VerticleBorder border = new VerticleBorder(borderY,corner1,corner2);
-                            border.startBorder();
                             Bukkit.broadcastMessage(ChatColor.RED+"Border shrinking!");
                             for(Player players : Bukkit.getOnlinePlayers()) {
                                 world = players.getWorld();
                                 world.getWorldBorder().setSize(10,90);
                             }
-                        }));
+                        })
+                        .addGameFunction(new VerticalBorder(borderY,corner1,corner2)));
 
     }
 

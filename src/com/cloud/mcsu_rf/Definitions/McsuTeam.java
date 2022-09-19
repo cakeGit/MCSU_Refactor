@@ -1,7 +1,9 @@
 package com.cloud.mcsu_rf.Definitions;
 
 import com.cloud.mcsu_rf.TeamHandlers.TeamMain;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,7 +20,8 @@ public class McsuTeam {
     int calculatedPoints = 0;
 
     ArrayList<String> memberUUIDs;
-    ArrayList<McsuPlayer> members;
+    ArrayList<Player> members;
+    ArrayList<McsuPlayer> team;
 
     public McsuTeam(String Name, String Shorthand, String TeamID, String Colour, ArrayList<String> memberUUIDs, int teamPoints) {
 
@@ -28,6 +31,11 @@ public class McsuTeam {
         this.ChatColour = Colour;
         this.memberUUIDs = memberUUIDs;
         this.teamPoints = teamPoints;
+
+        members = new ArrayList<>();
+        for (String memberUuid : memberUUIDs) {
+            members.add(Bukkit.getPlayer(memberUuid));
+        }
 
     }
 
@@ -63,7 +71,7 @@ public class McsuTeam {
             toScoreboardString(false); }
 
     public void setCalculatedPoints(int Points) { calculatedPoints = Points; saveYaml(); }
-    public void addMember(McsuPlayer player) { memberUUIDs.add(player.toBukkit().getUniqueId().toString()); members.add(player); saveYaml(); }
+    public void addMember(McsuPlayer player) { memberUUIDs.add(player.toBukkit().getUniqueId().toString()); members.add(player.toBukkit()); saveYaml(); }
     public void removeMember(McsuPlayer player) { memberUUIDs.remove(player.toBukkit().getUniqueId().toString()); members.remove(player); saveYaml(); }
     public void awardTeamPoints(int teamPoints, String reason) {
 

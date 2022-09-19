@@ -52,7 +52,6 @@ public class Score_Cmds {
 
     public static boolean Team(CommandSender sender, String[] args) {
 
-        sender.sendMessage("PENISSI");
 
         switch (args[0]) {
             case "set":
@@ -71,6 +70,7 @@ public class Score_Cmds {
                         }
 
                         McsuTeam team = TeamMain.getTeamById(args[2]);
+                        sender.sendMessage("Setting to team " + team.getStyledName());
                         Player.setTeam(team);
                         team.addMember(Player);
 
@@ -78,6 +78,7 @@ public class Score_Cmds {
 
                         TeamMain.refreshTeamsCalculatedPoints();
                     } catch (Exception err) {
+                        err.printStackTrace();
                         sender.sendMessage(ChatColor.RED + "[MCSU]: Error in setting player team, are you sure that " +args[2] + " is a valid TeamID?");
                     }
 
