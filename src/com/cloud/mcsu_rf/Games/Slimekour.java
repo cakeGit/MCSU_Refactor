@@ -107,6 +107,8 @@ public class Slimekour {
                                         }
                                     }
 
+                                    EventListenerMain.setActivityRule("PVP", true);
+
                                     ItemStack item = new ItemStack(Material.STICK, 1);
                                     ItemMeta meta = item.getItemMeta();
                                     meta.setCustomModelData(1);
