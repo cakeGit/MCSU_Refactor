@@ -199,7 +199,7 @@ public class EventListenerMain implements Listener {
 
     @EventHandler public void onServerListPing(ServerListPingEvent e) {
         e.setMotd(
-                ChatColor.RED +""+ ChatColor.BOLD + "MCSU in development! \n" + ChatColor.RESET +""+ ChatColor.AQUA +""+ ChatColor.ITALIC +
+                ChatColor.RED +""+ ChatColor.BOLD + "MCSU in development! \n" + ChatColor.RESET +""+ ChatColor.GRAY +""+ ChatColor.ITALIC +
                 Pick.Random(
                         "wait whos candice?",
                         "the cake is " + ChatColor.STRIKETHROUGH + "a lie"
