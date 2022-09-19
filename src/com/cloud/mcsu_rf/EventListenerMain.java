@@ -28,6 +28,7 @@ import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,6 +113,84 @@ public class EventListenerMain implements Listener {
                         .replace("${player}", p.getDisplayName())
                         .replace("${tcol}", McsuPlayer.fromBukkit(p).getColour())
         );
+    }
+
+    @EventHandler
+    public static void noDmgSpawn(EntityDamageEvent e) {
+        int[] coords1 = {
+                -165,
+                3,
+                120
+        };
+        int[] coords2 = {
+                21,
+                48,
+                273
+        };
+        if(e.getEntity() instanceof Player) {
+            Player player = (Player) e.getEntity();
+            if(isPlayerInRegion(player,coords1,coords2)) {
+                e.setCancelled(true);
+            }
+        }
+    }
+
+    public static boolean isPlayerInRegion(Player player, int[] coords1, int[] coords2) {
+
+        Location pLoc = player.getLocation();
+        int[] pCoords = { pLoc.getBlockX(), pLoc.getBlockY(), pLoc.getBlockZ() };
+
+        for(int index = 0; index < pCoords.length; index++) {
+            if(!isNumBetween(pCoords[index], coords1[index], coords2[index])) return false;
+        }
+
+        return true;
+    }
+
+    public static boolean isNumBetween(int targetNum, int min, int max) {
+        if(min > max) {
+            int i = min;
+            min = max;
+            max = i;
+        }
+        return ( (targetNum >= min) && (targetNum <= max) );
+    }
+
+    // Bouncy Glass for Trampoline/Slimekour
+
+    @EventHandler
+    public void onPlayerJump(PlayerMoveEvent e) {
+        Player player = e.getPlayer();
+        World world = player.getWorld();
+        Location l = player.getLocation();
+        l.add(0, -1, 0);
+        Block b = l.getBlock();
+        if (b.getType() == Material.BLACK_STAINED_GLASS || b.getType() == Material.RED_STAINED_GLASS || b.getType() == Material.BLUE_STAINED_GLASS) {
+            player.setVelocity(new Vector(0, 2, 0));
+            player.playSound(player.getLocation(), Sound.ENTITY_SLIME_SQUISH, 1, 1);
+        } else {
+            return;
+        }
+    }
+
+    @EventHandler
+    public void onPlayerFall(EntityDamageEvent e) {
+        Player player = (Player) e.getEntity();
+        World world = player.getWorld();
+        Location l = player.getLocation();
+        l.add(0, -1, 0);
+        Block b = l.getBlock();
+        if (b.getType() == Material.BLACK_STAINED_GLASS || b.getType() == Material.RED_STAINED_GLASS || b.getType() == Material.BLUE_STAINED_GLASS) {
+            if (player.isSneaking()) {
+                e.setCancelled(true);
+            } else {
+                e.setCancelled(true);
+                player.setVelocity(new Vector(0, 2, 0));
+                player.playSound(player.getLocation(), Sound.ENTITY_SLIME_SQUISH, 1, 1);
+            }
+        } else {
+            return;
+        }
     }
 
     @EventHandler public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {

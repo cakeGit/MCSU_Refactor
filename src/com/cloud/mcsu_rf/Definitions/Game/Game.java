@@ -20,13 +20,12 @@ import com.cloud.mcsu_rf.TeamHandlers.TeamMain;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Firework;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Game {
@@ -205,6 +204,18 @@ public class Game {
         Bukkit.getPluginManager().callEvent(initEvent);
 
         gameActive = true;
+        List<Entity> entList = world.getEntities();//get all entities in the world
+        for(Entity current : entList) {//loop through the list
+            if (current instanceof Item) {//make sure we aren't deleting mobs/players
+                current.remove();//remove it
+            }
+            if( current instanceof Arrow) {
+                current.remove();
+            }
+            if( current instanceof Boat) {
+                current.remove();
+            }
+        }
         MapMetadataDisplay.update();
 
         if (startIntervalEnabled) {

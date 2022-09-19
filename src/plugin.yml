@@ -50,11 +50,18 @@ commands:
   enablepvp:
     description: command to enable force pvp,
     usage: /enablepvp
-
   blocksumoloot:
     description: testing command
     usage: /blocksumoloot
-
   event:
     description: All of the MCSU event commands
     usage: /event <Action>
+  mcsuevent:
+    description: Starts an MCSU Event!
+    usage: /mcsuevent
+  winner:
+    description: Crowns the winner of MCSU!
+    usage: /winner
+  stopglow:
+    description: Stops players from glowing if a round of block sumo ended incorrectly
+    usage: /stopglow

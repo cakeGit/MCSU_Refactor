@@ -6,7 +6,6 @@ import com.cloud.mcsu_rf.TeamHandlers.TeamMain;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -19,7 +18,6 @@ public class McsuPlayer {
 
     public static ArrayList<McsuPlayer> McsuPlayers = new ArrayList<>();
 
-    @NotNull
     public static McsuPlayer fromBukkit(Player bukkitPlayer) {
         for (McsuPlayer mcsuPlayer: McsuPlayers) {
             if (mcsuPlayer.toBukkit() == bukkitPlayer) {
@@ -30,7 +28,6 @@ public class McsuPlayer {
         throw new IllegalArgumentException("Player '"+bukkitPlayer.getName()+"' not found in McsuPlayers");
     }
 
-    @NotNull
     public static McsuPlayer getPlayerByUUID(String UUID) {
         for (McsuPlayer mcsuPlayer: McsuPlayers) {
             if (Objects.equals(mcsuPlayer.toBukkit().getUniqueId().toString(), UUID)) {
@@ -46,8 +43,6 @@ public class McsuPlayer {
         }*/
     }
 
-
-    @NotNull
     @Deprecated //Use getPlayerByUUID() instead
     public static McsuPlayer getPlayerByName(String Name) {
         for (McsuPlayer mcsuPlayer: McsuPlayers) {
