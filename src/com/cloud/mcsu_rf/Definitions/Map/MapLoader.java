@@ -1,8 +1,8 @@
 package com.cloud.mcsu_rf.Definitions.Map;
 
+import com.cloud.mcsu_rf.Definitions.Game.Game;
 import com.cloud.mcsu_rf.Game_Handlers.FaweFunctions;
 import com.cloud.mcsu_rf.Game_Handlers.ShorthandClasses.Pick;
-import com.cloud.mcsu_rf.Definitions.Game.Game;
 import com.sk89q.worldedit.math.BlockVector3;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -25,7 +25,7 @@ public class MapLoader {
     public MapMetadata getMapData() { return mapData; }
     public World getWorld() { return world; }
 
-    public void MapInit(Game game, World world) {
+    public void MapInit(Game game, World world, MapMetadata map) {
 
         this.world = world;
 
@@ -44,6 +44,9 @@ public class MapLoader {
 
         }
 
+        if (map != null) {
+            mapData = map;
+        }
         mapData = Pick.Random(gameMaps);
 
         game.setMapMetadata(mapData);

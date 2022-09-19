@@ -17,6 +17,9 @@ public class VerticalBorder extends GameFunctionBase {
         borderY = bY;
         corner1 = c1;
         corner2 = c2;
+        Bukkit.broadcastMessage(String.valueOf(corner1[0]));
+
+        Bukkit.broadcastMessage(String.valueOf(corner1[1]));
     }
 
     @Override
@@ -36,18 +39,21 @@ public class VerticalBorder extends GameFunctionBase {
                             players.damage(2.5F);
                         }
 
-                        int minX = Math.min(corner1[0], corner2[0]);
-                        int maxX = Math.max(corner1[0], corner2[0]);
-                        int minZ = Math.min(corner1[1], corner2[1]);
-                        int maxZ = Math.max(corner1[1], corner2[1]);
-                        Particle.DustOptions dustOptions = new Particle.DustOptions(Color.ORANGE, 10);
-                        for (int x = minX; x <= maxX; x = x + 6) {
-                            for (int z = minZ; z <= maxZ; z = z + 6) {
-                                world.spawnParticle(Particle.REDSTONE, new Location(world, x, borderY, z),1, dustOptions);
-                            }
-                        }
-
                     }
+
+                    int minX = Math.min(corner1[0], corner2[0]);
+                    int maxX = Math.max(corner1[0], corner2[0]);
+                    int minZ = Math.min(corner1[1], corner2[1]);
+                    int maxZ = Math.max(corner1[1], corner2[1]);
+
+
+                    Particle.DustOptions dustOptions = new Particle.DustOptions(Color.ORANGE, 10);
+                    for (int x = minX; x <= maxX; x = x + 6) {
+                        for (int z = minZ; z <= maxZ; z = z + 6) {
+                            world.spawnParticle(Particle.REDSTONE, new Location(world, x, borderY, z),1, dustOptions);
+                        }
+                    }
+
 
                 }
             };

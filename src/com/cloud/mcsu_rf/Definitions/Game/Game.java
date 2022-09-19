@@ -108,7 +108,7 @@ public class Game {
 
     }
 
-    public void initGameLoader(World world) {
+    public void initGameLoader(World world, MapMetadata map) { //Can be passed a map to load
 
         currentGame = this;
 
@@ -182,7 +182,7 @@ public class Game {
 
         EventListenerMain.setActivityRule("PlayerMovement", false);
 
-        mapLoader.MapInit(this, world);
+        mapLoader.MapInit(this, world, map);
         mapLoader.getSpawnManager().lobbySpawns(mapLoader);
 
         alivePlayers = (ArrayList<McsuPlayer>) McsuPlayer.McsuPlayers.clone();
@@ -445,4 +445,7 @@ public class Game {
 
     }
 
+    public Game addTimedEvent() {
+        return this;
+    }
 }

@@ -39,8 +39,8 @@ public class Spleef {
                         new GamemodeManager(
                                 new GamemodeOptionBlock(
                                         "Tool",
-                                        new GamemodeOption(2, "Shovels"),
-                                        new GamemodeOption(1, "Fireworks")
+                                        new GamemodeOption(0, "Shovels"),
+                                        new GamemodeOption(5, "Fireworks")
                                         )
                         )
                 )

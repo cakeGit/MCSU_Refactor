@@ -53,32 +53,30 @@ public class Skybattle {
                                     world.getWorldBorder().setCenter(mapCenter[0],mapCenter[1]);
                                     world.getWorldBorder().setSize(160,1);
 
-                                            Bukkit.getLogger().info(String.valueOf(killZoneY));
+                                    Bukkit.getLogger().info(String.valueOf(killZoneY));
 
-                                            skybattleInventory = new SkybattleInventory();
+                                    skybattleInventory = new SkybattleInventory();
 
-                                            game.getGamestate("afterCountdown").addGameFunction(
+                                    game.getGamestate("afterCountdown").addGameFunction(//Done in here because it has to load off config
+                                            new HeightActionZone(
+                                                    killZoneY,
+                                                    true
+                                            )
+                                                    .setWhilePlayerInside(player -> {
+                                                        if (
+                                                                game.getAlivePlayers().contains(
+                                                                        McsuPlayer.fromBukkit(player)
+                                                                )
+                                                        ) {
+                                                            player.setHealth(0);
+                                                        }
+                                                    }),
+                                            true);
 
-                                                    //Done in here because it has to load off config
-                                                    new HeightActionZone(
-                                                            killZoneY,
-                                                            true
-                                                    )
-                                                            .setWhilePlayerInside(player -> {
-                                                                if (
-                                                                        game.getAlivePlayers().contains(
-                                                                                McsuPlayer.fromBukkit(player)
-                                                                        )
-                                                                ) {
-                                                                    player.setHealth(0);
-                                                                }
-                                                            })
+                                    game.addTimedEvent();
 
-                                            );
-
-                                        }
-
-                                )
+                                })
+                                //.addGameFunction(new CustomEventListener())
                                 .addGameFunction(new CustomEventListener(Event -> {
 
                                     BlockPlaceEvent placeEvent = (BlockPlaceEvent) Event;
@@ -126,15 +124,18 @@ public class Skybattle {
                             };
                             preBorder.runTaskLater(MCSU_Main.Mcsu_Plugin, 20L*150); // Delays for 2 min 30 secs
                         })
-                ).addGameState( new GameState("borderStart")
+                )
+                .addGameState( new GameState("borderStart")
                         .onEnable(() -> {
                             Bukkit.broadcastMessage(ChatColor.RED+"Border shrinking!");
                             for(Player players : Bukkit.getOnlinePlayers()) {
                                 world = players.getWorld();
                                 world.getWorldBorder().setSize(10,90);
                             }
+
+                            game.getGamestate("borderStart").addGameFunction(new VerticalBorder(borderY,corner1,corner2), true);
                         })
-                        .addGameFunction(new VerticalBorder(borderY,corner1,corner2)));
+                );
 
     }
 
