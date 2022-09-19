@@ -92,6 +92,7 @@ public class SurvivalGames implements Listener {
                                     EventListenerMain.setActivityRule("Crafting", true);
                                     EventListenerMain.setActivityRule("FallDamage", true);
                                     EventListenerMain.setActivityRule("EntityDamage",true);
+                                    EventListenerMain.setActivityRule("Cars",true);
                                     EventListenerMain.setActivityRule("PearlDamage",true);
                                     EventListenerMain.setActivityRule("Hunger",true);
                                     game.getGamestate("afterCountdown").setEnabled(true);
@@ -103,7 +104,6 @@ public class SurvivalGames implements Listener {
                                     Bukkit.broadcastMessage(ChatColor.AQUA + "PVP will be enabled in "+gracePeriodTime+" seconds!");
                                     game.getGamestate("gracePeriod").setEnabled(true);
                                     spawnCars();
-                                    gameWorld.getWorldBorder().setSize(10,450);
                                 })
                                 .addGameFunction(new CustomEventListener(Event -> {
                                     PlayerInteractEvent playerInteractEvent = (PlayerInteractEvent) Event;
