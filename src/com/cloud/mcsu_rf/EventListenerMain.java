@@ -425,6 +425,7 @@ public class EventListenerMain implements Listener {
         new ActivityRule("Suffocation",true);
         new ActivityRule("PlaceFireworks",true);
         new ActivityRule("LockInvItems",false);
+        new ActivityRule("Cars",false);
 
     }
 
