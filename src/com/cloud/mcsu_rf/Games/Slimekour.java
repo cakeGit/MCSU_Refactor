@@ -18,6 +18,8 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 
@@ -65,36 +67,42 @@ public class Slimekour {
                                             Player player = playerMove.getPlayer();
                                             Location blockLoc = playerMove.getPlayer().getLocation().add(0, -1, 0);
 
-                                            if ((blockLoc.getBlock().getType() == Material.GOLD_BLOCK || player.getLocation().getBlock().getType() == Material.LIGHT_WEIGHTED_PRESSURE_PLATE) && Game.getAlivePlayers().contains(McsuPlayer.fromBukkit(player))) {
-                                                Bukkit.broadcastMessage(
-                                                        McsuPlayer.fromBukkit(player).getColouredName(true) +
-                                                                McsuPlayer.fromBukkit(player).getColour() +
-                                                                " has finished Slimekour in " + ChatColor.WHITE + ChatColor.BOLD +
-                                                                SlimekourPlayer.fromBukkit(player).getFormattedTime() + " (#"+currentPos+")"
-                                                );
+                                            if (Game.getAlivePlayers().contains(McsuPlayer.fromBukkit(player))) {
+                                                if (blockLoc.getBlock().getType() == Material.LIGHT_BLUE_STAINED_GLASS) {
+                                                    player.addPotionEffect((new PotionEffect(PotionEffectType.SPEED, 5, 2)));
+                                                } else if (blockLoc.getBlock().getType() == Material.GOLD_BLOCK ||
+                                                        player.getLocation().getBlock().getType() == Material.LIGHT_WEIGHTED_PRESSURE_PLATE) {
+                                                    Bukkit.broadcastMessage(
+                                                            McsuPlayer.fromBukkit(player).getColouredName(true) +
+                                                                    McsuPlayer.fromBukkit(player).getColour() +
+                                                                    " has finished Slimekour in " + ChatColor.WHITE + ChatColor.BOLD +
+                                                                    SlimekourPlayer.fromBukkit(player).getFormattedTime() + " (#"+currentPos+")"
+                                                    );
 
-                                                McsuPlayer.fromBukkit(player).awardPoints((int) (
-                                                                ( ((float) (Bukkit.getOnlinePlayers().size() - (currentPos-1)) )
-                                                                        / Bukkit.getOnlinePlayers().size() ) * 100
-                                                        )
-                                                );
+                                                    McsuPlayer.fromBukkit(player).awardPoints((int) (
+                                                                    ( ((float) (Bukkit.getOnlinePlayers().size() - (currentPos-1)) )
+                                                                            / Bukkit.getOnlinePlayers().size() ) * 100
+                                                            )
+                                                    );
 
-                                                currentPos+=1;
+                                                    currentPos+=1;
 
 
-                                                game.eliminatePlayer(player);
-                                                SlimekourPlayer.fromBukkit(player).endTimer();
-                                                player.spigot().sendMessage(
-                                                        ChatMessageType.ACTION_BAR,
-                                                        TextComponent.fromLegacyText(
-                                                                ChatColor.GOLD +""+ ChatColor.BOLD + "Finished!"
-                                                        )
-                                                );
-                                                new EventListenerMain().onPlayerDeath(new PlayerDeathEvent(player, new ArrayList<ItemStack>().stream().toList(), 0, ""));
+                                                    game.eliminatePlayer(player);
+                                                    SlimekourPlayer.fromBukkit(player).endTimer();
+                                                    player.spigot().sendMessage(
+                                                            ChatMessageType.ACTION_BAR,
+                                                            TextComponent.fromLegacyText(
+                                                                    ChatColor.GOLD +""+ ChatColor.BOLD + "Finished!"
+                                                            )
+                                                    );
+                                                    new EventListenerMain().onPlayerDeath(new PlayerDeathEvent(player, new ArrayList<ItemStack>().stream().toList(), 0, ""));
 
-                                                checkIfEnded();
+                                                    checkIfEnded();
 
+                                                }
                                             }
+
                                         },
                                         "PlayerMoveEvent"
                                 ))
