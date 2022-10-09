@@ -113,6 +113,8 @@ public class Skybattle {
                             EventListenerMain.setActivityRule("Crafting", true);
                             EventListenerMain.setActivityRule("FallDamage", true);
                             EventListenerMain.setActivityRule("EntityDamage", true);
+                            EventListenerMain.setActivityRule("Hunger", true);
+
                             preBorder = new BukkitRunnable() {
                                 @Override
                                 public void run() {

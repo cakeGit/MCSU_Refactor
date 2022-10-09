@@ -17,9 +17,6 @@ public class VerticalBorder extends GameFunctionBase {
         borderY = bY;
         corner1 = c1;
         corner2 = c2;
-        Bukkit.broadcastMessage(String.valueOf(corner1[0]));
-
-        Bukkit.broadcastMessage(String.valueOf(corner1[1]));
     }
 
     @Override
