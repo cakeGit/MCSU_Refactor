@@ -4,9 +4,7 @@ import com.cloud.mcsu_rf.Definitions.McsuPlayer;
 import com.cloud.mcsu_rf.Definitions.McsuScoreboard.McsuScoreboard;
 import com.cloud.mcsu_rf.Definitions.McsuScoreboard.ScoreboardElements.FixedContent;
 import com.cloud.mcsu_rf.Definitions.McsuScoreboard.ScoreboardElements.MapMetadataDisplay;
-import com.cloud.mcsu_rf.Definitions.McsuScoreboard.ScoreboardElements.TeamTotalPoints;
 import com.cloud.mcsu_rf.Definitions.McsuTeam;
-import com.cloud.mcsu_rf.MCSU_Main;
 import com.cloud.mcsu_rf.TeamHandlers.TeamMain;
 import org.bukkit.*;
 import org.bukkit.command.Command;
@@ -18,14 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
-import org.bukkit.scoreboard.*;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
 
 public class McsuEvent implements CommandExecutor {
 
@@ -212,7 +203,6 @@ public class McsuEvent implements CommandExecutor {
                 new FixedContent("", ChatColor.WHITE+" MCSU Starting in: "+fancytimer+"!", "")
         );
         eventScoreboard.bindPlayer(McsuPlayer.fromBukkit(player),true);
-        eventScoreboard.generateScoreboard(McsuPlayer.fromBukkit(player));
         eventScoreboard.update();
     }
 

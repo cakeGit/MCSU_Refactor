@@ -1,12 +1,14 @@
 package com.cloud.mcsu_rf.Games;
 
-import com.cloud.mcsu_rf.EventListenerMain;
-import com.cloud.mcsu_rf.GamePlayers.SlimekourPlayer;
-import com.cloud.mcsu_rf.Game_Handlers.ShorthandClasses.ParseArr;
+import com.cak.what.ItemAPI.WhItemStack;
+import com.cak.what.Util.ChCol;
 import com.cloud.mcsu_rf.Definitions.Game.Game;
 import com.cloud.mcsu_rf.Definitions.Game.GameState;
 import com.cloud.mcsu_rf.Definitions.GameFunctions.CustomEventListener;
 import com.cloud.mcsu_rf.Definitions.McsuPlayer;
+import com.cloud.mcsu_rf.EventListenerMain;
+import com.cloud.mcsu_rf.GamePlayers.SlimekourPlayer;
+import com.cloud.mcsu_rf.Game_Handlers.ShorthandClasses.ParseArr;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
@@ -18,7 +20,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Slimekour {
 
@@ -59,11 +60,12 @@ public class Slimekour {
                         new GameState("afterCountdown")
                                 .addGameFunction(new CustomEventListener(
                                         event -> {
+
                                             PlayerMoveEvent playerMove = (PlayerMoveEvent) event;
                                             Player player = playerMove.getPlayer();
                                             Location blockLoc = playerMove.getPlayer().getLocation().add(0, -1, 0);
 
-                                            if (blockLoc.getBlock().getType() == Material.GOLD_BLOCK && Game.getAlivePlayers().contains(McsuPlayer.fromBukkit(player))) {
+                                            if ((blockLoc.getBlock().getType() == Material.GOLD_BLOCK || player.getLocation().getBlock().getType() == Material.LIGHT_WEIGHTED_PRESSURE_PLATE) && Game.getAlivePlayers().contains(McsuPlayer.fromBukkit(player))) {
                                                 Bukkit.broadcastMessage(
                                                         McsuPlayer.fromBukkit(player).getColouredName(true) +
                                                                 McsuPlayer.fromBukkit(player).getColour() +
@@ -98,6 +100,8 @@ public class Slimekour {
                                 ))
                                 .onEnable(()-> {
 
+                                    EventListenerMain.setActivityRule("PVP", true);
+
                                     GlassWallFrom = ParseArr.toInteger(((String) game.getMapMetadata().get("GameData.GlassWallFrom")).split(" "));
                                     GlassWallTo = ParseArr.toInteger(((String) game.getMapMetadata().get("GameData.GlassWallTo")).split(" "));
 
@@ -120,15 +124,12 @@ public class Slimekour {
 
                                     EventListenerMain.setActivityRule("PVP", true);
 
-                                    ItemStack item = new ItemStack(Material.STICK, 1);
+                                    WhItemStack item = new WhItemStack(Material.STICK, ChCol.BOLD + ChCol.DARK_PURPLE + "Annoying stick");
                                     ItemMeta meta = item.getItemMeta();
                                     meta.setCustomModelData(1);
-                                    meta.setDisplayName("§5Annoying Stick");
-                                    meta.addEnchant(Enchantment.KNOCKBACK,1,true);
-                                    List<String> lore = new ArrayList<>();
-                                    lore.add("§7Use this stick to annoy enemies or to boost teammates");
-                                    meta.setLore(lore);
                                     item.setItemMeta(meta);
+                                    item.setLore("§7Use this stick to annoy enemies");
+                                    item.addUnsafeEnchantment(Enchantment.KNOCKBACK,1);
 
                                     for(Player players : Bukkit.getOnlinePlayers()) {
                                         players.getInventory().addItem(item);

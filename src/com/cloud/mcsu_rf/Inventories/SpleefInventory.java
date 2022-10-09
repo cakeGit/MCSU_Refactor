@@ -1,11 +1,9 @@
 package com.cloud.mcsu_rf.Inventories;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.Inventory;
@@ -71,6 +69,7 @@ public class SpleefInventory extends InventoryBase {
 
                 fireworksItemStack.setAmount(64);
                 FireworkMeta fireworkMeta = (FireworkMeta) fireworksItemStack.getItemMeta();
+                fireworkMeta.setPower(100);
                 fireworkMeta.addEffect(
                         FireworkEffect
                         .builder()

@@ -17,7 +17,6 @@ public class McsuTeam {
     String TeamID;
     String ChatColour;
     int teamPoints;
-    int calculatedPoints = 0;
 
     ArrayList<String> memberUUIDs;
     ArrayList<Player> members;
@@ -58,30 +57,34 @@ public class McsuTeam {
         return McsuPlayer.McsuPlayers.stream().filter(player -> memberUUIDs.contains(player.bukkitPlayer.getUniqueId().toString())).toArray(McsuPlayer[]::new);
     }
     public String getChatColour() { return ChatColour; }
-    public int getCalculatedPoints() { return calculatedPoints; }
     public String getTeamID() { return TeamID; }
     public String getStyledName() { return ChatColour + Name + ChatColor.RESET; }
     public String getRawName() { return Name; }
     public int getTeamPoints() { return teamPoints; }
     public String toScoreboardString() { return toScoreboardString(true); }
     public String toScoreboardString(boolean indent) {
-        return (indent ? "  " : "") + ChatColor.GRAY + TeamMain.getTeamRanking(this)+ ". " + ChatColour + Name + ChatColor.WHITE + ": " + calculatedPoints;
+        return (indent ? "  " : "") + ChatColor.GRAY + TeamMain.getTeamRanking(this)+ ". " + ChatColour + Name + ChatColor.WHITE + ": " + teamPoints;
     }
     public String toScoreboardString(McsuPlayer player) { return (Objects.equals(player.getTeamID(), TeamID) ? "> " : "  ") +
             toScoreboardString(false); }
 
-    public void setCalculatedPoints(int Points) { calculatedPoints = Points; saveYaml(); }
     public void addMember(McsuPlayer player) { memberUUIDs.add(player.toBukkit().getUniqueId().toString()); members.add(player.toBukkit()); saveYaml(); }
     public void removeMember(McsuPlayer player) { memberUUIDs.remove(player.toBukkit().getUniqueId().toString()); members.remove(player); saveYaml(); }
-    public void awardTeamPoints(int teamPoints, String reason) {
+
+    public int awardPoints(int teamPoints) { return awardPoints(teamPoints, null, false); }
+    public int awardPoints(int teamPoints, String reason) { return awardPoints(teamPoints, reason, true); }
+
+    public int awardPoints(int teamPoints, String reason, boolean announce) {
 
         this.teamPoints += teamPoints;
         saveYaml();
-        TeamMain.refreshTeamsCalculatedPoints();
-
-        for (McsuPlayer player : getMembers()) {
-            player.notifyTeamPoints(teamPoints, reason);
+        if (announce) {
+            for (McsuPlayer player : getMembers()) {
+                player.notifyTeamPoints(teamPoints, reason);
+            }
         }
+
+        return teamPoints;
 
     }
 

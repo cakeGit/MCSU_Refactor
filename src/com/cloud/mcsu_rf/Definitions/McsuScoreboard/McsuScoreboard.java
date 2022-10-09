@@ -1,21 +1,19 @@
 package com.cloud.mcsu_rf.Definitions.McsuScoreboard;
 
 
-import com.cloud.mcsu_rf.MCSU_Main;
 import com.cloud.mcsu_rf.Definitions.Game.Game;
 import com.cloud.mcsu_rf.Definitions.McsuPlayer;
 import com.cloud.mcsu_rf.Definitions.McsuScoreboard.ScoreboardElements.FixedContent;
 import com.cloud.mcsu_rf.Definitions.McsuScoreboard.ScoreboardElements.MapMetadataDisplay;
 import com.cloud.mcsu_rf.Definitions.McsuScoreboard.ScoreboardElements.TeamTotalPoints;
+import com.cloud.mcsu_rf.Definitions.McsuScoreboard.ScoreboardElements.TimedEventDisplay;
 import com.cloud.mcsu_rf.Definitions.McsuTeam;
+import com.cloud.mcsu_rf.MCSU_Main;
 import com.cloud.mcsu_rf.TeamHandlers.TeamMain;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.Team;
+import org.bukkit.scoreboard.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,6 +26,7 @@ public class McsuScoreboard {
     public static void init() {
 
         defaultScoreboard = new McsuScoreboard(
+                new TimedEventDisplay(),
                 new MapMetadataDisplay(false),
                 new FixedContent("",
                         ChatColor.RED+""+ChatColor.BOLD +"Team Scores"+ ChatColor.RESET +":"),
@@ -67,10 +66,17 @@ public class McsuScoreboard {
         return boundPlayers;
     }
 
-    public Scoreboard generateScoreboard(McsuPlayer mcsuPlayer) {
+    public Scoreboard generateScoreboard(McsuPlayer mcsuPlayer, Scoreboard previous) {
+        Scoreboard scoreboard = previous;
+        if (previous.getObjectives().size() == 0) {
+            scoreboard = Objects.requireNonNull(Bukkit.getScoreboardManager()).getNewScoreboard();
+        }
 
-        Scoreboard scoreboard = Objects.requireNonNull(Bukkit.getScoreboardManager()).getNewScoreboard();
-        Objective objective = scoreboard.registerNewObjective(title, "dummy", title);
+        Objective objective = scoreboard.getObjective(title);
+        if (objective == null) {
+            objective = scoreboard.registerNewObjective(title, "dummy", title);
+        }
+
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 
         ArrayList<String> generatedContents = new ArrayList<>();
@@ -78,7 +84,10 @@ public class McsuScoreboard {
         for(Player player : Bukkit.getOnlinePlayers()) {
             McsuTeam mcsuTeam = TeamMain.getTeamById(McsuPlayer.fromBukkit(player).getTeamID());
 
-            Team team = scoreboard.registerNewTeam(player.getName());
+            Team team = scoreboard.getTeam(player.getName());
+            if (team == null) {
+                team = scoreboard.registerNewTeam(player.getName());
+            }
 
             team.setColor(McsuPlayer.fromBukkit(player).getColourRaw());
             team.addEntry(player.getName());
@@ -89,6 +98,10 @@ public class McsuScoreboard {
                     ChatColor.GOLD + "[★"+mcsuPlayer.getWins()+"] " + mcsuPlayer.getColour()
                     //ChatColor.getByChar(mcsuTeam.getChatColour().substring(1))+"["+mcsuTeam.getStyledName()+mcsuPlayer.getColour()+"] "
             );
+        }
+
+        for (String entry : scoreboard.getEntries()) {
+            scoreboard.resetScores(entry);
         }
 
         for (ScoreboardElementBase element : scoreboardElements) {
@@ -125,7 +138,7 @@ public class McsuScoreboard {
     public McsuScoreboard update() {
 
         for (McsuPlayer player : boundPlayers) {
-            player.toBukkit().setScoreboard(generateScoreboard(player));
+            player.toBukkit().setScoreboard(generateScoreboard(player, player.toBukkit().getScoreboard()));
         }
         return this;
 

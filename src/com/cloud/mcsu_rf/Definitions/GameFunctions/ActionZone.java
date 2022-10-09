@@ -54,7 +54,9 @@ public class ActionZone extends GameFunctionBase {
             if (
                     testLocationInsideZone(pLoc)
             ) {
-                whilePlayerInside.exec(player);
+                if (whilePlayerInside != null) {
+                    whilePlayerInside.exec(player);
+                }
 
                 if ( complexEventProcessing ) {
                     if ( !playersInside.contains(player) ) {
@@ -66,7 +68,7 @@ public class ActionZone extends GameFunctionBase {
                 if ( complexEventProcessing ) {
                     if (playersInside.contains(player)) {
                         playersInside.remove(player);
-                        onEnterEvent.exec(player);
+                        onExitEvent.exec(player);
                     }
                 }
             }

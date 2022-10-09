@@ -11,13 +11,12 @@ public class BlockSumoPlayer {
 
     int maxLives = 5;
     int lives = 5;
+    int lifePowerups = 0;
     Player player;
     boolean spawnProt = false;
 
-    public BlockSumoPlayer(Player player, int lives) {
+    public BlockSumoPlayer(Player player) {
 
-        this.maxLives = lives;
-        this.lives = lives;
         this.player = player;
 
         BlockSumoPlayers.add(this);
@@ -27,10 +26,14 @@ public class BlockSumoPlayer {
     public static BlockSumoPlayer fromBukkit(Player player) {
         return BlockSumoPlayers.stream().filter(blockSumoPlayer -> blockSumoPlayer.toBukkit().equals(player)).findFirst().orElse(null);
     }
+    public Player toBukkit() { return player; }
 
     public int getLives() { return lives; }
-    public void removeLife() { this.lives -= 1; }
-    public Player toBukkit() { return player; }
+    public void removeLife() { if (lives > 0) { this.lives -= 1; } }
+
+    public int getLifePowerups() { return lifePowerups; }
+    public void resetLifePowerups() { lifePowerups = 0; }
+    public void addLifePowerup() { lifePowerups +=1; }
 
     public void setSpawnProt(boolean spawnProt) { this.spawnProt = spawnProt; }
     public boolean hasSpawnProt() { return this.spawnProt; }
@@ -46,5 +49,9 @@ public class BlockSumoPlayer {
 
     public String getLivesTabString() {
         return (lives == 0 ? ChatColor.GRAY + "[☠]": ChatColor.RED + "["+lives+"❤]");
+    }
+
+    public void setLives(int i) {
+        lives = i;
     }
 }

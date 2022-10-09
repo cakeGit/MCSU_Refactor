@@ -10,6 +10,7 @@ import com.cloud.mcsu_rf.Definitions.Map.SpawnManager;
 import com.cloud.mcsu_rf.Definitions.McsuPlayer;
 import com.cloud.mcsu_rf.Definitions.McsuScoreboard.McsuScoreboard;
 import com.cloud.mcsu_rf.Definitions.McsuScoreboard.ScoreboardElements.MapMetadataDisplay;
+import com.cloud.mcsu_rf.Definitions.McsuScoreboard.ScoreboardElements.TimedEventDisplay;
 import com.cloud.mcsu_rf.Definitions.McsuTeam;
 import com.cloud.mcsu_rf.Definitions.Timer;
 import com.cloud.mcsu_rf.EventListenerMain;
@@ -25,6 +26,7 @@ import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -82,6 +84,7 @@ public class Game {
     //static
     static ArrayList<McsuPlayer> alivePlayers = new ArrayList<>();
     static StringReturnMcsuPlayerLambda getGamePrefix;
+    public static HashMap<String, Integer> QueuedTimedEvents = new HashMap<>();
 
     //Other vars
     String Id;
@@ -354,14 +357,13 @@ public class Game {
 
     }
 
-
     public void endGame(McsuTeam winner){endGame(winner, 100);}
     public void endGame(McsuTeam winner, int points) {
         String style = ChatColor.BOLD + "" + ChatColor.WHITE;
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.sendTitle(winner.getStyledName() + style + " win " + ChatColor.RESET + getName() + style + "!", generateEndSplash());
         }
-        winner.awardTeamPoints(points, "winning "+getName());
+        winner.awardPoints(points, "winning "+getName());
         gameReset();
         world.getWorldBorder().setSize(100000,1);
         world.setTime(1000);
@@ -445,7 +447,33 @@ public class Game {
 
     }
 
-    public Game addTimedEvent() {
+    public Game addTimedEvent(String name, Integer delay, GameTimedEventLambda onActive) {
+
+        QueuedTimedEvents.put(name, delay);
+
+        BukkitRunnable timedEvent = new BukkitRunnable() {
+
+            @Override
+            public void run() {
+                QueuedTimedEvents.put(name, QueuedTimedEvents.get(name)-1);
+                TimedEventDisplay.update();
+            }
+
+        };
+        timedEvent.runTaskTimer(MCSU_Main.Mcsu_Plugin, 0L, 20L);
+
+        new BukkitRunnable() {
+
+            @Override
+            public void run() {
+                onActive.exec();
+                QueuedTimedEvents.remove(name);
+                TimedEventDisplay.update();
+                timedEvent.cancel();
+            }
+
+        }.runTaskLater(MCSU_Main.Mcsu_Plugin, delay * 20L);
+
         return this;
     }
 }

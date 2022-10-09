@@ -55,9 +55,11 @@ public class MCSU_Main extends JavaPlugin implements Listener {
         Game_Main.init();
         Cmd_Main.Init();
         TeamMain.init();
+
         getCommand("mcsuevent").setExecutor(new McsuEvent());
         getCommand("winner").setExecutor(new McsuEvent());
         getCommand("stopglow").setExecutor(new McsuEvent());
+
         MapMetadata.loadData();
         DeathMessages.init();
         McsuScoreboard.init();

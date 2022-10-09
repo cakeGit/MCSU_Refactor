@@ -1,28 +1,24 @@
 package com.cloud.mcsu_rf.Games;
 
 import com.cloud.mcsu_rf.Cars.CarEvents;
-import com.cloud.mcsu_rf.EventListenerMain;
-import com.cloud.mcsu_rf.Inventories.SurvivalGamesInventory;
-import com.cloud.mcsu_rf.LootTables.SurvivalGamesLoot;
-import com.cloud.mcsu_rf.MCSU_Main;
 import com.cloud.mcsu_rf.Definitions.Game.Game;
 import com.cloud.mcsu_rf.Definitions.Game.GameState;
 import com.cloud.mcsu_rf.Definitions.GameFunctions.CustomEventListener;
 import com.cloud.mcsu_rf.Definitions.GameFunctions.PointAwarders.SurvivalAwarder;
+import com.cloud.mcsu_rf.EventListenerMain;
+import com.cloud.mcsu_rf.Inventories.SurvivalGamesInventory;
+import com.cloud.mcsu_rf.LootTables.SurvivalGamesLoot;
+import com.cloud.mcsu_rf.MCSU_Main;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
 
@@ -393,7 +389,7 @@ public class SurvivalGames implements Listener {
         }, 20L, 20L);
     }
 
-    @EventHandler
+    //@EventHandler
     public static void enterSoundRegion(PlayerMoveEvent e) {
         Player player = e.getPlayer();
         int[] sanbeez1 = {

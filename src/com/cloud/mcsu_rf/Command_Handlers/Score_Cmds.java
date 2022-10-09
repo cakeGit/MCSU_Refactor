@@ -44,7 +44,7 @@ public class Score_Cmds {
 
     public static boolean clearScores(CommandSender sender, String[] args) {
         for (McsuTeam team : TeamMain.Teams) {
-            team.awardTeamPoints(team.getTeamPoints()*-1, "resetting points");
+            team.awardPoints(team.getTeamPoints()*-1, "resetting points", false);
         }
 
         return true;
@@ -76,7 +76,6 @@ public class Score_Cmds {
 
                         sender.sendMessage(ChatColor.AQUA + "[MCSU]: Successfully set player " + Player.getName() + "'s team to " + team.getStyledName());
 
-                        TeamMain.refreshTeamsCalculatedPoints();
                     } catch (Exception err) {
                         err.printStackTrace();
                         sender.sendMessage(ChatColor.RED + "[MCSU]: Error in setting player team, are you sure that " +args[2] + " is a valid TeamID?");

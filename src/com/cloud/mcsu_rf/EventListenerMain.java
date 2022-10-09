@@ -1,14 +1,16 @@
 package com.cloud.mcsu_rf;
 
 import com.cak.what.ConfigApi.ConfigFile;
-import com.cloud.mcsu_rf.Game_Handlers.ShorthandClasses.Pick;
+import com.cak.what.Util.ChCol;
 import com.cloud.mcsu_rf.Definitions.ActivityRule;
 import com.cloud.mcsu_rf.Definitions.CustomEvents.GameCountdownEndEvent;
 import com.cloud.mcsu_rf.Definitions.CustomEvents.GameInitEvent;
 import com.cloud.mcsu_rf.Definitions.CustomEvents.GameSpawnsActivatedEvent;
 import com.cloud.mcsu_rf.Definitions.EventListener;
+import com.cloud.mcsu_rf.Definitions.Game.Game;
 import com.cloud.mcsu_rf.Definitions.McsuPlayer;
 import com.cloud.mcsu_rf.Definitions.McsuScoreboard.McsuScoreboard;
+import com.cloud.mcsu_rf.Game_Handlers.ShorthandClasses.Pick;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -113,6 +115,12 @@ public class EventListenerMain implements Listener {
                         .replace("${player}", p.getDisplayName())
                         .replace("${tcol}", McsuPlayer.fromBukkit(p).getColour())
         );
+
+        if (Game.gameActive) {
+            e.getPlayer().sendMessage(ChCol.RED + ChCol.BOLD + "You have been eliminated as you have left during the game!");
+            e.getPlayer().setGameMode(GameMode.SPECTATOR);
+        }
+
     }
 
     @EventHandler
@@ -195,6 +203,16 @@ public class EventListenerMain implements Listener {
 
     @EventHandler public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
         e.setCancelled(!getRuleActive("PVP"));
+
+        if (!getRuleActive("FriendlyFire")) {
+            if (e.getDamager() instanceof Player && e.getEntity() instanceof Player) {
+                if (
+                        McsuPlayer.fromBukkit((Player) e.getDamager()).getTeam() ==
+                                McsuPlayer.fromBukkit((Player) e.getEntity()).getTeam()
+                ) { e.setCancelled(true); }
+            }
+        }
+
         onRegisteredEvent(e);
     }
 
@@ -410,6 +428,7 @@ public class EventListenerMain implements Listener {
 
     public static void registerActivityRules() {
 
+        new ActivityRule("FriendlyFire", false);
         new ActivityRule("TileDrops", false);
         new ActivityRule("TileBreaking", true);
         new ActivityRule("PVP", false);

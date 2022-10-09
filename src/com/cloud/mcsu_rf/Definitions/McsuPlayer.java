@@ -75,9 +75,13 @@ public class McsuPlayer {
                     if (team.getMemberUUIDs().contains(p.getUniqueId().toString())) {
                         assert McsuPlayer.fromBukkit(p) != null;
                         McsuPlayer.fromBukkit(p).setTeam(team);
-                        TeamMain.refreshTeamsCalculatedPoints();
                     }
                 }
+            }
+
+            if (McsuPlayer.fromBukkit(p).getTeam() == null) {
+                McsuPlayer.fromBukkit(p).setTeam(TeamMain.Teams.get(0));
+
             }
         } else {
             Bukkit.getLogger().info("Player " + p.getName() + " was attempted to be registered but already exists");
@@ -90,9 +94,8 @@ public class McsuPlayer {
     //Object defenition
 
     Player bukkitPlayer;
-    String teamID = null;
+    McsuTeam team = null;
     String Colour = String.valueOf(ChatColor.WHITE);
-    int points = 0;
 
     public McsuPlayer(Player BukkitPlayer) {
 
@@ -100,9 +103,9 @@ public class McsuPlayer {
 
     }
 
-    public String getTeamID() { return this.teamID; }
+    public String getTeamID() { return team.getTeamID(); }
+    public McsuTeam getTeam() { return team; }
     public Player toBukkit() { return this.bukkitPlayer; }
-    public int getPoints() { return this.points; }
     public String getColouredName() { return this.Colour + this.bukkitPlayer.getName() + ChatColor.RESET; }
     public String getColouredName(boolean bold) { return this.Colour + (bold ? ChatColor.BOLD : "") + this.bukkitPlayer.getName(); }
     public String getName() { return this.bukkitPlayer.getName(); }
@@ -110,36 +113,38 @@ public class McsuPlayer {
 
     public void setTeam(McsuTeam newTeam) {
 
-        this.teamID = newTeam.TeamID;
+        this.team = newTeam;
         this.Colour = newTeam.getChatColour();
         bukkitPlayer.setDisplayName(getColouredName());
         //bukkitPlayer.setPlayerListName(getColouredName());
 
     }
 
-    public int awardPoints(int points){return awardPoints(points, null);}
+    public int awardPoints(int points) { return awardPoints(points, null, true); }
+    public int awardPoints(int points, String reason) { return awardPoints(points, reason, true); }
 
-    public int awardPoints(int points, String reason) {
+    public int awardPoints(int points, String reason, Boolean announce) {
 
-        this.points += points;
+        team.awardPoints(points, reason, false);
+
+
         Bukkit.getLogger().info("(Debug) " + getColouredName()  + " has received " + points + " points!");
         boolean hasReason = (reason!=null);
 
-        bukkitPlayer.sendMessage(ChatColor.BLUE +""+ ChatColor.ITALIC +
-                "You have received " + points + " points " + (hasReason ? " for " + reason : "" ) + "!");
+        if (announce) {
+            bukkitPlayer.sendMessage(ChatColor.BLUE +""+ ChatColor.ITALIC +
+                    "You have received " + points + " points " + (hasReason ? " for " + reason : "" ) + "!");
+        }
 
-        TeamMain.refreshTeamsCalculatedPoints();
         TeamTotalPoints.update();
 
-        return this.points;
+        return team.teamPoints;
 
     }
 
-    public int notifyTeamPoints(int points, String reason) {
+    public void notifyTeamPoints(int points, String reason) {
         bukkitPlayer.sendMessage(ChatColor.BLUE +""+ ChatColor.ITALIC +
                 "Your team has received " + points + " points for " + reason + "!");
-
-        return this.points;
     }
 
     public int getWins() { return 0; }
@@ -147,4 +152,5 @@ public class McsuPlayer {
     public ChatColor getColourRaw() {
         return ChatColor.getByChar(this.Colour.substring(1));
     }
+
 }

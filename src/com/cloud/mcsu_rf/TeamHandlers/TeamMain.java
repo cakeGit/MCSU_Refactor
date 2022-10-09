@@ -1,7 +1,7 @@
 package com.cloud.mcsu_rf.TeamHandlers;
 
 import com.cak.what.ConfigApi.ConfigFile;
-import com.cloud.mcsu_rf.Definitions.McsuPlayer;
+import com.cak.what.Util.ChCol;
 import com.cloud.mcsu_rf.Definitions.McsuTeam;
 import org.bukkit.Bukkit;
 
@@ -19,6 +19,15 @@ public class TeamMain {
 
     static void initTeams() {
         assert teamList != null;
+
+        Teams.add(new McsuTeam(
+                "No Team",
+                "None",
+                "nt",
+                ChCol.DARK_GREEN,
+                new ArrayList<>(),
+                0
+        ));
 
         for (HashMap<String, Object> teamHash : teamList) {
             Bukkit.getLogger().info("Loading team from config: " + teamHash.get("Name"));
@@ -54,38 +63,11 @@ public class TeamMain {
     public static ArrayList<McsuTeam> getSortedTeams() {
         ArrayList<McsuTeam> sortedTeams = Teams;
         sortedTeams.sort((t1, t2) -> {
-            return Integer.compare(t2.getCalculatedPoints(), t1.getCalculatedPoints());
+            return Integer.compare(t2.getTeamPoints(), t1.getTeamPoints());
         });
 
         return sortedTeams;
     }
 
-    public static void refreshTeamsCalculatedPoints() {
-
-        for (McsuTeam team : Teams) {
-
-            int teamPoints = team.getTeamPoints(); // gets the teams's points from winning games and things
-
-            if (team.getMemberUUIDs() == null) {
-
-                Bukkit.getLogger().info("[MCSU]: Team with name" +team.getRawName() + " has null member uuids");
-
-            } else {
-
-                for ( McsuPlayer player : team.getMembers() ) {
-
-                    try {
-                        teamPoints += player.getPoints();
-                    } catch (NullPointerException ignored) { }
-
-                }
-
-                team.setCalculatedPoints(teamPoints);
-
-            }
-
-        }
-
-    }
 
 }

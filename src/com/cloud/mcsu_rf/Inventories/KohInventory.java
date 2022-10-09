@@ -2,7 +2,6 @@ package com.cloud.mcsu_rf.Inventories;
 
 import com.cloud.mcsu_rf.Definitions.McsuItemStack;
 import com.cloud.mcsu_rf.Definitions.McsuPlayer;
-import com.cloud.mcsu_rf.LootTables.BlockSumoLoot;
 import com.cloud.mcsu_rf.TeamSwitchStatements;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -13,7 +12,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-public class BlockSumoInventory extends InventoryBase {
+public class KohInventory extends InventoryBase {
 
     public void init() {
         manager.bindEvent("BlockPlaceEvent");
@@ -53,13 +52,6 @@ public class BlockSumoInventory extends InventoryBase {
         }
     }
 
-    public static void givePowerUp(Player player) {
-
-        Inventory playerInventory = player.getInventory();
-        playerInventory.addItem(
-                BlockSumoLoot.powerupLootTable.generate()
-                );
-
-    }
+    public void onInventoryEvent(String inventoryEventName) { }
 
 }

@@ -35,6 +35,7 @@ public class Game_Main {
         new Slimekour().init();
         new MCTriathlon().init();
         new SnowballFight().init();
+        new KOH().init();
 
     }
 

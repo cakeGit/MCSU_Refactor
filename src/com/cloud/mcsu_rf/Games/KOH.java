@@ -3,12 +3,12 @@ package com.cloud.mcsu_rf.Games;
 import com.cak.what.Util.ChCol;
 import com.cloud.mcsu_rf.Definitions.Game.Game;
 import com.cloud.mcsu_rf.Definitions.Game.GameState;
+import com.cloud.mcsu_rf.Definitions.GameFunctions.ActionZone;
 import com.cloud.mcsu_rf.Definitions.GameFunctions.ActionZones.HeightActionZone;
 import com.cloud.mcsu_rf.Definitions.GameFunctions.ActionZones.HeightKillZone;
 import com.cloud.mcsu_rf.Definitions.GameFunctions.BuildLimits.BuildMaxDistance;
 import com.cloud.mcsu_rf.Definitions.GameFunctions.BuildLimits.BuildMaxHeight;
 import com.cloud.mcsu_rf.Definitions.GameFunctions.CustomEventListener;
-import com.cloud.mcsu_rf.Definitions.GameFunctions.CustomExplosionVelocities;
 import com.cloud.mcsu_rf.Definitions.GameFunctions.GamePrefixText;
 import com.cloud.mcsu_rf.Definitions.GameFunctions.InventoryManager;
 import com.cloud.mcsu_rf.Definitions.GameFunctions.PointAwarders.KillsAwarder;
@@ -16,59 +16,56 @@ import com.cloud.mcsu_rf.Definitions.Map.MapPoint;
 import com.cloud.mcsu_rf.Definitions.Map.SpawnManager;
 import com.cloud.mcsu_rf.Definitions.McsuPlayer;
 import com.cloud.mcsu_rf.Definitions.McsuScoreboard.McsuScoreboard;
+import com.cloud.mcsu_rf.Definitions.McsuTeam;
 import com.cloud.mcsu_rf.EventListenerMain;
-import com.cloud.mcsu_rf.GamePlayers.BlockSumoPlayer;
+import com.cloud.mcsu_rf.GamePlayers.KohPlayer;
 import com.cloud.mcsu_rf.Game_Handlers.ShorthandClasses.ParseArr;
-import com.cloud.mcsu_rf.Inventories.BlockSumoInventory;
-import com.cloud.mcsu_rf.LootTables.BlockSumoLoot;
+import com.cloud.mcsu_rf.Inventories.KohInventory;
 import com.cloud.mcsu_rf.MCSU_Main;
-import com.cloud.mcsu_rf.TeamSwitchStatements;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.BlockVector;
+import org.bukkit.util.BoundingBox;
 
 import java.util.ArrayList;
 
-public class BlockSumo {
+public class KOH {
 
     Game game;
+
+    BukkitRunnable hillUpdate;
+    InventoryManager inventoryManager = new InventoryManager(new KohInventory());
 
     int killZoneY;
     int buildHeightLimit;
     int buildDistanceLimit;
-    BukkitRunnable powerupTimer;
-    BukkitRunnable displayLivesTimer;
-    InventoryManager inventoryManager = new InventoryManager(new BlockSumoInventory());
     Integer[] buildDistanceOrigin;
+    Integer[] hillZoneTo;
+    Integer[] hillZoneFrom;
+    BoundingBox hillBoundingBox;
 
-    public static int maxLives = 5;
-    public static int maxLifePowerups = 5;
+    public static int captureTime = 30;
+    public static McsuTeam owner = null;
+    public static ArrayList<McsuTeam> hillTeams = new ArrayList<>();
+    public static int ownerTime = 0;
 
     ArrayList<Location> placedBlockPositions = new ArrayList<>();
 
     public void init() {
 
-        BlockSumoLoot.init();
-
-        game = new Game("blockSumo", "Block Sumo")
+        game = new Game("KOH", "King Of The Hill") // placeholder name
                 .addGameState(
                         new GameState("base", true)
                                 .addGameFunction(new CustomEventListener(event -> {game.checkAliveTeams(false);checkIfEnded();}, "PlayerLeaveEvent"))
                                 .addGameFunction(new GamePrefixText(
-                                        mcsuPlayer -> BlockSumoPlayer.fromBukkit(mcsuPlayer.toBukkit()).getLivesTabString()
+                                        mcsuPlayer -> KohPlayer.fromBukkit(mcsuPlayer.toBukkit()).getLivesTabString()
                                 ))
                                 .addGameFunction(new CustomEventListener(
                                         event -> game.getGamestate("afterCountdown").setEnabled(true),
@@ -91,13 +88,46 @@ public class BlockSumo {
                                     buildDistanceLimit = (int) game.getMapMetadata().get("GameData.BuildDistanceLimit");
                                     buildDistanceOrigin = ParseArr.toInteger(((String) game.getMapMetadata().get("GameData.BuildDistanceOrigin")).split(" "));
 
+                                    hillZoneTo = ParseArr.toInteger(((String) game.getMapMetadata().get("GameData.HillZoneTo")).split(" "));
+                                    hillZoneFrom = ParseArr.toInteger(((String) game.getMapMetadata().get("GameData.HillZoneFrom")).split(" "));
+
+                                    hillBoundingBox = new BoundingBox(
+                                            hillZoneTo[0],hillZoneTo[1],hillZoneTo[2],
+                                            hillZoneFrom[0],hillZoneFrom[1],hillZoneFrom[2]
+                                    );
+
                                     game.getGamestate("afterCountdown")
                                             .addGameFunction(new HeightKillZone(
                                                     killZoneY,
                                                     true
                                             ), true)
                                             .addGameFunction(new BuildMaxHeight(buildHeightLimit), true)
-                                            .addGameFunction(new BuildMaxDistance(buildDistanceOrigin[0], buildDistanceOrigin[1], buildDistanceLimit), true);
+                                            .addGameFunction(new BuildMaxDistance(
+                                                    buildDistanceOrigin[0],
+                                                    buildDistanceOrigin[1],
+                                                    buildDistanceLimit
+                                            ), true)
+                                            .addGameFunction(
+                                                    new ActionZone(
+                                                            new BlockVector(hillZoneTo[0],hillZoneTo[1],hillZoneTo[2]),
+                                                            new BlockVector(hillZoneFrom[0],hillZoneFrom[1],hillZoneFrom[2])
+                                                    ).setOnEnterEvent(player -> {
+                                                        Bukkit.broadcastMessage("a");
+
+                                                        McsuTeam team = McsuPlayer.fromBukkit(player).getTeam();
+
+                                                        if (!hillTeams.contains(team)) {
+                                                            hillTeams.add(team);
+                                                        }
+
+                                                    }).setOnExitEvent(player -> {
+
+                                                        McsuTeam team = McsuPlayer.fromBukkit(player).getTeam();
+
+                                                        hillTeams.remove(team);
+
+                                                    })
+                                            ,true);
 
                                     game.getGamestate("lobby")
                                             .addGameFunction(
@@ -108,16 +138,45 @@ public class BlockSumo {
                                                                     game.getWorld()
                                                             )), true);
 
+                                    hillUpdate = new BukkitRunnable() {
+                                        @Override
+                                        public void run() {
+
+                                            if (hillTeams.contains(owner)) {
+
+                                            } else if (hillTeams.size() != 0) {
+                                                if (ownerTime == 0) {
+                                                    if (hillTeams.size() == 1) {
+                                                        Bukkit.broadcastMessage("Switchowner");
+                                                        owner = hillTeams.get(0);
+                                                    }
+                                                }
+
+                                                ownerTime-=1;
+                                            }
+
+                                            for (KohPlayer kohPlayer : KohPlayer.KohPlayers) {
+                                                kohPlayer.toBukkit().spigot().sendMessage(
+                                                    ChatMessageType.ACTION_BAR,
+                                                    TextComponent.fromLegacyText(kohPlayer.getTimeString())
+                                                );
+                                            }
+
+                                        }
+                                    };
+                                    hillUpdate.runTaskTimer(MCSU_Main.Mcsu_Plugin, 0L, 20L);
+
 
                                     for (Player player : Bukkit.getOnlinePlayers()) {
-                                        new BlockSumoPlayer(player);
+                                        new KohPlayer(player);
                                     }
+
 
                                     game.getGamestate("lobby").setEnabled(true);
 
                                 })
                                 .addGameFunction(inventoryManager)
-                                .addGameFunction(new CustomExplosionVelocities())
+                                /*.addGameFunction(new CustomExplosionVelocities())
                                 .addGameFunction(new CustomEventListener(event -> {
                                     EntityExplodeEvent explodeEvent = (EntityExplodeEvent) event;
                                     explodeEvent.setCancelled(true);
@@ -132,7 +191,7 @@ public class BlockSumo {
                                     Player player;
                                     if (event.getEventName().equals("InventoryClickEvent")) {
                                         player = (Player) ((InventoryClickEvent) event).getWhoClicked();
-                                    } else /*if (event.getEventName().equals("PlayerInteractEvent"))*/ {
+                                    } else /*if (event.getEventName().equals("PlayerInteractEvent")) {
                                         player = ((PlayerInteractEvent) event).getPlayer();
                                     }
 
@@ -165,14 +224,14 @@ public class BlockSumo {
 
                                     } catch (NullPointerException ignored) { }
 
-                                }, "InventoryClickEvent", "PlayerInteractEvent"))
+                                }, "InventoryClickEvent", "PlayerInteractEvent"))*/
                                 .addGameFunction(new CustomEventListener(event -> {
                                     EntityDamageByEntityEvent damageByEntityEvent = (EntityDamageByEntityEvent) event;
-                                    if (BlockSumoPlayer.fromBukkit((Player) damageByEntityEvent.getEntity()).hasSpawnProt()) {
+                                    if (KohPlayer.fromBukkit((Player) damageByEntityEvent.getEntity()).hasSpawnProt()) {
                                         damageByEntityEvent.setCancelled(true);
                                     }
                                 }, "EntityDamageByEntityEvent"))
-                                .addGameFunction(new CustomEventListener(event -> {
+                                /*.addGameFunction(new CustomEventListener(event -> {
                                     try {
                                         PlayerInteractEvent playerInteractEvent = (PlayerInteractEvent) event;
                                         Player player = playerInteractEvent.getPlayer();
@@ -182,7 +241,7 @@ public class BlockSumo {
                                             playerInteractEvent.getItem().setAmount(playerInteractEvent.getItem().getAmount()-1);
                                         }
                                     } catch (NullPointerException ignored){}
-                                }, "PlayerInteractEvent"))
+                                }, "PlayerInteractEvent"))*/
 
                 )
                 .addGameState(
@@ -191,31 +250,6 @@ public class BlockSumo {
                 .addGameState(
                         new GameState("afterCountdown")
                                 .onEnable(()-> {
-                                    game.addTimedEvent("Powerups I", 60, () -> {
-                                        powerupTimer.runTaskTimer(MCSU_Main.Mcsu_Plugin, 0L, 20L*30L); //Happens every 30s
-                                    });
-                                    game.addTimedEvent("Powerups II", 60*4, () -> {
-                                        for (Player player : Bukkit.getOnlinePlayers()) {
-                                            player.sendMessage("Powerups upgrading!");
-                                        }
-                                    });
-                                    game.addTimedEvent("Powerups III", 60*8, () -> {
-                                        Bukkit.broadcastMessage("Powerups upgrading!");
-                                    });
-
-                                    game.addTimedEvent(ChCol.BOLD + ChCol.RED + "Sudden Death", 60*10, () -> {
-                                        Bukkit.broadcastMessage(ChCol.BOLD + ChCol.RED + "Sudden Death has begun!");
-                                        for (Player player : Bukkit.getOnlinePlayers()) {
-                                            player.playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 1.0F, 1.0F);
-                                            if (BlockSumoPlayer.fromBukkit(player).getLives() != 0) {
-                                                BlockSumoPlayer.fromBukkit(player).setLives(1);
-                                            }
-                                        }
-
-                                        for (McsuPlayer player : Game.getAlivePlayers()) {
-                                            player.toBukkit().sendTitle(ChCol.BOLD + ChCol.RED + "Sudden Death",  ChCol.GRAY + "Everyone has one life!");
-                                        }
-                                    });
 
                                     EventListenerMain.setActivityRule("PVP", true);
                                     game.getGamestate("lobby").setEnabled(false);
@@ -223,47 +257,18 @@ public class BlockSumo {
                                         players.setGlowing(true);
                                     }
 
-                                    powerupTimer = new BukkitRunnable() {
-                                        @Override
-                                        public void run() {
-
-                                            for (McsuPlayer player : Game.getAlivePlayers()) {
-                                                if (BlockSumoPlayer.fromBukkit(player.toBukkit()).getLifePowerups() != maxLifePowerups) {
-                                                    BlockSumoPlayer blockSumoPlayer = BlockSumoPlayer.fromBukkit(player.toBukkit());
-                                                    blockSumoPlayer.addLifePowerup();
-                                                    player.toBukkit().sendMessage(ChCol.BLUE + "You have received a powerup! [" +
-                                                            blockSumoPlayer.getLifePowerups()
-                                                            + "/" + maxLifePowerups + "]"
-                                                    );
-                                                    BlockSumoInventory.givePowerUp(player.toBukkit());
-                                                }
-                                            }
-
-                                        }
-                                    };
-
-                                    displayLivesTimer = new BukkitRunnable() {
-                                        @Override
-                                        public void run() {
-
-                                            for (BlockSumoPlayer blockSumoPlayer : BlockSumoPlayer.BlockSumoPlayers) {
-                                                blockSumoPlayer.toBukkit().spigot().sendMessage(
-                                                        ChatMessageType.ACTION_BAR,
-                                                        TextComponent.fromLegacyText(blockSumoPlayer.getLivesString())
-                                                );
-                                            }
-
-                                        }
-                                    };
-                                    displayLivesTimer.runTaskTimer(MCSU_Main.Mcsu_Plugin, 0L, 20L);
                                 })
-
                                 .addGameFunction(new CustomEventListener(
                                         event -> {
                                             BlockPlaceEvent placeEvent = (BlockPlaceEvent) event;
                                             Location blockLoc = placeEvent.getBlockPlaced().getLocation();
 
                                             placedBlockPositions.add(blockLoc);
+
+                                            if (hillBoundingBox.contains(blockLoc.toVector())) {
+                                                placeEvent.setCancelled(true);
+                                                placeEvent.getPlayer().sendMessage(ChCol.RED + "You cant build on the hill!");
+                                            }
                                         }, "BlockPlaceEvent"))
 
                                 .addGameFunction(new CustomEventListener(
@@ -281,24 +286,10 @@ public class BlockSumo {
 
                                             PlayerDeathEvent deathEvent = (PlayerDeathEvent) event;
                                             Player deathEventPlayer = deathEvent.getEntity().getPlayer();
-                                            BlockSumoPlayer sumoPlayer = BlockSumoPlayer.fromBukkit(deathEventPlayer);
+                                            KohPlayer sumoPlayer = KohPlayer.fromBukkit(deathEventPlayer);
 
-                                            displayLivesTimer.run(); // Runs an off-beat display to update immediately
-                                            sumoPlayer.removeLife();
                                             McsuScoreboard.defaultScoreboard.update();
 
-                                            Player killer = deathEvent.getEntity().getKiller();
-                                            if (killer != null) {
-                                                BlockSumoInventory.givePowerUp(killer);
-                                                assert deathEventPlayer != null;
-                                                killer.sendMessage(ChCol.BLUE + "You have received a powerup for killing " + deathEventPlayer.getDisplayName() + ChCol.BLUE + "!");
-                                            }
-
-                                            if (sumoPlayer.getLives() <= 0) {
-                                                game.eliminatePlayer(sumoPlayer.toBukkit());
-                                                game.checkAliveTeams(true);
-                                                checkIfEnded();
-                                            } else {
                                                 new BukkitRunnable() {
                                                     int timeLeft = 3;
 
@@ -324,11 +315,8 @@ public class BlockSumo {
                                                             deathEventPlayer.playSound(deathEventPlayer.getLocation(), Game.DefaultRespawnSound, 1, 1);
                                                             deathEventPlayer.setGameMode(GameMode.SURVIVAL);
 
-                                                            BlockSumoInventory inventory = new BlockSumoInventory();
+                                                            KohInventory inventory = new KohInventory();
                                                             inventory.load(deathEvent.getEntity());
-
-                                                            BlockSumoInventory.givePowerUp(deathEventPlayer);
-                                                            deathEventPlayer.sendMessage(ChCol.BLUE + "You have received a powerup!");
 
                                                             sumoPlayer.setSpawnProt(true);
 
@@ -340,23 +328,18 @@ public class BlockSumo {
                                                                 }
                                                             }.runTaskLater(MCSU_Main.Mcsu_Plugin, 60L);
 
-                                                            BlockSumoPlayer.fromBukkit(deathEventPlayer).resetLifePowerups();
-
                                                             cancel();
                                                         } else {
                                                             deathEventPlayer.sendTitle(
                                                                     ChatColor.RED + "Respawning in " + ChatColor.WHITE +""+ ChatColor.BOLD +""+  timeLeft,
-                                                                    ChatColor.RED +""+ sumoPlayer.getLives() + " lives left!"
-                                                            );
+                                                                    "");
                                                             deathEventPlayer.playSound(deathEventPlayer.getLocation(), Game.DefaultStartTimerTickSound, 1, 1);
                                                         }
 
                                                         timeLeft -= 1;
                                                     }
                                                 }.runTaskTimer(MCSU_Main.Mcsu_Plugin, 0L, 20L);
-                                            }
-                                        },
-                                        "PlayerDeathEvent"))
+                                        }, "PlayerDeathEvent"))
                 );
 
 
@@ -370,10 +353,7 @@ public class BlockSumo {
 
             Bukkit.getLogger().info("Game " + game.getName() + " has ended!");
 
-            powerupTimer.cancel();
-            displayLivesTimer.cancel();
-
-            BlockSumoPlayer.BlockSumoPlayers = new ArrayList<>();
+            KohPlayer.KohPlayers = new ArrayList<>();
 
             game.endGame(game.getAliveTeams().get(0));
 
